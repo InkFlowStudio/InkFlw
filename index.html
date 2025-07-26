@@ -2560,6 +2560,76 @@
             color: white;
         }
     </style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js">
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+  const ctx = canvas.getContext("2d");
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js">
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+  const ctx = canvas.getContext("2d");
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js">
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+  const ctx = canvas.getContext("2d");
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+</script>
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyA4I4FO-mXd5Rh_ZsUAVOjREakxR8HQTSs",
+  authDomain: "inkflow-70617.firebaseapp.com",
+  projectId: "inkflow-70617",
+  storageBucket: "inkflow-70617.firebasestorage.app",
+  messagingSenderId: "204642124018",
+  appId: "1:204642124018:web:0df8d8e4a3426b3d7e506b",
+  measurementId: "G-74CH1K1K5H"
+};
+  firebase.initializeApp(firebaseConfig);
+
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+  const ctx = canvas.getContext("2d");
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+</script>
+
 </head>
 <body>
     <!-- Navigation -->
@@ -6004,6 +6074,19 @@
             window.addEventListener('resize', resizeCanvas);
             initCanvas();
         });
-    </script>
+    
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+  const ctx = canvas.getContext("2d");
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+</script>
 </body>
 </html>
