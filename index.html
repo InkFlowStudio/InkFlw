@@ -2575,6 +2575,23 @@ function downloadCanvasWithWatermark(canvas, username, displayName) {
   link.click();
 }
 
+
+function downloadWithWatermark() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const username = localStorage.getItem('username') || "Unknown";
+  const displayName = localStorage.getItem('displayName') || "Artist";
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
 </script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js">
 function downloadCanvasWithWatermark(canvas, username, displayName) {
@@ -2589,6 +2606,23 @@ function downloadCanvasWithWatermark(canvas, username, displayName) {
   link.click();
 }
 
+
+function downloadWithWatermark() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const username = localStorage.getItem('username') || "Unknown";
+  const displayName = localStorage.getItem('displayName') || "Artist";
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
 </script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js">
 function downloadCanvasWithWatermark(canvas, username, displayName) {
@@ -2596,6 +2630,23 @@ function downloadCanvasWithWatermark(canvas, username, displayName) {
   ctx.font = "12px sans-serif";
   ctx.fillStyle = "rgba(0,0,0,0.6)";
   ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+
+function downloadWithWatermark() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const username = localStorage.getItem('username') || "Unknown";
+  const displayName = localStorage.getItem('displayName') || "Artist";
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
 
   const link = document.createElement('a');
   link.download = 'drawing.png';
@@ -2621,6 +2672,23 @@ function downloadCanvasWithWatermark(canvas, username, displayName) {
   ctx.font = "12px sans-serif";
   ctx.fillStyle = "rgba(0,0,0,0.6)";
   ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+
+function downloadWithWatermark() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const username = localStorage.getItem('username') || "Unknown";
+  const displayName = localStorage.getItem('displayName') || "Artist";
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
 
   const link = document.createElement('a');
   link.download = 'drawing.png';
@@ -6080,6 +6148,23 @@ function downloadCanvasWithWatermark(canvas, username, displayName) {
   ctx.font = "12px sans-serif";
   ctx.fillStyle = "rgba(0,0,0,0.6)";
   ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+  const link = document.createElement('a');
+  link.download = 'drawing.png';
+  link.href = canvas.toDataURL();
+  link.click();
+}
+
+
+function downloadWithWatermark() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const username = localStorage.getItem('username') || "Unknown";
+  const displayName = localStorage.getItem('displayName') || "Artist";
+  ctx.font = "12px sans-serif";
+  ctx.fillStyle = "rgba(0,0,0,0.6)";
+  ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
 
   const link = document.createElement('a');
   link.download = 'drawing.png';
