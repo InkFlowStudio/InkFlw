@@ -1,382 +1,6177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InkFlow Studio | Advanced Pixel Art</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InkFlow Studio | Advanced Pixel Art</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+:root {
+--primary-bg: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+--panel-bg: rgba(18, 18, 30, 0.85);
+--accent-purple: #8a2be2;
+--accent-blue: #4fc3f7;
+--accent-green: #27ae60;
+--accent-red: #e74c3c;
+--accent-orange: #f39c12;
+--text-light: #e0e0ff;
+--text-secondary: #b0b0ff;
+--border-color: rgba(100, 100, 255, 0.2);
+--transition-speed: 0.3s;
+}
+
+body {
+background: var(--primary-bg);
+color: var(--text-light);
+font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+min-height: 100vh;
+overflow-x: hidden;
+line-height: 1.6;
+transition: background var(--transition-speed), color var(--transition-speed);
+}
+
+/* Light theme */
+body.light-theme {
+--primary-bg: linear-gradient(135deg, #f0f0f5, #e0e0ff, #d0d0ff);
+--panel-bg: rgba(255, 255, 255, 0.9);
+--accent-purple: #8a2be2;
+--accent-blue: #3498db;
+--text-light: #333355;
+--text-secondary: #555577;
+--border-color: rgba(100, 100, 200, 0.3);
+}
+
+/* Blue night theme */
+body.blue-night-theme {
+--primary-bg: linear-gradient(135deg, #0a0a1a, #001a33, #003366);
+--panel-bg: rgba(10, 20, 40, 0.9);
+--accent-purple: #a050f0;
+--accent-blue: #60c0ff;
+--text-light: #e0f0ff;
+--text-secondary: #a0c0e0;
+}
+
+/* UI Scale Adjustments */
+body.ui-scale-125 { font-size: 125%; }
+body.ui-scale-150 { font-size: 150%; }
+
+/* Navigation */
+.navbar {
+background: rgba(18, 18, 30, 0.95);
+backdrop-filter: blur(10px);
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 15px 40px;
+border-bottom: 1px solid var(--border-color);
+position: sticky;
+top: 0;
+z-index: 1000;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.logo h1 {
+font-size: 1.8rem;
+font-weight: 800;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+text-shadow: 0 2px 10px rgba(79, 195, 247, 0.15);
+}
+
+.nav-links {
+display: flex;
+gap: 25px;
+}
+
+.nav-links a {
+color: var(--text-secondary);
+text-decoration: none;
+font-weight: 600;
+padding: 8px 15px;
+border-radius: 8px;
+transition: all var(--transition-speed);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+background: rgba(100, 100, 255, 0.15);
+color: var(--accent-blue);
+}
+
+.user-actions {
+display: flex;
+gap: 15px;
+align-items: center;
+}
+
+.user-info {
+display: flex;
+align-items: center;
+gap: 10px;
+cursor: pointer;
+}
+
+.user-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-weight: bold;
+overflow: hidden;
+}
+
+.user-avatar img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+/* Main Content */
+.main-container {
+max-width: 1600px;
+margin: 20px auto;
+padding: 0 20px;
+display: flex;
+gap: 25px;
+}
+
+.content-section {
+flex: 1;
+background: var(--panel-bg);
+backdrop-filter: blur(12px);
+border-radius: 16px;
+box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+overflow: hidden;
+border: 1px solid var(--border-color);
+padding: 25px;
+display: none;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.content-section.active {
+display: block;
+}
+
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 25px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.25);
+transition: border-color var(--transition-speed);
+}
+
+.section-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+/* Studio Section */
+.studio-content {
+display: flex;
+gap: 25px;
+height: calc(100vh - 200px);
+}
+
+.canvas-section {
+flex: 1;
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.canvas-container {
+flex: 1;
+position: relative;
+border-radius: 12px;
+overflow: hidden;
+box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+border: 2px solid #33334d;
+background: #1a1a2e;
+transition: background var(--transition-speed);
+}
+
+#drawing-canvas {
+width: 100%;
+height: 100%;
+display: block;
+cursor: crosshair;
+}
+
+.tools-section {
+width: 320px;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.tools-container {
+display: flex;
+flex-direction: column;
+gap: 20px;
+overflow-y: auto;
+padding-right: 10px;
+height: 100%;
+}
+
+.tools-container::-webkit-scrollbar {
+width: 8px;
+}
+
+.tools-container::-webkit-scrollbar-track {
+background: rgba(30, 30, 50, 0.5);
+border-radius: 4px;
+transition: background var(--transition-speed);
+}
+
+.tools-container::-webkit-scrollbar-thumb {
+background: linear-gradient(to bottom, var(--accent-purple), var(--accent-blue));
+border-radius: 4px;
+transition: background var(--transition-speed);
+}
+
+/* Reference Panel */
+.reference-panel {
+width: 320px;
+background: var(--panel-bg);
+backdrop-filter: blur(12px);
+border-radius: 16px;
+box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+border: 1px solid var(--border-color);
+padding: 25px;
+display: flex;
+flex-direction: column;
+gap: 20px;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.reference-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.reference-image-container {
+flex: 1;
+background: #1a1a2e;
+border-radius: 12px;
+overflow: hidden;
+border: 2px solid #33334d;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.reference-image {
+max-width: 100%;
+max-height: 300px;
+display: none;
+}
+
+.reference-placeholder {
+text-align: center;
+color: var(--text-secondary);
+padding: 30px;
+transition: color var(--transition-speed);
+}
+
+.reference-controls {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.reference-control {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+/* Community Gallery */
+.gallery-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 25px;
+margin-top: 20px;
+}
+
+.artwork-card {
+background: rgba(30, 30, 50, 0.75);
+border-radius: 12px;
+overflow: hidden;
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+border: 1px solid rgba(100, 100, 255, 0.25);
+transition: transform var(--transition-speed), box-shadow var(--transition-speed), background var(--transition-speed), border-color var(--transition-speed);
+cursor: pointer;
+}
+
+.artwork-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 25px rgba(79, 195, 247, 0.3);
+}
+
+.artwork-image {
+width: 100%;
+height: 200px;
+object-fit: cover;
+border-bottom: 1px solid rgba(100, 100, 255, 0.25);
+}
+
+.artwork-info {
+padding: 15px;
+}
+
+.artwork-title {
+font-size: 1.2rem;
+margin-bottom: 8px;
+color: var(--text-light);
+display: flex;
+align-items: center;
+gap: 8px;
+transition: color var(--transition-speed);
+}
+
+.profile-author {
+color: var(--text-secondary);
+font-size: 0.9rem;
+margin-bottom: 10px;
+display: flex;
+align-items: center;
+gap: 5px;
+transition: color var(--transition-speed);
+cursor: pointer;
+}
+
+.profile-author:hover {
+color: var(--accent-blue);
+text-decoration: underline;
+}
+
+.artwork-stats {
+display: flex;
+justify-content: space-between;
+color: var(--text-secondary);
+font-size: 0.85rem;
+transition: color var(--transition-speed);
+}
+
+.stat {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+/* Artwork Detail View */
+.artwork-detail {
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.artwork-detail-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.artwork-detail-image {
+max-width: 100%;
+max-height: 500px;
+border-radius: 12px;
+box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+margin: 0 auto;
+display: block;
+}
+
+.artwork-detail-info {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.artwork-detail-title {
+font-size: 2rem;
+color: var(--accent-blue);
+}
+
+.artwork-detail-author {
+font-size: 1.2rem;
+color: var(--text-secondary);
+}
+
+.artwork-detail-description {
+font-size: 1rem;
+line-height: 1.6;
+color: var(--text-light);
+margin: 10px 0;
+}
+
+.artwork-interactions {
+display: flex;
+gap: 15px;
+margin: 15px 0;
+flex-wrap: wrap;
+}
+
+.like-btn, .comment-btn, .download-btn, .delete-artwork-btn {
+background: rgba(40, 40, 60, 0.75);
+border: none;
+border-radius: 8px;
+padding: 10px 15px;
+cursor: pointer;
+color: var(--text-light);
+font-weight: 600;
+transition: all var(--transition-speed);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.like-btn:hover, .comment-btn:hover, .download-btn:hover, .delete-artwork-btn:hover {
+background: rgba(60, 60, 100, 0.85);
+}
+
+.like-btn.liked {
+background: linear-gradient(to right, #e74c3c, #c0392b);
+}
+
+.delete-artwork-btn {
+background: linear-gradient(to right, var(--accent-red), #c0392b);
+}
+
+.comments-section {
+margin-top: 20px;
+}
+
+.comments-title {
+font-size: 1.4rem;
+margin-bottom: 15px;
+color: var(--accent-blue);
+}
+
+.comments-list {
+max-height: 300px;
+overflow-y: auto;
+padding-right: 10px;
+}
+
+.comment {
+background: rgba(40, 40, 60, 0.5);
+border-radius: 8px;
+padding: 12px;
+margin-bottom: 12px;
+}
+
+.comment-header {
+display: flex;
+justify-content: space-between;
+margin-bottom: 8px;
+}
+
+.comment-author {
+font-weight: bold;
+color: var(--accent-blue);
+}
+
+.comment-date {
+color: var(--text-secondary);
+font-size: 0.8rem;
+}
+
+.comment-content {
+color: var(--text-light);
+}
+
+.add-comment {
+margin-top: 20px;
+display: flex;
+gap: 10px;
+}
+
+.comment-input {
+flex: 1;
+padding: 12px 15px;
+border-radius: 8px;
+border: 1px solid var(--border-color);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+}
+
+.post-comment-btn {
+background: linear-gradient(to right, var(--accent-purple), #5d2d91);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 12px 20px;
+cursor: pointer;
+font-weight: 600;
+}
+
+.back-to-gallery {
+background: rgba(40, 40, 60, 0.75);
+border: none;
+border-radius: 8px;
+padding: 10px 15px;
+cursor: pointer;
+color: var(--text-light);
+font-weight: 600;
+transition: all var(--transition-speed);
+display: flex;
+align-items: center;
+gap: 8px;
+margin-top: 20px;
+}
+
+.back-to-gallery:hover {
+background: rgba(60, 60, 100, 0.85);
+}
+
+/* Common Elements */
+.btn {
+background: linear-gradient(to right, #5d2d91, var(--accent-purple));
+color: white;
+border: none;
+border-radius: 8px;
+padding: 10px 15px;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 0.9rem;
+box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+}
+
+.btn:hover {
+transform: translateY(-3px);
+box-shadow: 0 6px 15px rgba(138, 43, 226, 0.5);
+}
+
+.btn:active {
+transform: translateY(1px);
+}
+
+.btn-clear {
+background: linear-gradient(to right, #c0392b, var(--accent-red));
+}
+
+.btn-save {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+}
+
+.btn-download {
+background: linear-gradient(to right, #3498db, #2980b9);
+}
+
+.btn-upload {
+background: linear-gradient(to right, var(--accent-orange), #f1c40f);
+color: #222;
+}
+
+.btn-layer {
+background: linear-gradient(to right, #3498db, #4fc3f7);
+}
+
+.tool-group {
+background: rgba(30, 30, 50, 0.75);
+border-radius: 14px;
+padding: 20px;
+text-align: left;
+border: 1px solid rgba(100, 100, 255, 0.25);
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.tool-group h3 {
+color: var(--accent-purple);
+margin-bottom: 15px;
+font-size: 1.2rem;
+display: flex;
+align-items: center;
+gap: 10px;
+padding-bottom: 10px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.25);
+transition: color var(--transition-speed), border-color var(--transition-speed);
+}
+
+.controls {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: center;
+margin-top: 15px;
+}
+
+.color-picker {
+width: 50px;
+height: 50px;
+border-radius: 50%;
+overflow: hidden;
+border: 2px solid #444;
+cursor: pointer;
+transition: all var(--transition-speed);
+margin: 0 auto 15px;
+}
+
+.color-picker:hover {
+transform: scale(1.1);
+}
+
+.color-picker input {
+width: 100%;
+height: 100%;
+border: none;
+cursor: pointer;
+}
+
+.slider-container {
+display: flex;
+align-items: center;
+gap: 12px;
+background: rgba(40, 40, 60, 0.75);
+padding: 8px 15px;
+border-radius: 50px;
+margin-top: 10px;
+transition: background var(--transition-speed);
+}
+
+.slider-container i {
+color: var(--accent-blue);
+font-size: 1.1rem;
+transition: color var(--transition-speed);
+}
+
+#brush-size, #brush-opacity {
+width: 100%;
+height: 8px;
+-webkit-appearance: none;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+border-radius: 5px;
+outline: none;
+transition: background var(--transition-speed);
+}
+
+#brush-size::-webkit-slider-thumb,
+#brush-opacity::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 20px;
+height: 20px;
+border-radius: 50%;
+background: white;
+cursor: pointer;
+box-shadow: 0 0 5px rgba(0,0,0,0.7);
+border: 2px solid var(--accent-purple);
+transition: border-color var(--transition-speed);
+}
+
+.slider-value {
+min-width: 35px;
+text-align: center;
+font-weight: bold;
+color: var(--accent-blue);
+font-size: 0.95rem;
+transition: color var(--transition-speed);
+}
+
+.preset-colors {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+justify-content: center;
+margin-top: 12px;
+}
+
+.preset-color {
+width: 30px;
+height: 30px;
+border-radius: 6px;
+cursor: pointer;
+transition: all var(--transition-speed);
+border: 2px solid transparent;
+}
+
+.preset-color:hover {
+transform: scale(1.2);
+}
+
+.preset-color.active {
+border: 2px solid white;
+transform: scale(1.2);
+box-shadow: 0 0 10px rgba(255,255,255,0.7);
+}
+
+.brush-types {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 8px;
+margin-top: 12px;
+}
+
+.brush-btn {
+background: rgba(40, 40, 60, 0.75);
+border: none;
+border-radius: 8px;
+padding: 8px 5px;
+cursor: pointer;
+color: var(--text-light);
+transition: all var(--transition-speed);
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 5px;
+}
+
+.brush-btn:hover {
+background: rgba(60, 60, 100, 0.85);
+transform: translateY(-3px);
+}
+
+.brush-btn.active {
+background: linear-gradient(to right, #5d2d91, var(--accent-purple));
+box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+transform: translateY(-3px);
+}
+
+.blend-modes {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 8px;
+margin-top: 12px;
+}
+
+.blend-btn {
+background: rgba(40, 40, 60, 0.75);
+border: none;
+border-radius: 8px;
+padding: 8px 5px;
+cursor: pointer;
+color: var(--text-light);
+font-size: 0.8rem;
+transition: all var(--transition-speed);
+}
+
+.blend-btn:hover {
+background: rgba(60, 60, 100, 0.85);
+}
+
+.blend-btn.active {
+background: linear-gradient(to right, #4a2d91, var(--accent-blue));
+box-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+}
+
+.footer {
+margin-top: 40px;
+text-align: center;
+color: #9090d0;
+font-size: 0.9rem;
+padding: 20px;
+border-top: 1px solid var(--border-color);
+transition: color var(--transition-speed), border-color var(--transition-speed);
+}
+
+/* Layer Controls */
+.layer-controls {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-top: 12px;
+}
+
+.layer-row {
+display: flex;
+align-items: center;
+background: rgba(40, 40, 60, 0.75);
+padding: 8px 12px;
+border-radius: 8px;
+gap: 8px;
+transition: all var(--transition-speed);
+position: relative;
+cursor: pointer;
+}
+
+/* Active layer styling */
+.layer-row.active {
+background: rgba(79, 195, 247, 0.2);
+border: 1px solid #4fc3f7;
+box-shadow: 0 0 10px rgba(79, 195, 247, 0.3);
+}
+
+.layer-row::after {
+content: '';
+position: absolute;
+top: 0;
+right: 0;
+width: 4px;
+height: 100%;
+background: #4fc3f7;
+border-radius: 0 8px 8px 0;
+opacity: 0;
+transition: opacity var(--transition-speed);
+}
+
+.layer-row.active::after {
+opacity: 1;
+}
+
+.layer-btn {
+background: none;
+border: none;
+color: #e0e0ff;
+cursor: pointer;
+padding: 4px;
+border-radius: 5px;
+transition: all var(--transition-speed);
+}
+
+.layer-btn:hover {
+background: rgba(60, 60, 100, 0.85);
+}
+
+.layer-name {
+flex-grow: 1;
+text-align: left;
+font-size: 0.85rem;
+padding: 4px 8px;
+border-radius: 4px;
+transition: background var(--transition-speed);
+}
+
+.layer-name:hover {
+background: rgba(60, 60, 100, 0.5);
+}
+
+.layer-name.editing {
+background: rgba(60, 60, 100, 0.8);
+border: 1px solid #4fc3f7;
+cursor: text;
+}
+
+.layer-visibility {
+color: #4fc3f7;
+cursor: pointer;
+margin-left: auto;
+padding: 0 5px;
+transition: color var(--transition-speed);
+}
+
+.layer-hidden {
+opacity: 0.6;
+}
+
+.layer-hidden .layer-name {
+text-decoration: line-through;
+}
+
+/* Project Management */
+.project-manager {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(10, 10, 20, 0.9);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(10px);
+display: none;
+}
+
+.project-panel {
+background: rgba(30, 30, 50, 0.95);
+width: 90%;
+max-width: 600px;
+border-radius: 16px;
+padding: 25px;
+box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+border: 1px solid rgba(100, 100, 255, 0.3);
+max-height: 90vh;
+overflow-y: auto;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.project-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.3);
+transition: border-color var(--transition-speed);
+}
+
+.project-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.close-btn {
+background: none;
+border: none;
+color: var(--text-light);
+font-size: 1.5rem;
+cursor: pointer;
+transition: color var(--transition-speed);
+}
+
+.close-btn:hover {
+color: var(--accent-blue);
+}
+
+.project-list {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 15px;
+margin-bottom: 20px;
+max-height: 400px;
+overflow-y: auto;
+padding: 10px;
+}
+
+.project-item {
+background: rgba(40, 40, 60, 0.8);
+border-radius: 12px;
+padding: 15px;
+cursor: pointer;
+transition: all var(--transition-speed);
+border: 1px solid transparent;
+}
+
+.project-item:hover {
+transform: translateY(-5px);
+border-color: var(--accent-blue);
+box-shadow: 0 5px 15px rgba(79, 195, 247, 0.3);
+}
+
+.project-item.active {
+border-color: var(--accent-purple);
+background: rgba(50, 40, 70, 0.8);
+}
+
+.project-name {
+font-weight: 600;
+margin-bottom: 8px;
+font-size: 1.1rem;
+color: var(--text-light);
+display: flex;
+align-items: center;
+gap: 8px;
+transition: color var(--transition-speed);
+}
+
+.project-date {
+color: #a0a0ff;
+font-size: 0.8rem;
+margin-bottom: 10px;
+transition: color var(--transition-speed);
+}
+
+.project-actions {
+display: flex;
+gap: 8px;
+}
+
+.project-btn {
+flex: 1;
+padding: 8px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.project-btn.load {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+color: white;
+}
+
+.project-btn.delete {
+background: linear-gradient(to right, var(--accent-red), #e74c3c);
+color: white;
+}
+
+.new-project {
+background: rgba(40, 40, 60, 0.8);
+border-radius: 12px;
+padding: 20px;
+margin-top: 20px;
+transition: background var(--transition-speed);
+}
+
+.new-project h3 {
+margin-bottom: 15px;
+color: var(--accent-blue);
+transition: color var(--transition-speed);
+}
+
+.project-input {
+display: flex;
+gap: 10px;
+}
+
+.project-input input {
+flex: 1;
+padding: 10px 15px;
+border-radius: 8px;
+border: 1px solid rgba(100, 100, 255, 0.3);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+transition: background var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
+}
+
+.project-input button {
+padding: 10px 20px;
+border-radius: 8px;
+border: none;
+background: linear-gradient(to right, #5d2d91, var(--accent-purple));
+color: white;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.project-input button:hover {
+transform: translateY(-3px);
+box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+}
+
+.projects-btn {
+background: linear-gradient(to right, var(--accent-orange), #f1c40f);
+color: #222;
+margin-top: 15px;
+width: 100%;
+}
+
+/* Download Modal */
+.download-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(10, 10, 20, 0.9);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(10px);
+display: none;
+}
+
+.download-panel {
+background: rgba(30, 30, 50, 0.95);
+width: 90%;
+max-width: 400px;
+border-radius: 16px;
+padding: 25px;
+box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+border: 1px solid rgba(100, 100, 255, 0.3);
+text-align: center;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.download-header {
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.3);
+transition: border-color var(--transition-speed);
+}
+
+.download-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+margin-bottom: 10px;
+}
+
+.filename-input {
+width: 100%;
+padding: 12px 15px;
+border-radius: 8px;
+border: 1px solid rgba(100, 100, 255, 0.3);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+margin-bottom: 20px;
+text-align: center;
+transition: background var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed);
+}
+
+.download-actions {
+display: flex;
+gap: 15px;
+justify-content: center;
+}
+
+.download-actions button {
+padding: 10px 20px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.download-actions button.download-confirm {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+color: white;
+}
+
+.download-actions button.download-cancel {
+background: linear-gradient(to right, var(--accent-red), #e74c3c);
+color: white;
+}
+
+/* Alex Box */
+#alex-box {
+margin-top: 20px;
+background: linear-gradient(135deg, #1e1e3a, #252545);
+border-left: 4px solid var(--accent-blue);
+padding: 18px;
+border-radius: 12px;
+text-align: left;
+position: relative;
+overflow: hidden;
+box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+#alex-box::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 4px;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+transition: background var(--transition-speed);
+}
+
+#alex-text {
+font-style: italic;
+color: #c0c0ff;
+line-height: 1.6;
+font-size: 1rem;
+transition: color var(--transition-speed);
+}
+
+/* Upload Modal */
+.upload-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(10, 10, 20, 0.9);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(10px);
+display: none;
+}
+
+.upload-panel {
+background: rgba(30, 30, 50, 0.95);
+width: 90%;
+max-width: 500px;
+border-radius: 16px;
+padding: 25px;
+box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+border: 1px solid rgba(100, 100, 255, 0.3);
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.upload-header {
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.3);
+transition: border-color var(--transition-speed);
+}
+
+.upload-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+margin-bottom: 10px;
+}
+
+.upload-form {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.form-group {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.form-group label {
+font-weight: 600;
+color: var(--accent-blue);
+transition: color var(--transition-speed);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+padding: 12px 15px;
+border-radius: 8px;
+border: 1px solid rgba(100, 100, 255, 0.3);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+}
+
+.form-group textarea {
+height: 100px;
+resize: vertical;
+}
+
+.upload-actions {
+display: flex;
+gap: 15px;
+justify-content: flex-end;
+margin-top: 10px;
+}
+
+.upload-actions button {
+padding: 10px 20px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.upload-actions button.upload-confirm {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+color: white;
+}
+
+.upload-actions button.upload-cancel {
+background: linear-gradient(to right, var(--accent-red), #e74c3c);
+color: white;
+}
+
+/* Settings Panel */
+.settings-container {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 25px;
+}
+
+.settings-group {
+background: rgba(30, 30, 50, 0.75);
+border-radius: 14px;
+padding: 20px;
+border: 1px solid rgba(100, 100, 255, 0.25);
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.settings-group h3 {
+color: var(--accent-blue);
+margin-bottom: 15px;
+font-size: 1.3rem;
+display: flex;
+align-items: center;
+gap: 10px;
+padding-bottom: 10px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.25);
+transition: color var(--transition-speed), border-color var(--transition-speed);
+}
+
+.setting-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.1);
+transition: border-color var(--transition-speed);
+}
+
+.setting-item:last-child {
+margin-bottom: 0;
+padding-bottom: 0;
+border-bottom: none;
+}
+
+.setting-label {
+font-weight: 500;
+transition: color var(--transition-speed);
+}
+
+.toggle-switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 24px;
+}
+
+.toggle-switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #2c2c54;
+transition: .4s;
+border-radius: 24px;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 16px;
+width: 16px;
+left: 4px;
+bottom: 4px;
+background: white;
+transition: .4s;
+border-radius: 50%;
+}
+
+input:checked + .slider {
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+}
+
+input:checked + .slider:before {
+transform: translateX(26px);
+}
+
+/* Auth Modals */
+.auth-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(10, 10, 20, 0.9);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(10px);
+display: none;
+}
+
+.auth-panel {
+background: rgba(30, 30, 50, 0.95);
+width: 90%;
+max-width: 450px;
+border-radius: 16px;
+padding: 30px;
+box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+border: 1px solid rgba(100, 100, 255, 0.3);
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.auth-header {
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.3);
+text-align: center;
+transition: border-color var(--transition-speed);
+}
+
+.auth-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.auth-tabs {
+display: flex;
+margin-bottom: 20px;
+background: rgba(40, 40, 60, 0.75);
+border-radius: 12px;
+overflow: hidden;
+}
+
+.auth-tab {
+flex: 1;
+padding: 12px;
+text-align: center;
+background: none;
+border: none;
+color: var(--text-light);
+font-weight: 600;
+cursor: pointer;
+transition: all var(--transition-speed);
+}
+
+.auth-tab.active {
+background: linear-gradient(to right, var(--accent-purple), #5d2d91);
+}
+
+.auth-form {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.auth-form-group {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.auth-form-group label {
+font-weight: 600;
+color: var(--accent-blue);
+transition: color var(--transition-speed);
+}
+
+.auth-form-group input {
+padding: 12px 15px;
+border-radius: 8px;
+border: 1px solid rgba(100, 100, 255, 0.3);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+}
+
+.auth-actions {
+display: flex;
+gap: 15px;
+justify-content: center;
+margin-top: 10px;
+}
+
+.auth-actions button {
+padding: 12px 25px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.auth-actions button.auth-confirm {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+color: white;
+}
+
+.auth-actions button.auth-cancel {
+background: linear-gradient(to right, var(--accent-red), #e74c3c);
+color: white;
+}
+
+/* Notification Modal */
+.notification-modal {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: rgba(30, 30, 50, 0.95);
+border-radius: 12px;
+padding: 15px 20px;
+box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+border: 1px solid rgba(100, 100, 255, 0.3);
+z-index: 1000;
+display: flex;
+align-items: center;
+gap: 15px;
+transform: translateY(100px);
+opacity: 0;
+transition: transform 0.5s, opacity 0.5s;
+}
+
+.notification-modal.show {
+transform: translateY(0);
+opacity: 1;
+}
+
+.notification-icon {
+font-size: 1.5rem;
+color: var(--accent-blue);
+}
+
+.notification-content {
+flex: 1;
+}
+
+.notification-title {
+font-weight: 600;
+margin-bottom: 5px;
+}
+
+.notification-message {
+font-size: 0.9rem;
+color: var(--text-secondary);
+}
+
+/* Profile Section */
+.profile-container {
+max-width: 1000px;
+margin: 0 auto;
+}
+
+.profile-header {
+position: relative;
+border-radius: 16px;
+overflow: hidden;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+margin-bottom: 25px;
+}
+
+.profile-banner {
+height: 250px;
+background: linear-gradient(135deg, #5d2d91, #8a2be2, #4fc3f7);
+position: relative;
+display: flex;
+align-items: flex-end;
+justify-content: center;
+}
+
+.profile-banner-placeholder {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: rgba(255, 255, 255, 0.7);
+font-size: 1.2rem;
+text-align: center;
+padding: 20px;
+}
+
+.profile-info {
+position: relative;
+padding: 30px;
+background: var(--panel-bg);
+display: flex;
+gap: 25px;
+align-items: flex-start;
+}
+
+.profile-avatar {
+position: relative;
+margin-top: -80px;
+}
+
+.avatar-container {
+width: 150px;
+height: 150px;
+border-radius: 50%;
+background: linear-gradient(135deg, #1a1a2e, #16213e);
+border: 5px solid var(--panel-bg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 4rem;
+color: var(--accent-blue);
+position: relative;
+overflow: hidden;
+}
+
+.avatar-container img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.avatar-edit {
+position: absolute;
+bottom: 10px;
+right: 10px;
+background: rgba(30, 30, 50, 0.9);
+border-radius: 50%;
+width: 36px;
+height: 36px;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+color: var(--accent-blue);
+border: 2px solid var(--accent-blue);
+transition: all var(--transition-speed);
+}
+
+.avatar-edit:hover {
+transform: scale(1.1);
+background: var(--accent-blue);
+color: white;
+}
+
+.profile-details {
+flex: 1;
+}
+
+.profile-name {
+font-size: 2.2rem;
+margin-bottom: 10px;
+color: var(--text-light);
+display: flex;
+align-items: center;
+gap: 15px;
+}
+
+.profile-username {
+color: var(--accent-blue);
+font-weight: 600;
+font-size: 1.3rem;
+background: rgba(79, 195, 247, 0.15);
+padding: 5px 12px;
+border-radius: 20px;
+}
+
+.profile-bio {
+color: var(--text-secondary);
+line-height: 1.7;
+margin: 20px 0;
+max-width: 700px;
+}
+
+.profile-stats {
+display: flex;
+gap: 25px;
+margin: 25px 0;
+}
+
+.stat-item {
+background: rgba(40, 40, 60, 0.75);
+border-radius: 12px;
+padding: 15px 20px;
+min-width: 150px;
+text-align: center;
+border: 1px solid var(--border-color);
+}
+
+.stat-value {
+font-size: 2rem;
+font-weight: 800;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+margin-bottom: 5px;
+}
+
+.stat-label {
+color: var(--text-secondary);
+font-size: 0.9rem;
+}
+
+.profile-tabs {
+display: flex;
+gap: 5px;
+margin-bottom: 25px;
+border-bottom: 1px solid var(--border-color);
+padding-bottom: 5px;
+}
+
+.tab-btn {
+background: none;
+border: none;
+padding: 12px 25px;
+border-radius: 8px 8px 0 0;
+cursor: pointer;
+color: var(--text-secondary);
+font-weight: 600;
+transition: all var(--transition-speed);
+position: relative;
+}
+
+.tab-btn.active {
+color: var(--accent-blue);
+}
+
+.tab-btn.active::after {
+content: '';
+position: absolute;
+bottom: -6px;
+left: 0;
+width: 100%;
+height: 3px;
+background: var(--accent-blue);
+border-radius: 3px;
+}
+
+.tab-content {
+display: none;
+}
+
+.tab-content.active {
+display: block;
+}
+
+.profile-gallery {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+gap: 20px;
+}
+
+.profile-artwork {
+border-radius: 12px;
+overflow: hidden;
+background: rgba(30, 30, 50, 0.75);
+border: 1px solid var(--border-color);
+transition: all var(--transition-speed);
+}
+
+.profile-artwork:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 25px rgba(79, 195, 247, 0.2);
+border-color: rgba(79, 195, 247, 0.4);
+}
+
+.profile-artwork img {
+width: 100%;
+height: 180px;
+object-fit: cover;
+border-bottom: 1px solid var(--border-color);
+}
+
+.artwork-info {
+padding: 15px;
+}
+
+.artwork-title {
+font-weight: 600;
+margin-bottom: 8px;
+color: var(--text-light);
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.artwork-stats {
+display: flex;
+justify-content: space-between;
+color: var(--text-secondary);
+font-size: 0.85rem;
+}
+
+.profile-about {
+background: rgba(30, 30, 50, 0.75);
+border-radius: 16px;
+padding: 25px;
+border: 1px solid var(--border-color);
+}
+
+.social-links {
+display: flex;
+gap: 15px;
+margin: 25px 0;
+}
+
+.social-link {
+width: 45px;
+height: 45px;
+border-radius: 50%;
+background: rgba(40, 40, 60, 0.75);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-light);
+font-size: 1.2rem;
+transition: all var(--transition-speed);
+border: 1px solid var(--border-color);
+}
+
+.social-link:hover {
+transform: translateY(-3px);
+background: var(--accent-blue);
+color: white;
+}
+
+.profile-form {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 25px;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+color: var(--accent-blue);
+font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+width: 100%;
+padding: 12px 15px;
+border-radius: 8px;
+border: 1px solid var(--border-color);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+}
+
+.form-group textarea {
+min-height: 120px;
+resize: vertical;
+}
+
+.full-width {
+grid-column: 1 / -1;
+}
+
+.form-actions {
+grid-column: 1 / -1;
+display: flex;
+justify-content: flex-end;
+gap: 15px;
+margin-top: 15px;
+}
+
+.save-btn {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 12px 25px;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.cancel-btn {
+background: linear-gradient(to right, var(--accent-red), #e74c3c);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 12px 25px;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.save-btn:hover, .cancel-btn:hover {
+transform: translateY(-3px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.banner-edit {
+position: absolute;
+top: 15px;
+right: 15px;
+background: rgba(30, 30, 50, 0.9);
+border-radius: 8px;
+padding: 8px 15px;
+cursor: pointer;
+color: var(--accent-blue);
+border: 2px solid var(--accent-blue);
+transition: all var(--transition-speed);
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.banner-edit:hover {
+background: var(--accent-blue);
+color: white;
+}
+
+/* New styles for contact form and watermark */
+.social-link-form {
+display: flex;
+gap: 10px;
+margin-bottom: 10px;
+align-items: center;
+}
+
+.social-link-form select {
+flex: 1;
+padding: 8px;
+border-radius: 8px;
+background: rgba(40,40,60,0.8);
+color: var(--text-light);
+border: 1px solid var(--border-color);
+}
+
+.social-link-form input {
+flex: 2;
+padding: 8px;
+border-radius: 8px;
+background: rgba(40,40,60,0.8);
+color: var(--text-light);
+border: 1px solid var(--border-color);
+}
+
+.social-link-form button {
+padding: 8px 12px;
+border-radius: 8px;
+background: var(--accent-red);
+color: white;
+border: none;
+cursor: pointer;
+}
+
+.watermark {
+position: absolute;
+bottom: 10px;
+right: 10px;
+color: rgba(255,255,255,0.7);
+font-size: 12px;
+background: rgba(0,0,0,0.5);
+padding: 2px 8px;
+border-radius: 4px;
+pointer-events: none;
+}
+
+.blend-modes {
+grid-template-columns: repeat(4, 1fr) !important;
+}
+
+/* Profile picture upload preview */
+.avatar-preview {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+border: 2px solid var(--accent-blue);
+margin: 10px auto;
+overflow: hidden;
+display: none;
+}
+
+.avatar-preview img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+/* Skills editor */
+.skills-container {
+background: rgba(40,40,60,0.5);
+border-radius: 8px;
+padding: 15px;
+margin-bottom: 15px;
+}
+
+.skills-list {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 10px;
+}
+
+.skill-tag {
+background: rgba(79, 195, 247, 0.2);
+padding: 5px 10px;
+border-radius: 20px;
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.skill-tag .remove-skill {
+cursor: pointer;
+color: var(--accent-red);
+}
+
+.skill-input {
+display: flex;
+gap: 10px;
+margin-top: 15px;
+}
+
+.skill-input input {
+flex: 1;
+padding: 8px 12px;
+border-radius: 8px;
+background: rgba(30,30,50,0.8);
+color: var(--text-light);
+border: 1px solid var(--border-color);
+}
+
+/* Background Selector */
+.background-selector {
+display: flex;
+gap: 10px;
+margin-top: 15px;
+}
+
+.bg-option {
+flex: 1;
+padding: 10px;
+text-align: center;
+border-radius: 8px;
+cursor: pointer;
+border: 2px solid transparent;
+transition: all var(--transition-speed);
+}
+
+.bg-option.active {
+border-color: var(--accent-blue);
+background: rgba(60, 60, 100, 0.5);
+}
+
+.bg-option.black {
+background: #1a1a2e;
+color: white;
+}
+
+.bg-option.white {
+background: white;
+color: #333;
+}
+
+.bg-option.transparent {
+background: repeating-conic-gradient(#555 0% 25%, #333 0% 50%) 50% / 10px 10px;
+color: white;
+position: relative;
+}
+
+.bg-option.transparent::after {
+content: 'Transparent';
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: rgba(0,0,0,0.7);
+padding: 2px 5px;
+border-radius: 4px;
+}
+
+/* Animation Timeline */
+.animation-timeline {
+background: rgba(30, 30, 50, 0.9);
+border-top: 1px solid var(--border-color);
+padding: 15px;
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 900;
+display: none;
+transition: transform 0.3s;
+}
+
+.animation-timeline.active {
+display: block;
+}
+
+.timeline-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+}
+
+.timeline-controls {
+display: flex;
+gap: 10px;
+margin-bottom: 15px;
+}
+
+.timeline-frames {
+display: flex;
+gap: 10px;
+overflow-x: auto;
+padding: 5px;
+}
+
+.frame {
+flex: 0 0 80px;
+height: 60px;
+border-radius: 6px;
+background: rgba(40, 40, 60, 0.75);
+border: 2px solid transparent;
+cursor: pointer;
+overflow: hidden;
+position: relative;
+}
+
+.frame.active {
+border-color: var(--accent-blue);
+}
+
+.frame img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.frame-number {
+position: absolute;
+top: 3px;
+left: 3px;
+background: rgba(0,0,0,0.7);
+color: white;
+font-size: 10px;
+padding: 2px 5px;
+border-radius: 3px;
+}
+
+/* Symmetry Controls */
+.symmetry-controls {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.symmetry-option {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 8px;
+border-radius: 8px;
+cursor: pointer;
+transition: background var(--transition-speed);
+}
+
+.symmetry-option:hover {
+background: rgba(60, 60, 100, 0.5);
+}
+
+.symmetry-option.active {
+background: rgba(79, 195, 247, 0.2);
+}
+
+/* Canvas Size Modal */
+.size-modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(10, 10, 20, 0.9);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+backdrop-filter: blur(10px);
+display: none;
+}
+
+.size-panel {
+background: rgba(30, 30, 50, 0.95);
+width: 90%;
+max-width: 400px;
+border-radius: 16px;
+padding: 25px;
+box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+border: 1px solid rgba(100, 100, 255, 0.3);
+text-align: center;
+transition: background var(--transition-speed), border-color var(--transition-speed);
+}
+
+.size-header {
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid rgba(100, 100, 255, 0.3);
+transition: border-color var(--transition-speed);
+}
+
+.size-header h2 {
+font-size: 1.8rem;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+margin-bottom: 10px;
+}
+
+.size-inputs {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 15px;
+margin-bottom: 20px;
+}
+
+.size-input {
+display: flex;
+flex-direction: column;
+gap: 5px;
+}
+
+.size-input label {
+font-weight: 500;
+color: var(--accent-blue);
+}
+
+.size-input input {
+padding: 10px;
+border-radius: 8px;
+border: 1px solid rgba(100, 100, 255, 0.3);
+background: rgba(30, 30, 50, 0.8);
+color: var(--text-light);
+font-size: 1rem;
+text-align: center;
+}
+
+.size-actions {
+display: flex;
+gap: 15px;
+justify-content: center;
+}
+
+.size-actions button {
+padding: 10px 20px;
+border-radius: 8px;
+border: none;
+cursor: pointer;
+font-weight: 600;
+transition: all var(--transition-speed);
+}
+
+.size-actions button.size-confirm {
+background: linear-gradient(to right, var(--accent-green), #2ecc71);
+color: white;
+}
+
+.size-actions button.size-cancel {
+background: linear-gradient(to right, var(--accent-red), #e74c3c);
+color: white;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+.main-container {
+flex-direction: column;
+}
+.reference-panel {
+width: 100%;
+}
+.studio-content {
+height: auto;
+}
+}
+
+@media (max-width: 768px) {
+.navbar {
+padding: 15px;
+flex-direction: column;
+gap: 15px;
+}
+.studio-content {
+flex-direction: column;
+}
+.tools-section {
+width: 100%;
+}
+.brush-types {
+grid-template-columns: repeat(3, 1fr);
+}
+.gallery-grid {
+grid-template-columns: 1fr;
+}
+.artwork-detail-image {
+max-height: 300px;
+}
+.user-actions {
+flex-direction: column;
+}
+.profile-info {
+flex-direction: column;
+align-items: center;
+text-align: center;
+}
+.profile-stats {
+justify-content: center;
+}
+.profile-tabs {
+justify-content: center;
+}
+.profile-form {
+grid-template-columns: 1fr;
+}
+.profile-name {
+flex-direction: column;
+gap: 5px;
+}
+}
+
+@media (max-width: 480px) {
+.profile-stats {
+flex-direction: column;
+align-items: center;
+}
+.artwork-interactions {
+flex-direction: column;
+}
+}
+
+/* Text Tool */
+.text-tool-container {
+display: none;
+position: absolute;
+background: rgba(30, 30, 50, 0.95);
+border: 1px solid var(--border-color);
+border-radius: 8px;
+padding: 15px;
+z-index: 1000;
+box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+width: 300px;
+}
+
+.text-tool-container.active {
+display: block;
+}
+
+.text-tool-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.text-tool-header h4 {
+color: var(--accent-blue);
+font-size: 1.1rem;
+}
+
+.text-input {
+width: 100%;
+padding: 10px;
+border-radius: 6px;
+background: rgba(40,40,60,0.8);
+color: var(--text-light);
+border: 1px solid var(--border-color);
+margin-bottom: 10px;
+}
+
+.font-select {
+width: 100%;
+padding: 8px;
+border-radius: 6px;
+background: rgba(40,40,60,0.8);
+color: var(--text-light);
+border: 1px solid var(--border-color);
+margin-bottom: 10px;
+}
+
+.text-preview {
+padding: 8px;
+margin: 10px 0;
+background: rgba(40,40,60,0.8);
+border: 1px solid var(--border-color);
+border-radius: 6px;
+color: var(--text-light);
+text-align: center;
+font-size: 16px;
+min-height: 40px;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+}
+
+.text-tool-actions {
+display: flex;
+gap: 8px;
+}
+
+.text-confirm {
+flex: 1;
+padding: 8px;
+background: var(--accent-green);
+color: white;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+}
+
+.text-cancel {
+flex: 1;
+padding: 8px;
+background: var(--accent-red);
+color: white;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+}
+
+.font-size-indicator {
+background: rgba(40,40,60,0.8);
+padding: 5px 10px;
+border-radius: 20px;
+font-size: 0.9rem;
+}
+
+/* Animation Speed Control */
+.speed-control {
+display: flex;
+align-items: center;
+gap: 10px;
+background: rgba(40,40,60,0.75);
+padding: 8px 15px;
+border-radius: 50px;
+margin-top: 10px;
+}
+
+.speed-label {
+font-size: 0.9rem;
+color: var(--accent-blue);
+}
+
+#frame-speed {
+flex: 1;
+height: 8px;
+-webkit-appearance: none;
+background: linear-gradient(to right, var(--accent-purple), var(--accent-blue));
+border-radius: 5px;
+outline: none;
+}
+
+#frame-speed::-webkit-slider-thumb {
+-webkit-appearance: none;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+background: white;
+cursor: pointer;
+box-shadow: 0 0 5px rgba(0,0,0,0.7);
+border: 2px solid var(--accent-purple);
+}
+
+.speed-value {
+min-width: 40px;
+text-align: center;
+font-weight: bold;
+color: var(--accent-blue);
+font-size: 0.95rem;
+}
+
+/* Animation Loop */
+.loop-toggle {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-top: 10px;
+}
+
+.loop-label {
+font-size: 0.9rem;
+color: var(--accent-blue);
+}
+
+/* Canvas Navigation */
+.canvas-controls {
+position: absolute;
+bottom: 15px;
+right: 15px;
+display: flex;
+flex-direction: column;
+gap: 10px;
+z-index: 10;
+}
+
+.canvas-nav-btn {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: rgba(40,40,60,0.9);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--accent-blue);
+font-size: 1rem;
+cursor: pointer;
+transition: all var(--transition-speed);
+border: 1px solid var(--border-color);
+}
+
+.canvas-nav-btn:hover {
+background: var(--accent-blue);
+color: white;
+transform: scale(1.1);
+}
+
+/* Disabled input styling */
+input:disabled {
+background: rgba(60, 60, 100, 0.5) !important;
+color: var(--text-secondary) !important;
+cursor: not-allowed;
+}
+
+/* Text Tool Enhancements */
+.text-tool-settings {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin: 10px 0;
+}
+
+.text-style-btn {
+flex: 1;
+padding: 8px;
+background: rgba(40,40,60,0.8);
+border: none;
+border-radius: 6px;
+color: var(--text-light);
+cursor: pointer;
+transition: all var(--transition-speed);
+}
+
+.text-style-btn.active {
+background: var(--accent-purple);
+color: white;
+}
+</style>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js">
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+const ctx = canvas.getContext("2d");
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+
+function downloadWithWatermark() {
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
+const username = localStorage.getItem('username') || "Unknown";
+const displayName = localStorage.getItem('displayName') || "Artist";
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js">
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+const ctx = canvas.getContext("2d");
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+
+function downloadWithWatermark() {
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
+const username = localStorage.getItem('username') || "Unknown";
+const displayName = localStorage.getItem('displayName') || "Artist";
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js">
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+const ctx = canvas.getContext("2d");
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+
+function downloadWithWatermark() {
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
+const username = localStorage.getItem('username') || "Unknown";
+const displayName = localStorage.getItem('displayName') || "Artist";
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+</script>
+<script>
+const firebaseConfig = {
+apiKey: "AIzaSyA4I4FO-mXd5Rh_ZsUAVOjREakxR8HQTSs",
+authDomain: "inkflow-70617.firebaseapp.com",
+projectId: "inkflow-70617",
+storageBucket: "inkflow-70617.firebasestorage.app",
+messagingSenderId: "204642124018",
+appId: "1:204642124018:web:0df8d8e4a3426b3d7e506b",
+measurementId: "G-74CH1K1K5H"
+};
+firebase.initializeApp(firebaseConfig);
+
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+const ctx = canvas.getContext("2d");
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+
+function downloadWithWatermark() {
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
+const username = localStorage.getItem('username') || "Unknown";
+const displayName = localStorage.getItem('displayName') || "Artist";
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+</script>
+
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo">
-            <i class="fas fa-palette"></i>
-            <h1>InkFlow Studio</h1>
-        </div>
-        <div class="nav-links">
-            <a href="#" class="active" data-section="studio"><i class="fas fa-draw-polygon"></i> Studio</a>
-            <a href="#" data-section="community"><i class="fas fa-users"></i> Community</a>
-            <a href="#" data-section="profile"><i class="fas fa-user"></i> Profile</a>
-            <a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
-        </div>
-        <div class="user-actions" id="user-actions">
-            <div id="auth-buttons">
-                <button class="btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
-                <button class="btn btn-upload" id="register-btn"><i class="fas fa-user-plus"></i> Register</button>
-            </div>
-            <div id="user-info" style="display: none;">
-                <div class="user-info" id="profile-btn">
-                    <div class="user-avatar" id="user-avatar">
-                        <span id="avatar-initial">U</span>
-                    </div>
-                    <span id="username-display">User</span>
-                </div>
-                <button class="btn btn-clear" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
-            </div>
-        </div>
-    </nav>
+<!-- Navigation -->
+<nav class="navbar">
+<div class="logo">
+<i class="fas fa-palette"></i>
+<h1>InkFlow Studio</h1>
+</div>
+<div class="nav-links">
+<a href="#" class="active" data-section="studio"><i class="fas fa-draw-polygon"></i> Studio</a>
+<a href="#" data-section="community"><i class="fas fa-users"></i> Community</a>
+<a href="#" data-section="profile"><i class="fas fa-user"></i> Profile</a>
+<a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
+</div>
+<div class="user-actions" id="user-actions">
+<div id="auth-buttons">
+<button class="btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+<button class="btn btn-upload" id="register-btn"><i class="fas fa-user-plus"></i> Register</button>
+</div>
+<div id="user-info" style="display: none;">
+<div class="user-info" id="profile-btn">
+<div class="user-avatar" id="user-avatar">
+<span id="avatar-initial">U</span>
+</div>
+<span id="username-display">User</span>
+</div>
+<button class="btn btn-clear" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+</div>
+</div>
+</nav>
 
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Studio Section -->
-        <div class="content-section active" id="studio-section">
-            <div class="section-header">
-                <h2><i class="fas fa-draw-polygon"></i> Pixel Art Studio</h2>
-            </div>
-            <div class="studio-content">
-                <div class="canvas-section">
-                    <div class="canvas-container">
-                        <canvas id="drawing-canvas"></canvas>
-                    </div>
-                </div>
+<!-- Main Content -->
+<div class="main-container">
+<!-- Studio Section -->
+<div class="content-section active" id="studio-section">
+<div class="section-header">
+<h2><i class="fas fa-draw-polygon"></i> Pixel Art Studio</h2>
+<div>
+<button class="btn btn-save" id="save-project-btn"><i class="fas fa-save"></i> Save</button>
+<button class="btn btn-upload" id="upload-artwork-btn"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+</div>
+</div>
+<div class="studio-content">
+<div class="reference-panel">
+<div class="reference-header">
+<h3><i class="fas fa-image"></i> Reference Image</h3>
+<button class="btn btn-upload" id="upload-ref-btn"><i class="fas fa-upload"></i> Upload</button>
+</div>
+<div class="reference-image-container">
+<div class="reference-placeholder">
+<i class="fas fa-cloud-upload-alt" style="font-size: 3rem; margin-bottom: 15px;"></i>
+<p>Upload a reference image to help with your artwork</p>
+</div>
+<img src="" alt="Reference Image" class="reference-image" id="reference-image">
+</div>
+<div class="reference-controls">
+<div class="slider-container">
+<i class="fas fa-adjust"></i>
+<input type="range" id="ref-opacity" min="10" max="100" value="70">
+<span class="slider-value" id="ref-opacity-value">70%</span>
+</div>
+<button class="btn btn-clear" id="clear-ref-btn"><i class="fas fa-times"></i> Clear Reference</button>
+</div>
+</div>
 
-                <div class="tools-section">
-                    <div class="tool-group">
-                        <h3><i class="fas fa-fill-drip"></i> Color</h3>
-                        <div class="color-picker">
-                            <input type="color" id="color-picker" value="#ff6b6b">
-                        </div>
-                    </div>
+<div class="canvas-section">
+<div class="canvas-container">
+<canvas id="drawing-canvas"></canvas>
+<div class="zoom-controls">
+<div class="zoom-btn" id="zoom-in"><i class="fas fa-plus"></i></div>
+<div class="zoom-display" id="zoom-display">100%</div>
+<div class="zoom-btn" id="zoom-out"><i class="fas fa-minus"></i></div>
+<div class="zoom-btn" id="reset-view"><i class="fas fa-sync"></i></div>
+</div>
+<!-- Canvas Navigation Controls -->
+<div class="canvas-controls">
+<div class="canvas-nav-btn" id="pan-up"><i class="fas fa-arrow-up"></i></div>
+<div style="display: flex; gap: 10px;">
+<div class="canvas-nav-btn" id="pan-left"><i class="fas fa-arrow-left"></i></div>
+<div class="canvas-nav-btn" id="pan-right"><i class="fas fa-arrow-right"></i></div>
+</div>
+<div class="canvas-nav-btn" id="pan-down"><i class="fas fa-arrow-down"></i></div>
+</div>
+</div>
+<div id="alex-box">
+<p id="alex-text"><i class="fas fa-quote-left"></i> Use layers to organize your artwork! Hide layers by clicking the eye icon, rename by double-clicking names, and reorder layers with the arrow buttons. <i class="fas fa-quote-right"></i></p>
+</div>
+</div>
 
-                    <div class="tool-group">
-                        <h3><i class="fas fa-sliders-h"></i> Controls</h3>
-                        <div class="slider-container">
-                            <i class="fas fa-ruler-combined"></i>
-                            <input type="range" id="brush-size" min="1" max="40" value="10">
-                            <span class="slider-value" id="brush-size-value">10px</span>
-                        </div>
-                        <div class="controls">
-                            <button class="btn btn-clear" id="clear-btn"><i class="fas fa-broom"></i> Clear</button>
-                            <button class="btn btn-undo" id="undo-btn"><i class="fas fa-undo-alt"></i> Undo</button>
-                            <button class="btn btn-download" id="download-btn"><i class="fas fa-file-download"></i> Download</button>
-                        </div>
-                    </div>
+<div class="tools-section">
+<div class="tools-container">
+<div class="tool-group">
+<h3><i class="fas fa-fill-drip"></i> Color</h3>
+<div class="color-picker">
+<input type="color" id="color-picker" value="#ff6b6b">
+</div>
+<div class="slider-container">
+<i class="fas fa-adjust"></i>
+<input type="range" id="brush-opacity" min="1" max="100" value="100">
+<span class="slider-value" id="opacity-value">100%</span>
+</div>
+<div class="preset-colors">
+<div class="preset-color active" style="background-color: #ff6b6b;" data-color="#ff6b6b"></div>
+<div class="preset-color" style="background-color: #4fc3f7;" data-color="#4fc3f7"></div>
+<div class="preset-color" style="background-color: #8a2be2;" data-color="#8a2be2"></div>
+<div class="preset-color" style="background-color: #ffd166;" data-color="#ffd166"></div>
+<div class="preset-color" style="background-color: #06d6a0;" data-color="#06d6a0"></div>
+<div class="preset-color" style="background-color: #ff9e6d;" data-color="#ff9e6d"></div>
+</div>
+</div>
 
-                    <div class="tool-group">
-                        <h3><i class="fas fa-snowflake"></i> Symmetry</h3>
-                        <div class="symmetry-controls">
-                            <div class="symmetry-option active" data-symmetry="none">
-                                <i class="fas fa-ban"></i>
-                                <span>None</span>
-                            </div>
-                            <div class="symmetry-option" data-symmetry="vertical">
-                                <i class="fas fa-grip-lines-vertical"></i>
-                                <span>Vertical</span>
-                            </div>
-                            <div class="symmetry-option" data-symmetry="horizontal">
-                                <i class="fas fa-grip-lines"></i>
-                                <span>Horizontal</span>
-                            </div>
-                            <div class="symmetry-option" data-symmetry="radial">
-                                <i class="fas fa-circle"></i>
-                                <span>Radial</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="tool-group">
+<h3><i class="fas fa-sliders-h"></i> Controls</h3>
+<div class="slider-container">
+<i class="fas fa-ruler-combined"></i>
+<input type="range" id="brush-size" min="1" max="40" value="10">
+<span class="slider-value" id="brush-size-value">10px</span>
+</div>
+<div class="controls">
+<button class="btn btn-clear" id="clear-btn"><i class="fas fa-broom"></i> Clear</button>
+<button class="btn btn-undo" id="undo-btn"><i class="fas fa-undo-alt"></i> Undo</button>
+<button class="btn btn-download" id="download-btn"><i class="fas fa-file-download"></i> Download</button>
+<button class="btn" id="size-btn"><i class="fas fa-ruler"></i> Size</button>
+</div>
+<div class="hotkey-hint">Undo: Ctrl+Z | Clear: Ctrl+Del | Save: Ctrl+S</div>
+</div>
 
-        <!-- Community Section -->
-        <div class="content-section" id="community-section">
-            <div class="section-header">
-                <h2><i class="fas fa-users"></i> Community Gallery</h2>
-            </div>
-            <div class="gallery-grid" id="gallery-grid">
-                <!-- Artwork will be loaded dynamically -->
-            </div>
-        </div>
+<div class="tool-group">
+<h3><i class="fas fa-paint-brush"></i> Brushes</h3>
+<div class="brush-types">
+<button class="brush-btn active" id="brush-normal" data-type="normal">
+<div class="brush-icon"><i class="fas fa-paint-brush"></i></div>
+<div class="brush-name">Normal</div>
+</button>
+<button class="brush-btn" id="brush-pixel" data-type="pixel">
+<div class="brush-icon"><i class="fas fa-th-large"></i></div>
+<div class="brush-name">Pixel</div>
+</button>
+<button class="brush-btn" id="brush-rainbow" data-type="rainbow">
+<div class="brush-icon"><i class="fas fa-rainbow"></i></div>
+<div class="brush-name">Rainbow</div>
+</button>
+<button class="brush-btn" id="brush-fur" data-type="fur">
+<div class="brush-icon"><i class="fas fa-paw"></i></div>
+<div class="brush-name">Fur</div>
+</button>
+<button class="brush-btn" id="brush-neon" data-type="neon">
+<div class="brush-icon"><i class="fas fa-lightbulb"></i></div>
+<div class="brush-name">Neon</div>
+</button>
+<button class="brush-btn" id="brush-shading" data-type="shading">
+<div class="brush-icon"><i class="fas fa-cloud"></i></div>
+<div class="brush-name">Shading</div>
+</button>
+<button class="brush-btn" id="brush-spray" data-type="spray">
+<div class="brush-icon"><i class="fas fa-spray-can"></i></div>
+<div class="brush-name">Spray</div>
+</button>
+<button class="brush-btn" id="brush-eraser" data-type="eraser">
+<div class="brush-icon"><i class="fas fa-eraser"></i></div>
+<div class="brush-name">Erase</div>
+</button>
+<button class="brush-btn" id="brush-calligraphy" data-type="calligraphy">
+<div class="brush-icon"><i class="fas fa-pen-nib"></i></div>
+<div class="brush-name">Calligraphy</div>
+</button>
+<button class="brush-btn" id="brush-glitter" data-type="glitter">
+<div class="brush-icon"><i class="fas fa-sparkles"></i></div>
+<div class="brush-name">Glitter</div>
+</button>
+<button class="brush-btn" id="brush-text" data-type="text">
+<div class="brush-icon"><i class="fas fa-font"></i></div>
+<div class="brush-name">Text</div>
+</button>
+</div>
+</div>
 
-        <!-- Profile Section -->
-        <div class="content-section" id="profile-section">
-            <div class="section-header">
-                <h2><i class="fas fa-user"></i> Your Profile</h2>
-            </div>
-            <div class="profile-container">
-                <!-- Profile content will be here -->
-            </div>
-        </div>
-    </div>
+<div class="tool-group">
+<h3><i class="fas fa-blender"></i> Blending</h3>
+<div class="blend-modes">
+<button class="blend-btn active" data-mode="source-over">Normal</button>
+<button class="blend-btn" data-mode="multiply">Multiply</button>
+<button class="blend-btn" data-mode="screen">Screen</button>
+<button class="blend-btn" data-mode="overlay">Overlay</button>
+<button class="blend-btn" data-mode="darken">Darken</button>
+<button class="blend-btn" data-mode="lighten">Lighten</button>
+<button class="blend-btn" data-mode="color-dodge">Dodge</button>
+<button class="blend-btn" data-mode="color-burn">Burn</button>
+</div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Canvas elements
-            const canvas = document.getElementById('drawing-canvas');
-            const ctx = canvas.getContext('2d');
-            const colorPicker = document.getElementById('color-picker');
-            const brushSizeSlider = document.getElementById('brush-size');
-            const brushSizeValue = document.getElementById('brush-size-value');
-            const clearBtn = document.getElementById('clear-btn');
-            const undoBtn = document.getElementById('undo-btn');
-            const downloadBtn = document.getElementById('download-btn');
-            const symmetryOptions = document.querySelectorAll('.symmetry-option');
+<div class="tool-group">
+<h3><i class="fas fa-layer-group"></i> Layers</h3>
+<div class="layer-controls" id="layer-controls">
+<div class="layer-row" data-index="0">
+<button class="layer-btn lock-btn" title="Lock/Unlock"><i class="fas fa-lock-open"></i></button>
+<span class="layer-name">Background</span>
+<span class="layer-visibility" title="Toggle Visibility"><i class="fas fa-eye"></i></span>
+<div class="layer-actions">
+<button class="layer-move-btn move-up-btn" title="Move Up" disabled><i class="fas fa-arrow-up"></i></button>
+<button class="layer-move-btn move-down-btn" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+</div>
+</div>
+<div class="layer-row active" data-index="1">
+<button class="layer-btn lock-btn" title="Lock/Unlock"><i class="fas fa-lock-open"></i></button>
+<span class="layer-name">Layer 1</span>
+<span class="layer-visibility" title="Toggle Visibility"><i class="fas fa-eye"></i></span>
+<div class="layer-actions">
+<button class="layer-move-btn move-up-btn" title="Move Up"><i class="fas fa-arrow-up"></i></button>
+<button class="layer-move-btn move-down-btn" title="Move Down"><i class="fas fa-arrow-down"></i></button>
+</div>
+</div>
+<div class="controls">
+<button class="btn btn-layer" id="add-layer"><i class="fas fa-plus"></i> Add Layer</button>
+<button class="btn btn-layer" id="remove-layer"><i class="fas fa-minus"></i> Remove Layer</button>
+<button class="btn btn-layer" id="merge-layers"><i class="fas fa-object-group"></i> Merge</button>
+</div>
+</div>
+</div>
 
-            // Drawing state
-            let isDrawing = false;
-            let lastX = 0;
-            let lastY = 0;
-            let currentColor = '#ff6b6b';
-            let brushSize = 10;
-            let symmetryType = 'none'; // FIXED: Default to none instead of vertical
-            let history = [];
-            let historyPointer = -1;
+<!-- Background Selector -->
+<div class="tool-group">
+<h3><i class="fas fa-fill"></i> Canvas Background</h3>
+<div class="background-selector">
+<div class="bg-option black active" data-bg="black">Black</div>
+<div class="bg-option white" data-bg="white">White</div>
+<div class="bg-option transparent" data-bg="transparent">Transparent</div>
+</div>
+</div>
 
-            // Initialize canvas
-            function initCanvas() {
-                resizeCanvas();
-                initEventListeners();
-                updateUserUI();
-                renderCommunityGallery();
-            }
+<div class="tool-group">
+<h3><i class="fas fa-snowflake"></i> Symmetry</h3>
+<div class="symmetry-controls">
+<div class="symmetry-option" data-symmetry="none">
+<i class="fas fa-ban"></i>
+<span>None</span>
+</div>
+<div class="symmetry-option active" data-symmetry="vertical">
+<i class="fas fa-grip-lines-vertical"></i>
+<span>Vertical</span>
+</div>
+<div class="symmetry-option" data-symmetry="horizontal">
+<i class="fas fa-grip-lines"></i>
+<span>Horizontal</span>
+</div>
+<div class="symmetry-option" data-symmetry="radial">
+<i class="fas fa-circle"></i>
+<span>Radial</span>
+</div>
+</div>
+</div>
 
-            // Initialize event listeners
-            function initEventListeners() {
-                // Canvas events
-                canvas.addEventListener('mousedown', startDrawing);
-                canvas.addEventListener('mousemove', draw);
-                canvas.addEventListener('mouseup', stopDrawing);
-                canvas.addEventListener('mouseout', stopDrawing);
+<div class="tool-group">
+<h3><i class="fas fa-film"></i> Animation</h3>
+<button class="btn" id="toggle-animation"><i class="fas fa-play"></i> Enable Animation</button>
+</div>
 
-                // Touch events for mobile drawing
-                canvas.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    startDrawing(e.touches[0]);
-                });
+<button class="btn projects-btn" id="projects-btn"><i class="fas fa-folder"></i> Projects</button>
+</div>
+</div>
+</div>
+</div>
 
-                canvas.addEventListener('touchmove', function(e) {
-                    e.preventDefault();
-                    draw(e.touches[0]);
-                });
+<!-- Animation Timeline -->
+<div class="animation-timeline" id="animation-timeline">
+<div class="timeline-header">
+<h3><i class="fas fa-film"></i> Animation Timeline</h3>
+<button class="btn btn-clear" id="close-timeline"><i class="fas fa-times"></i></button>
+</div>
+<div class="timeline-controls">
+<button class="btn" id="add-frame"><i class="fas fa-plus"></i> Add Frame</button>
+<button class="btn" id="prev-frame"><i class="fas fa-arrow-left"></i></button>
+<button class="btn" id="play-animation"><i class="fas fa-play"></i> Play</button>
+<button class="btn" id="next-frame"><i class="fas fa-arrow-right"></i></button>
+<button class="btn btn-clear" id="delete-frame"><i class="fas fa-trash"></i></button>
+</div>
+<div class="speed-control">
+<span class="speed-label">Speed:</span>
+<input type="range" id="frame-speed" min="100" max="1000" value="300">
+<span class="speed-value" id="speed-value">300ms</span>
+</div>
+<div class="loop-toggle">
+<input type="checkbox" id="loop-animation" checked>
+<span class="loop-label">Loop Animation</span>
+</div>
+<div class="timeline-frames" id="timeline-frames">
+<!-- Frames will be added here -->
+</div>
+</div>
 
-                canvas.addEventListener('touchend', stopDrawing);
+<!-- Community Section -->
+<div class="content-section" id="community-section">
+<div class="section-header">
+<h2><i class="fas fa-users"></i> Community Gallery</h2>
+<div>
+<button class="btn btn-upload" id="upload-to-community-btn"><i class="fas fa-plus"></i> Upload Artwork</button>
+</div>
+</div>
+<div class="gallery-grid" id="gallery-grid">
+<!-- Artwork will be loaded dynamically -->
+</div>
+</div>
 
-                // Color selection
-                colorPicker.addEventListener('input', function() {
-                    currentColor = this.value;
-                });
+<!-- Profile Section -->
+<div class="content-section" id="profile-section">
+<div class="section-header">
+<h2><i class="fas fa-user"></i> Your Profile</h2>
+</div>
+<div class="profile-container">
+<div class="profile-header">
+<div class="profile-banner" id="profile-banner">
+<div class="profile-banner-placeholder" id="banner-placeholder">
+<i class="fas fa-mountain"></i> Customize your banner to showcase your style
+</div>
+<button class="banner-edit" id="edit-banner"><i class="fas fa-camera"></i> Edit Banner</button>
+</div>
+<div class="profile-info">
+<div class="profile-avatar">
+<div class="avatar-container" id="avatar-container">
+<span id="avatar-text">PM</span>
+</div>
+<div class="avatar-edit" id="edit-avatar"><i class="fas fa-camera"></i></div>
+</div>
+<div class="profile-details">
+<div class="profile-name">
+<span id="profile-display-name">Pixel Master</span>
+<span class="profile-username" id="profile-username">@PixelArtist</span>
+</div>
+<div class="profile-bio" id="profile-bio">Digital artist specializing in pixel art and game design. Passionate about creating immersive worlds and characters. Currently working on my indie game project "Pixel Quest". Let's create something amazing together!</div>
+<div class="profile-stats">
+<div class="stat-item">
+<div class="stat-value" id="stat-artworks">42</div>
+<div class="stat-label">Artworks</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="stat-followers">1.2K</div>
+<div class="stat-label">Followers</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="stat-following">587</div>
+<div class="stat-label">Following</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="stat-projects">24</div>
+<div class="stat-label">Projects</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-                // Brush size
-                brushSizeSlider.addEventListener('input', function() {
-                    brushSize = this.value;
-                    brushSizeValue.textContent = brushSize + 'px';
-                });
+<div class="profile-tabs">
+<button class="tab-btn active" data-tab="gallery">Gallery</button>
+<button class="tab-btn" data-tab="about">About</button>
+<button class="tab-btn" data-tab="edit">Edit Profile</button>
+</div>
 
-                // Symmetry selection - FIXED: Properly initialize symmetry
-                symmetryOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        symmetryOptions.forEach(opt => opt.classList.remove('active'));
-                        this.classList.add('active');
-                        symmetryType = this.dataset.symmetry;
-                    });
-                });
+<div class="tab-content active" id="gallery-tab">
+<div class="profile-gallery" id="profile-gallery">
+<!-- Artwork cards will be added dynamically -->
+</div>
+</div>
 
-                // Clear canvas
-                clearBtn.addEventListener('click', function() {
-                    clearCanvas();
-                    saveState();
-                });
+<div class="tab-content" id="about-tab">
+<div class="profile-about">
+<h3><i class="fas fa-user"></i> About Me</h3>
+<p id="about-text">I'm a passionate pixel artist with over 5 years of experience in creating retro-style graphics for games and digital art. My work has been featured in several indie games and art exhibitions. I specialize in character design, environment art, and animation.</p>
 
-                // Undo
-                undoBtn.addEventListener('click', undo);
+<h3 style="margin-top: 30px;"><i class="fas fa-graduation-cap"></i> Skills</h3>
+<div class="skills-container">
+<div class="skills-list" id="skills-list">
+<!-- Skills will be added here dynamically -->
+</div>
+</div>
 
-                // Download artwork
-                downloadBtn.addEventListener('click', function() {
-                    downloadArtwork();
-                });
-            }
+<h3><i class="fas fa-link"></i> Connect With Me</h3>
+<div class="social-links" id="profile-contact-links">
+<!-- Contact links will be added dynamically -->
+</div>
+</div>
+</div>
 
-            // Set canvas dimensions
-            function resizeCanvas() {
-                const container = document.querySelector('.canvas-container');
-                canvas.width = container.clientWidth;
-                canvas.height = container.clientHeight;
-                saveState();
-            }
+<div class="tab-content" id="edit-tab">
+<div class="profile-about">
+<h3><i class="fas fa-user-edit"></i> Edit Profile</h3>
+<form class="profile-form">
+<div class="form-group">
+<label for="display-name">Display Name</label>
+<input type="text" id="display-name" value="Pixel Master">
+</div>
+<div class="form-group">
+<label for="username">Username</label>
+<input type="text" id="username" value="PixelArtist" readonly>
+</div>
+<div class="form-group full-width">
+<label for="bio">Bio</label>
+<textarea id="bio">Digital artist specializing in pixel art and game design. Passionate about creating immersive worlds and characters. Currently working on my indie game project "Pixel Quest". Let's create something amazing together!</textarea>
+</div>
 
-            // Start drawing
-            function startDrawing(e) {
-                isDrawing = true;
-                const pos = getCanvasMousePos(canvas, e);
-                [lastX, lastY] = [pos.x, pos.y];
-            }
+<!-- Contact Links Section -->
+<div class="form-group full-width">
+<label><i class="fas fa-link"></i> Contact Links</label>
+<div id="contact-links-container">
+<!-- Contact links will be added here dynamically -->
+</div>
+<div class="social-link-form">
+<select id="social-type">
+<option value="youtube">YouTube</option>
+<option value="instagram">Instagram</option>
+<option value="telegram">Telegram</option>
+<option value="discord">Discord</option>
+<option value="twitter">Twitter</option>
+<option value="website">Website</option>
+<option value="other">Other</option>
+</select>
+<input type="text" id="social-url" placeholder="Enter URL">
+<button type="button" id="add-social-link"><i class="fas fa-plus"></i> Add</button>
+</div>
+</div>
 
-            // Draw function
-            function draw(e) {
-                if (!isDrawing) return;
-                const pos = getCanvasMousePos(canvas, e);
-                const x = pos.x;
-                const y = pos.y;
+<!-- Skills Editor -->
+<div class="form-group full-width">
+<label><i class="fas fa-graduation-cap"></i> Skills</label>
+<div class="skills-container">
+<div class="skills-list" id="edit-skills-list">
+<!-- Skills will be added here dynamically -->
+</div>
+<div class="skill-input">
+<input type="text" id="new-skill" placeholder="Add a new skill">
+<button type="button" id="add-skill"><i class="fas fa-plus"></i> Add</button>
+</div>
+</div>
+</div>
 
-                ctx.strokeStyle = currentColor;
-                ctx.lineWidth = brushSize;
-                ctx.lineJoin = 'round';
-                ctx.lineCap = 'round';
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(x, y);
-                ctx.stroke();
+<div class="form-group full-width">
+<label for="about">About Me</label>
+<textarea id="about">I'm a passionate pixel artist with over 5 years of experience in creating retro-style graphics for games and digital art. My work has been featured in several indie games and art exhibitions. I specialize in character design, environment art, and animation.</textarea>
+</div>
+<div class="form-group">
+<label for="location">Location</label>
+<input type="text" id="location" value="San Francisco, CA">
+</div>
+<div class="form-group">
+<label for="website">Website</label>
+<input type="text" id="website" value="pixelmaster.art">
+</div>
+<div class="form-actions">
+<button type="button" class="cancel-btn" id="cancel-profile-edit">Cancel</button>
+<button type="button" class="save-btn" id="save-profile">Save Changes</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
 
-                // Apply symmetry if enabled
-                if (symmetryType !== 'none') {
-                    const symmetricPoint = applySymmetry(x, y);
-                    if (symmetricPoint) {
-                        ctx.beginPath();
-                        ctx.moveTo(symmetricPoint.x, symmetricPoint.y);
-                        ctx.lineTo(symmetricPoint.x, symmetricPoint.y);
-                        ctx.stroke();
-                    }
-                }
+<!-- Settings Section -->
+<div class="content-section" id="settings-section">
+<div class="section-header">
+<h2><i class="fas fa-cog"></i> Settings</h2>
+</div>
+<div class="settings-container">
+<div class="settings-group">
+<h3><i class="fas fa-paint-brush"></i> Canvas Settings</h3>
+<div class="setting-item">
+<div class="setting-label">Grid Visibility</div>
+<label class="toggle-switch">
+<input type="checkbox" id="grid-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-label">Pixel Snap</div>
+<label class="toggle-switch">
+<input type="checkbox" id="pixel-snap-toggle">
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-label">Auto-Save</div>
+<label class="toggle-switch">
+<input type="checkbox" id="auto-save-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+</div>
 
-                [lastX, lastY] = [x, y];
-            }
+<div class="settings-group">
+<h3><i class="fas fa-palette"></i> Appearance</h3>
+<div class="setting-item">
+<div class="setting-label">Theme</div>
+<select id="theme-select" class="setting-select">
+<option value="dark">Dark (Default)</option>
+<option value="light">Light</option>
+<option value="blue">Blue Night</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-label">UI Scale</div>
+<select id="ui-scale-select" class="setting-select">
+<option value="100">100% (Default)</option>
+<option value="125">125%</option>
+<option value="150">150%</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-label">Animation Effects</div>
+<label class="toggle-switch">
+<input type="checkbox" id="animations-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+</div>
 
-            // Stop drawing
-            function stopDrawing() {
-                if (isDrawing) {
-                    isDrawing = false;
-                    saveState();
-                }
-            }
+<div class="settings-group">
+<h3><i class="fas fa-tools"></i> Advanced</h3>
+<div class="setting-item">
+<div class="setting-label">Undo History Size</div>
+<select id="undo-history-select" class="setting-select">
+<option value="20">20 steps (Default)</option>
+<option value="50">50 steps</option>
+<option value="100">100 steps</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-label">Hardware Acceleration</div>
+<label class="toggle-switch">
+<input type="checkbox" id="hardware-accel-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-label">Export Quality</div>
+<select id="export-quality-select" class="setting-select">
+<option value="high">High (PNG)</option>
+<option value="medium">Medium (JPG 90%)</option>
+<option value="low">Low (JPG 70%)</option>
+</select>
+</div>
+</div>
+</div>
+</div>
 
-            // Apply symmetry
-            function applySymmetry(x, y) {
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
+<!-- Artwork Detail Section -->
+<div class="content-section" id="artwork-detail-section">
+<div class="section-header">
+<h2><i class="fas fa-image"></i> Artwork Detail</h2>
+</div>
+<div class="artwork-detail">
+<div class="artwork-detail-header">
+<button class="back-to-gallery" id="back-to-gallery"><i class="fas fa-arrow-left"></i> Back to Gallery</button>
+</div>
+<img src="" alt="Artwork" class="artwork-detail-image" id="artwork-detail-image">
+<div class="artwork-detail-info">
+<h2 class="artwork-detail-title" id="artwork-detail-title"></h2>
+<p class="artwork-detail-author" id="artwork-detail-author"></p>
+<p class="artwork-detail-description" id="artwork-detail-description"></p>
+<div class="artwork-interactions">
+<button class="like-btn" id="like-btn"><i class="fas fa-heart"></i> <span id="like-count">0</span> Likes</button>
+<button class="comment-btn"><i class="fas fa-comment"></i> <span id="comment-count">0</span> Comments</button>
+<button class="download-btn" id="detail-download-btn"><i class="fas fa-download"></i> Download</button>
+<button class="delete-artwork-btn" id="delete-artwork-btn"><i class="fas fa-trash"></i> Delete</button>
+</div>
+<div class="comments-section">
+<h3 class="comments-title">Comments</h3>
+<div class="comments-list" id="comments-list">
+<!-- Comments will be loaded here -->
+</div>
+<div class="add-comment">
+<input type="text" class="comment-input" id="comment-input" placeholder="Add a comment...">
+<button class="post-comment-btn" id="post-comment-btn">Post</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-                switch(symmetryType) {
-                    case 'vertical':
-                        return { x: canvas.width - x, y: y };
-                    case 'horizontal':
-                        return { x: x, y: canvas.height - y };
-                    case 'radial':
-                        return { 
-                            x: centerX + (centerX - x), 
-                            y: centerY + (centerY - y) 
-                        };
-                    default:
-                        return null;
-                }
-            }
+<!-- Footer -->
+<footer class="footer">
+<p>InkFlow Studio &copy; 2025 | :3</p>
+</footer>
 
-            // Clear canvas
-            function clearCanvas() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            }
+<!-- Project Manager Panel -->
+<div class="project-manager" id="project-manager" style="display: none;">
+<div class="project-panel">
+<div class="project-header">
+<h2><i class="fas fa-folder-open"></i> Project Manager</h2>
+<button class="close-btn" id="close-project-manager"><i class="fas fa-times"></i></button>
+</div>
+<div class="project-list" id="project-list">
+<!-- Projects will be loaded here -->
+</div>
+<div class="new-project">
+<h3><i class="fas fa-plus-circle"></i> Create New Project</h3>
+<div class="project-input">
+<input type="text" id="new-project-name" placeholder="Enter project name">
+<button id="create-project">Create</button>
+</div>
+</div>
+</div>
+</div>
 
-            // Save current state to history
-            function saveState() {
-                historyPointer++;
-                if (historyPointer < history.length) {
-                    history = history.slice(0, historyPointer);
-                }
+<!-- Download Modal -->
+<div class="download-modal" id="download-modal">
+<div class="download-panel">
+<div class="download-header">
+<h2><i class="fas fa-file-download"></i> Download Artwork</h2>
+<p>Enter a filename for your artwork</p>
+</div>
+<input type="text" id="filename-input" class="filename-input" placeholder="Enter filename" value="inkflow-art">
+<div class="download-actions">
+<button class="download-confirm" id="confirm-download"><i class="fas fa-download"></i> Download</button>
+<button class="download-cancel" id="cancel-download"><i class="fas fa-times"></i> Cancel</button>
+</div>
+</div>
+</div>
 
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                history.push(imageData);
+<!-- Upload Modal -->
+<div class="upload-modal" id="upload-modal">
+<div class="upload-panel">
+<div class="upload-header">
+<h2><i class="fas fa-cloud-upload-alt"></i> Upload Artwork</h2>
+<p>Share your creation with the community</p>
+</div>
+<div class="upload-form">
+<div class="form-group">
+<label for="artwork-title">Artwork Title</label>
+<input type="text" id="artwork-title" placeholder="Enter a title for your artwork">
+</div>
+<div class="form-group">
+<label for="artwork-description">Description</label>
+<textarea id="artwork-description" placeholder="Describe your artwork..."></textarea>
+</div>
+<div class="form-group">
+<label for="artwork-tags">Tags</label>
+<input type="text" id="artwork-tags" placeholder="pixel, art, landscape, etc.">
+</div>
+<div class="form-group">
+<label for="artwork-visibility">Visibility</label>
+<select id="artwork-visibility">
+<option value="public">Public</option>
+<option value="private">Private</option>
+</select>
+</div>
+<div class="upload-actions">
+<button class="upload-cancel" id="cancel-upload"><i class="fas fa-times"></i> Cancel</button>
+<button class="upload-confirm" id="confirm-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+</div>
+</div>
+</div>
+</div>
 
-                if (history.length > 20) {
-                    history.shift();
-                    historyPointer--;
-                }
-            }
+<!-- Auth Modal -->
+<div class="auth-modal" id="auth-modal">
+<div class="auth-panel">
+<div class="auth-header">
+<h2><i class="fas fa-user"></i> Welcome to InkFlow</h2>
+<p>Sign in or create an account to access all features</p>
+</div>
+<div class="auth-tabs">
+<button class="auth-tab active" id="login-tab">Login</button>
+<button class="auth-tab" id="register-tab">Register</button>
+</div>
+<div class="auth-form" id="login-form">
+<div class="auth-form-group">
+<label for="login-email">Email</label>
+<input type="email" id="login-email" placeholder="Enter your email">
+</div>
+<div class="auth-form-group">
+<label for="login-password">Password</label>
+<input type="password" id="login-password" placeholder="Enter your password">
+</div>
+<div class="auth-actions">
+<button class="auth-cancel" id="cancel-auth"><i class="fas fa-times"></i> Cancel</button>
+<button class="auth-confirm" id="confirm-login"><i class="fas fa-sign-in-alt"></i> Login</button>
+</div>
+</div>
+<div class="auth-form" id="register-form" style="display: none;">
+<div class="auth-form-group">
+<label for="register-email">Email</label>
+<input type="email" id="register-email" placeholder="Enter your email">
+</div>
+<div class="auth-form-group">
+<label for="register-password">Password</label>
+<input type="password" id="register-password" placeholder="Create a password">
+</div>
+<div class="auth-form-group">
+<label for="register-confirm">Confirm Password</label>
+<input type="password" id="register-confirm" placeholder="Confirm your password">
+</div>
+<div class="auth-actions">
+<button class="auth-cancel" id="cancel-register"><i class="fas fa-times"></i> Cancel</button>
+<button class="auth-confirm" id="confirm-register"><i class="fas fa-user-plus"></i> Register</button>
+</div>
+</div>
+</div>
+</div>
 
-            // Undo functionality
-            function undo() {
-                if (historyPointer > 0) {
-                    historyPointer--;
-                    ctx.putImageData(history[historyPointer], 0, 0);
-                }
-            }
+<!-- Notification Modal -->
+<div class="notification-modal" id="notification-modal">
+<div class="notification-icon"><i class="fas fa-bell"></i></div>
+<div class="notification-content">
+<div class="notification-title" id="notification-title"></div>
+<div class="notification-message" id="notification-message"></div>
+</div>
+</div>
 
-            // Download artwork
-            function downloadArtwork() {
-                const link = document.createElement('a');
-                link.download = 'inkflow-art.png';
-                link.href = canvas.toDataURL();
-                link.click();
-            }
+<!-- Canvas Size Modal -->
+<div class="size-modal" id="size-modal">
+<div class="size-panel">
+<div class="size-header">
+<h2><i class="fas fa-ruler"></i> Set Canvas Size</h2>
+</div>
+<div class="size-inputs">
+<div class="size-input">
+<label for="canvas-width">Width (px)</label>
+<input type="number" id="canvas-width" min="100" max="5000" value="800">
+</div>
+<div class="size-input">
+<label for="canvas-height">Height (px)</label>
+<input type="number" id="canvas-height" min="100" max="5000" value="600">
+</div>
+</div>
+<div class="size-actions">
+<button class="size-cancel" id="size-cancel">Cancel</button>
+<button class="size-confirm" id="size-confirm">Apply</button>
+</div>
+</div>
+</div>
 
-            // Helper function to get accurate canvas coordinates
-            function getCanvasMousePos(canvas, evt) {
-                const rect = canvas.getBoundingClientRect();
-                const scaleX = canvas.width / rect.width;
-                const scaleY = canvas.height / rect.height;
-                return {
-                    x: (evt.clientX - rect.left) * scaleX,
-                    y: (evt.clientY - rect.top) * scaleY
-                };
-            }
+<!-- Text Tool Modal -->
+<div class="text-tool-container" id="text-tool">
+<div class="text-tool-header">
+<h4><i class="fas fa-font"></i> Add Text</h4>
+<span class="font-size-indicator">Size: <span id="current-font-size">24</span>px</span>
+</div>
+<input type="text" class="text-input" id="text-input" placeholder="Enter text...">
+<div class="text-preview" id="text-preview">Text Preview</div>
+<select class="font-select" id="font-select">
+<option value="Arial">Arial</option>
+<option value="Verdana">Verdana</option>
+<option value="Georgia">Georgia</option>
+<option value="Times New Roman">Times New Roman</option>
+<option value="Courier New">Courier New</option>
+<option value="Comic Sans MS">Comic Sans MS</option>
+<option value="Impact">Impact</option>
+<option value="Tahoma">Tahoma</option>
+<option value="Trebuchet MS">Trebuchet MS</option>
+<option value="Lucida Sans Unicode">Lucida Sans</option>
+</select>
+<div class="text-tool-settings">
+<button class="text-style-btn" id="bold-btn"><i class="fas fa-bold"></i> Bold</button>
+<button class="text-style-btn" id="italic-btn"><i class="fas fa-italic"></i> Italic</button>
+<button class="text-style-btn" id="underline-btn"><i class="fas fa-underline"></i> Underline</button>
+</div>
+<div class="text-tool-actions">
+<button class="text-confirm" id="text-confirm">Add Text</button>
+<button class="text-cancel" id="text-cancel">Cancel</button>
+</div>
+</div>
 
-            // User system
-            let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-            let users = JSON.parse(localStorage.getItem('inkflowUsers')) || [];
-            let communityArtworks = JSON.parse(localStorage.getItem('inkflowCommunity')) || [];
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Canvas elements
+const canvas = document.getElementById('drawing-canvas');
+const ctx = canvas.getContext('2d');
+const colorPicker = document.getElementById('color-picker');
+const brushSizeSlider = document.getElementById('brush-size');
+const brushOpacitySlider = document.getElementById('brush-opacity');
+const brushSizeValue = document.getElementById('brush-size-value');
+const opacityValue = document.getElementById('opacity-value');
+const clearBtn = document.getElementById('clear-btn');
+const undoBtn = document.getElementById('undo-btn');
+const downloadBtn = document.getElementById('download-btn');
+const brushButtons = document.querySelectorAll('.brush-btn');
+const blendButtons = document.querySelectorAll('.blend-btn');
+const presetColors = document.querySelectorAll('.preset-color');
+const addLayerBtn = document.getElementById('add-layer');
+const removeLayerBtn = document.getElementById('remove-layer');
+const mergeLayersBtn = document.getElementById('merge-layers');
+const layerControls = document.getElementById('layer-controls');
+const projectsBtn = document.getElementById('projects-btn');
+const projectManager = document.getElementById('project-manager');
+const closeProjectManager = document.getElementById('close-project-manager');
+const projectList = document.getElementById('project-list');
+const newProjectName = document.getElementById('new-project-name');
+const createProjectBtn = document.getElementById('create-project');
+const saveProjectBtn = document.getElementById('save-project-btn');
+const uploadArtworkBtn = document.getElementById('upload-artwork-btn');
+const uploadToCommunityBtn = document.getElementById('upload-to-community-btn');
+const galleryGrid = document.getElementById('gallery-grid');
+const artworkDetailSection = document.getElementById('artwork-detail-section');
 
-            // Update user UI
-            function updateUserUI() {
-                const authButtons = document.getElementById('auth-buttons');
-                const userInfo = document.getElementById('user-info');
-                const usernameDisplay = document.getElementById('username-display');
-                const avatarInitial = document.getElementById('avatar-initial');
+// Reference panel elements
+const uploadRefBtn = document.getElementById('upload-ref-btn');
+const refImage = document.getElementById('reference-image');
+const clearRefBtn = document.getElementById('clear-ref-btn');
+const refOpacitySlider = document.getElementById('ref-opacity');
+const refOpacityValue = document.getElementById('ref-opacity-value');
 
-                if (currentUser) {
-                    authButtons.style.display = 'none';
-                    userInfo.style.display = 'flex';
-                    usernameDisplay.textContent = currentUser.username;
-                    avatarInitial.textContent = currentUser.username.charAt(0).toUpperCase();
-                } else {
-                    authButtons.style.display = 'flex';
-                    userInfo.style.display = 'none';
-                }
-            }
+// Modal elements
+const downloadModal = document.getElementById('download-modal');
+const filenameInput = document.getElementById('filename-input');
+const confirmDownload = document.getElementById('confirm-download');
+const cancelDownload = document.getElementById('cancel-download');
+const uploadModal = document.getElementById('upload-modal');
+const cancelUpload = document.getElementById('cancel-upload');
+const confirmUpload = document.getElementById('confirm-upload');
+const authModal = document.getElementById('auth-modal');
+const loginTab = document.getElementById('login-tab');
+const registerTab = document.getElementById('register-tab');
+const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
+const cancelAuth = document.getElementById('cancel-auth');
+const confirmLogin = document.getElementById('confirm-login');
+const confirmRegister = document.getElementById('confirm-register');
+const loginEmail = document.getElementById('login-email');
+const loginPassword = document.getElementById('login-password');
+const registerEmail = document.getElementById('register-email');
+const registerPassword = document.getElementById('register-password');
+const registerConfirm = document.getElementById('register-confirm');
+const notificationModal = document.getElementById('notification-modal');
+const notificationTitle = document.getElementById('notification-title');
+const notificationMessage = document.getElementById('notification-message');
 
-            // Render community gallery
-            function renderCommunityGallery() {
-                const galleryGrid = document.getElementById('gallery-grid');
-                galleryGrid.innerHTML = '';
+// Navigation elements
+const navLinks = document.querySelectorAll('.nav-links a');
+const contentSections = document.querySelectorAll('.content-section');
 
-                communityArtworks.forEach(artwork => {
-                    const artworkCard = document.createElement('div');
-                    artworkCard.className = 'artwork-card';
-                    artworkCard.innerHTML = `
-                        <img src="${artwork.image}" alt="${artwork.title}" class="artwork-image">
-                        <div class="artwork-info">
-                            <h3 class="artwork-title">${artwork.title}</h3>
-                            <div class="profile-author">By ${artwork.author}</div>
-                            <div class="artwork-stats">
-                                <div class="stat"><i class="fas fa-heart"></i> ${artwork.likes}</div>
-                                <div class="stat"><i class="fas fa-comment"></i> ${artwork.comments}</div>
-                            </div>
-                        </div>
-                    `;
-                    galleryGrid.appendChild(artworkCard);
-                });
-            }
+// User elements
+const authButtons = document.getElementById('auth-buttons');
+const userInfo = document.getElementById('user-info');
+const userAvatar = document.getElementById('user-avatar');
+const usernameDisplay = document.getElementById('username-display');
+const loginBtn = document.getElementById('login-btn');
+const registerBtn = document.getElementById('register-btn');
+const logoutBtn = document.getElementById('logout-btn');
+const avatarInitial = document.getElementById('avatar-initial');
 
-            // Initialize the application
-            window.addEventListener('resize', resizeCanvas);
-            initCanvas();
-        });
-    </script>
+// Artwork detail elements
+const backToGallery = document.getElementById('back-to-gallery');
+const artworkDetailImage = document.getElementById('artwork-detail-image');
+const artworkDetailTitle = document.getElementById('artwork-detail-title');
+const artworkDetailAuthor = document.getElementById('artwork-detail-author');
+const artworkDetailDescription = document.getElementById('artwork-detail-description');
+const likeBtn = document.getElementById('like-btn');
+const likeCount = document.getElementById('like-count');
+const commentCount = document.getElementById('comment-count');
+const commentsList = document.getElementById('comments-list');
+const commentInput = document.getElementById('comment-input');
+const postCommentBtn = document.getElementById('post-comment-btn');
+const deleteArtworkBtn = document.getElementById('delete-artwork-btn');
+
+// Profile elements
+const profileSection = document.getElementById('profile-section');
+const profileBtn = document.getElementById('profile-btn');
+const profileDisplayName = document.getElementById('profile-display-name');
+const profileUsername = document.getElementById('profile-username');
+const profileBio = document.getElementById('profile-bio');
+const aboutText = document.getElementById('about-text');
+const profileGallery = document.getElementById('profile-gallery');
+const editBanner = document.getElementById('edit-banner');
+const editAvatar = document.getElementById('edit-avatar');
+const avatarContainer = document.getElementById('avatar-container');
+const avatarText = document.getElementById('avatar-text');
+const profileBanner = document.getElementById('profile-banner');
+const bannerPlaceholder = document.getElementById('banner-placeholder');
+const displayNameInput = document.getElementById('display-name');
+const usernameInput = document.getElementById('username');
+const bioInput = document.getElementById('bio');
+const aboutInput = document.getElementById('about');
+const saveProfileBtn = document.getElementById('save-profile');
+const cancelProfileEdit = document.getElementById('cancel-profile-edit');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+const profileContactLinks = document.getElementById('profile-contact-links');
+const skillsList = document.getElementById('skills-list');
+const editSkillsList = document.getElementById('edit-skills-list');
+const addSkillBtn = document.getElementById('add-skill');
+const newSkillInput = document.getElementById('new-skill');
+
+// New elements from second script
+const addSocialLinkBtn = document.getElementById('add-social-link');
+const contactLinksContainer = document.getElementById('contact-links-container');
+const detailDownloadBtn = document.getElementById('detail-download-btn');
+
+// Background selector
+const bgOptions = document.querySelectorAll('.bg-option');
+
+// NEW: Zoom and Pan elements
+const zoomInBtn = document.getElementById('zoom-in');
+const zoomOutBtn = document.getElementById('zoom-out');
+const resetViewBtn = document.getElementById('reset-view');
+const zoomDisplay = document.getElementById('zoom-display');
+const panUpBtn = document.getElementById('pan-up');
+const panDownBtn = document.getElementById('pan-down');
+const panLeftBtn = document.getElementById('pan-left');
+const panRightBtn = document.getElementById('pan-right');
+
+// NEW: Symmetry elements
+const symmetryOptions = document.querySelectorAll('.symmetry-option');
+
+// NEW: Animation elements
+const animationTimeline = document.getElementById('animation-timeline');
+const toggleAnimationBtn = document.getElementById('toggle-animation');
+const closeTimelineBtn = document.getElementById('close-timeline');
+const addFrameBtn = document.getElementById('add-frame');
+const prevFrameBtn = document.getElementById('prev-frame');
+const playAnimationBtn = document.getElementById('play-animation');
+const nextFrameBtn = document.getElementById('next-frame');
+const deleteFrameBtn = document.getElementById('delete-frame');
+const timelineFrames = document.getElementById('timeline-frames');
+const frameSpeedSlider = document.getElementById('frame-speed');
+const speedValue = document.getElementById('speed-value');
+const loopAnimation = document.getElementById('loop-animation');
+
+// NEW: Canvas size elements
+const sizeBtn = document.getElementById('size-btn');
+const sizeModal = document.getElementById('size-modal');
+const sizeCancel = document.getElementById('size-cancel');
+const sizeConfirm = document.getElementById('size-confirm');
+const canvasWidth = document.getElementById('canvas-width');
+const canvasHeight = document.getElementById('canvas-height');
+
+// NEW: Text tool elements
+const textTool = document.getElementById('text-tool');
+const textInput = document.getElementById('text-input');
+const fontSelect = document.getElementById('font-select');
+const textPreview = document.getElementById('text-preview');
+const textConfirm = document.getElementById('text-confirm');
+const textCancel = document.getElementById('text-cancel');
+const currentFontSize = document.getElementById('current-font-size');
+const boldBtn = document.getElementById('bold-btn');
+const italicBtn = document.getElementById('italic-btn');
+const underlineBtn = document.getElementById('underline-btn');
+
+// Drawing state
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let currentColor = '#ff6b6b';
+let brushSize = 10;
+let brushOpacity = 1;
+let brushType = 'normal';
+let blendMode = 'source-over';
+let history = [];
+let historyPointer = -1;
+let canvasBackground = 'black'; // 'black', 'white', or 'transparent'
+
+// NEW: Zoom and pan state
+let zoomLevel = 1;
+let offsetX = 0;
+let offsetY = 0;
+let isPanning = false;
+let panStartX = 0;
+let panStartY = 0;
+
+// NEW: Symmetry state
+let symmetryType = 'vertical';
+
+// NEW: Animation state
+let isAnimationEnabled = false;
+let currentFrame = 0;
+let frames = [];
+let isPlaying = false;
+let frameSpeed = 300; // ms per frame
+let animationLoop = true;
+let animationTimeout = null;
+
+// NEW: Text tool state
+let textToolPosition = { x: 0, y: 0 };
+let textBold = false;
+let textItalic = false;
+let textUnderline = false;
+let textSize = 24;
+
+// Layer system
+let layers = [
+{ name: "Background", visible: true, locked: false, canvas: document.createElement('canvas'), ctx: null },
+{ name: "Layer 1", visible: true, locked: false, canvas: document.createElement('canvas'), ctx: null }
+];
+let currentLayerIndex = 1;
+
+// Project management
+let projects = JSON.parse(localStorage.getItem('inkflowProjects')) || [];
+let currentProject = null;
+
+// Community gallery
+let communityArtworks = JSON.parse(localStorage.getItem('inkflowCommunity')) || [
+{
+id: 1,
+title: "Pixel Mountains",
+author: "PixelArtist",
+image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+description: "A beautiful pixel art landscape of mountains at sunset",
+likes: 142,
+comments: 24,
+views: 568,
+likedBy: [],
+commentsList: [
+{ id: 1, author: "ArtLover", content: "Amazing work! The colors are stunning.", date: "2023-07-01" },
+{ id: 2, author: "PixelFan", content: "This brings back memories of old RPG games. Love it!", date: "2023-07-02" }
+]
+},
+{
+id: 2,
+title: "Cyber City",
+author: "NeonDreamer",
+image: "https://images.unsplash.com/photo-1546900703-cf06143d1239?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+description: "Futuristic cityscape with neon lights and flying cars",
+likes: 287,
+comments: 42,
+views: 1024,
+likedBy: [],
+commentsList: [
+{ id: 1, author: "CyberFan", content: "The details in this are incredible!", date: "2023-07-03" }
+]
+}
+];
+
+// User system
+let users = JSON.parse(localStorage.getItem('inkflowUsers')) || [
+{ id: 1, username: "PixelMaster", email: "pixel@example.com", password: "password123", avatar: "PM", displayName: "Pixel Master", skills: ["Pixel Art & Animation", "Character Design", "Environment Design", "UI/UX for Games", "Game Development (Unity)"] }
+];
+let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+let currentArtwork = null;
+
+// Profile data
+let userProfile = {
+displayName: "Pixel Master",
+username: "PixelArtist",
+bio: "Digital artist specializing in pixel art and game design. Passionate about creating immersive worlds and characters. Currently working on my indie game project 'Pixel Quest'. Let's create something amazing together!",
+about: "I'm a passionate pixel artist with over 5 years of experience in creating retro-style graphics for games and digital art. My work has been featured in several indie games and art exhibitions. I specialize in character design, environment art, and animation.",
+location: "San Francisco, CA",
+website: "pixelmaster.art",
+artworks: 42,
+followers: 1200,
+following: 587,
+projects: 24,
+avatarColor1: "#5d2d91",
+avatarColor2: "#8a2be2",
+bannerGradient: "linear-gradient(135deg, #5d2d91, #8a2be2, #4fc3f7)",
+contactLinks: [
+{ type: 'twitter', url: 'https://twitter.com/pixelartist' },
+{ type: 'instagram', url: 'https://instagram.com/pixelartist' }
+],
+skills: ["Pixel Art & Animation", "Character Design", "Environment Design", "UI/UX for Games", "Game Development (Unity)"]
+};
+
+// Initialize canvas
+function initCanvas() {
+resizeCanvas();
+initLayers();
+initEventListeners();
+initTextTool();
+initZoomAndPan();
+initSymmetry();
+initAnimation();
+initCanvasSize();
+updateUserUI();
+renderCommunityGallery();
+
+if (currentUser) {
+renderProfile();
+}
+
+// Set initial brush
+document.querySelector('.brush-btn.active').classList.remove('active');
+document.getElementById('brush-normal').classList.add('active');
+
+// Set initial preset color
+document.querySelector('.preset-color.active').classList.remove('active');
+document.querySelector('.preset-color[data-color="#ff6b6b"]').classList.add('active');
+}
+
+// Initialize event listeners
+function initEventListeners() {
+// Canvas events
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+// Touch events for mobile drawing
+canvas.addEventListener('touchstart', function(e) {
+e.preventDefault();
+startDrawing(e.touches[0]);
+});
+
+canvas.addEventListener('touchmove', function(e) {
+e.preventDefault();
+draw(e.touches[0]);
+});
+
+canvas.addEventListener('touchend', stopDrawing);
+
+// Navigation
+navLinks.forEach(link => {
+link.addEventListener('click', function(e) {
+e.preventDefault();
+
+// Update active link
+navLinks.forEach(l => l.classList.remove('active'));
+this.classList.add('active');
+
+// Show corresponding section
+const section = this.getAttribute('data-section');
+contentSections.forEach(sec => sec.classList.remove('active'));
+document.getElementById(`${section}-section`).classList.add('active');
+
+if (section === 'community') {
+renderCommunityGallery();
+} else if (section === 'profile') {
+if (currentUser) {
+renderProfile();
+}
+}
+});
+});
+
+// Color selection
+colorPicker.addEventListener('input', function() {
+currentColor = this.value;
+updateActivePreset(this.value);
+updateTextPreview();
+});
+
+// Brush size
+brushSizeSlider.addEventListener('input', function() {
+brushSize = this.value;
+brushSizeValue.textContent = brushSize + 'px';
+});
+
+// Brush opacity
+brushOpacitySlider.addEventListener('input', function() {
+brushOpacity = this.value / 100;
+opacityValue.textContent = this.value + '%';
+});
+
+// Brush type selection
+brushButtons.forEach(btn => {
+btn.addEventListener('click', function() {
+brushButtons.forEach(b => b.classList.remove('active'));
+this.classList.add('active');
+brushType = this.dataset.type;
+});
+});
+
+// Blend mode selection
+blendButtons.forEach(btn => {
+btn.addEventListener('click', function() {
+blendButtons.forEach(b => b.classList.remove('active'));
+this.classList.add('active');
+blendMode = this.dataset.mode;
+});
+});
+
+// Preset colors
+presetColors.forEach(color => {
+color.addEventListener('click', function() {
+currentColor = this.dataset.color;
+colorPicker.value = currentColor;
+
+// Update active preset
+presetColors.forEach(c => c.classList.remove('active'));
+this.classList.add('active');
+updateTextPreview();
+});
+});
+
+// Clear canvas
+clearBtn.addEventListener('click', function() {
+clearCanvas();
+saveState();
+});
+
+// Undo
+undoBtn.addEventListener('click', undo);
+
+// Save project
+saveProjectBtn.addEventListener('click', saveProject);
+
+// Download artwork
+downloadBtn.addEventListener('click', function() {
+// Show the download modal
+downloadModal.style.display = 'flex';
+filenameInput.focus();
+filenameInput.select();
+});
+
+confirmDownload.addEventListener('click', function() {
+const filename = filenameInput.value.trim() || "inkflow-art";
+downloadArtwork(filename);
+downloadModal.style.display = 'none';
+});
+
+cancelDownload.addEventListener('click', function() {
+downloadModal.style.display = 'none';
+});
+
+// Submit filename on Enter key
+filenameInput.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+const filename = filenameInput.value.trim() || "inkflow-art";
+downloadArtwork(filename);
+downloadModal.style.display = 'none';
+}
+});
+
+// Layer selection
+document.addEventListener('click', function(e) {
+if (e.target.closest('.layer-row')) {
+const row = e.target.closest('.layer-row');
+const index = parseInt(row.getAttribute('data-index'));
+setActiveLayer(index);
+}
+});
+
+// Toggle layer visibility
+document.addEventListener('click', function(e) {
+if (e.target.closest('.layer-visibility')) {
+const row = e.target.closest('.layer-row');
+const index = parseInt(row.getAttribute('data-index'));
+toggleLayerVisibility(index);
+}
+});
+
+// Rename layer on double click
+document.addEventListener('dblclick', function(e) {
+if (e.target.classList.contains('layer-name')) {
+const row = e.target.closest('.layer-row');
+const index = parseInt(row.getAttribute('data-index'));
+const nameSpan = row.querySelector('.layer-name');
+
+// Create input field
+const input = document.createElement('input');
+input.type = 'text';
+input.value = layers[index].name;
+input.className = 'layer-rename-input';
+input.addEventListener('blur', function() {
+renameLayer(index, this.value);
+this.remove();
+nameSpan.style.visibility = 'visible';
+});
+input.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+renameLayer(index, this.value);
+this.remove();
+nameSpan.style.visibility = 'visible';
+}
+});
+
+// Replace span with input
+nameSpan.style.visibility = 'hidden';
+row.appendChild(input);
+input.focus();
+input.select();
+}
+});
+
+// Move layer up
+document.addEventListener('click', function(e) {
+if (e.target.closest('.move-up-btn') && !e.target.closest('.move-up-btn').disabled) {
+const row = e.target.closest('.layer-row');
+const index = parseInt(row.getAttribute('data-index'));
+moveLayerUp(index);
+}
+});
+
+// Move layer down
+document.addEventListener('click', function(e) {
+if (e.target.closest('.move-down-btn') && !e.target.closest('.move-down-btn').disabled) {
+const row = e.target.closest('.layer-row');
+const index = parseInt(row.getAttribute('data-index'));
+moveLayerDown(index);
+}
+});
+
+// Project management events
+projectsBtn.addEventListener('click', function() {
+projectManager.style.display = 'flex';
+renderProjectList();
+});
+
+closeProjectManager.addEventListener('click', function() {
+projectManager.style.display = 'none';
+});
+
+createProjectBtn.addEventListener('click', createProject);
+
+newProjectName.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') createProject();
+});
+
+// Add layer
+addLayerBtn.addEventListener('click', function() {
+if (layers.length < 5) {
+const newIndex = layers.length;
+const newLayer = {
+name: `Layer ${newIndex}`,
+visible: true,
+locked: false,
+canvas: document.createElement('canvas'),
+ctx: null
+};
+
+newLayer.canvas.width = canvas.width;
+newLayer.canvas.height = canvas.height;
+newLayer.ctx = newLayer.canvas.getContext('2d');
+newLayer.ctx.fillStyle = 'rgba(0,0,0,0)';
+newLayer.ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+layers.push(newLayer);
+setActiveLayer(newIndex);
+
+// Update UI
+updateLayerUI();
+}
+});
+
+// Remove layer
+removeLayerBtn.addEventListener('click', function() {
+if (layers.length > 1) {
+const indexToRemove = layers.length - 1;
+// Don't remove if it's the only layer besides background
+if (indexToRemove === 0) return;
+layers.pop();
+
+// Set active layer to the new last layer
+setActiveLayer(layers.length - 1);
+
+// Update UI
+updateLayerUI();
+}
+});
+
+// Merge layers
+mergeLayersBtn.addEventListener('click', function() {
+if (layers.length > 1) {
+// Create a new layer to merge into
+const mergedLayer = {
+name: "Merged Layer",
+visible: true,
+locked: false,
+canvas: document.createElement('canvas'),
+ctx: null
+};
+
+mergedLayer.canvas.width = canvas.width;
+mergedLayer.canvas.height = canvas.height;
+mergedLayer.ctx = mergedLayer.canvas.getContext('2d');
+
+// Draw all visible layers to the merged layer
+layers.forEach(layer => {
+if (layer.visible) {
+mergedLayer.ctx.drawImage(layer.canvas, 0, 0);
+}
+});
+
+// Replace all layers with the merged layer and background
+layers = [
+layers[0], // Keep background
+mergedLayer
+];
+
+currentLayerIndex = 1;
+setActiveLayer(currentLayerIndex);
+
+// Update UI
+updateLayerUI();
+renderLayers();
+saveState();
+
+// Show success message
+const alexText = document.getElementById('alex-text');
+alexText.innerHTML = `<i class="fas fa-quote-left"></i> Layers merged successfully! <i class="fas fa-quote-right"></i>`;
+}
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+if (e.ctrlKey && e.key === 'z') {
+e.preventDefault();
+undo();
+}
+if (e.ctrlKey && e.key === 'Delete') {
+e.preventDefault();
+clearCanvas();
+saveState();
+}
+if (e.ctrlKey && e.key === 's') {
+e.preventDefault();
+saveProject();
+}
+if (e.key === 'Escape') {
+closeTextTool();
+}
+});
+
+// Reference image upload
+uploadRefBtn.addEventListener('click', function() {
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'image/*';
+input.addEventListener('change', function(e) {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(event) {
+refImage.src = event.target.result;
+refImage.style.display = 'block';
+document.querySelector('.reference-placeholder').style.display = 'none';
+};
+reader.readAsDataURL(file);
+}
+});
+input.click();
+});
+
+// Clear reference image
+clearRefBtn.addEventListener('click', function() {
+refImage.src = '';
+refImage.style.display = 'none';
+document.querySelector('.reference-placeholder').style.display = 'block';
+});
+
+// Update reference opacity
+refOpacitySlider.addEventListener('input', function() {
+refOpacityValue.textContent = this.value + '%';
+refImage.style.opacity = this.value / 100;
+});
+
+// Upload artwork
+uploadArtworkBtn.addEventListener('click', function() {
+if (!currentUser) {
+showNotification("Login Required", "Please log in to upload artwork");
+return;
+}
+uploadModal.style.display = 'flex';
+});
+
+uploadToCommunityBtn.addEventListener('click', function() {
+if (!currentUser) {
+showNotification("Login Required", "Please log in to upload artwork");
+return;
+}
+uploadModal.style.display = 'flex';
+});
+
+cancelUpload.addEventListener('click', function() {
+uploadModal.style.display = 'none';
+});
+
+confirmUpload.addEventListener('click', function() {
+const title = document.getElementById('artwork-title').value;
+if (!title) {
+alert("Please enter a title for your artwork");
+return;
+}
+
+// Create a new artwork entry
+const newArtwork = {
+id: Date.now(),
+title: title,
+author: currentUser.username,
+image: canvas.toDataURL('image/png'),
+description: document.getElementById('artwork-description').value,
+tags: document.getElementById('artwork-tags').value.split(',').map(tag => tag.trim()),
+visibility: document.getElementById('artwork-visibility').value,
+likes: 0,
+comments: 0,
+views: 0,
+likedBy: [],
+commentsList: []
+};
+
+// Add to community gallery
+communityArtworks.unshift(newArtwork);
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+
+// Update UI
+renderCommunityGallery();
+
+// Close modal and show success
+uploadModal.style.display = 'none';
+const alexText = document.getElementById('alex-text');
+alexText.innerHTML = `<i class="fas fa-quote-left"></i> Artwork "${title}" uploaded to community gallery! <i class="fas fa-quote-right"></i>`;
+
+// Switch to community tab
+navLinks.forEach(l => l.classList.remove('active'));
+document.querySelector('[data-section="community"]').classList.add('active');
+contentSections.forEach(sec => sec.classList.remove('active'));
+document.getElementById('community-section').classList.add('active');
+
+// Update user's artwork count
+if (currentUser) {
+currentUser.artworks = (currentUser.artworks || 0) + 1;
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+localStorage.setItem('inkflowUsers', JSON.stringify(users));
+renderProfile();
+}
+});
+
+// Auth events
+loginBtn.addEventListener('click', function() {
+authModal.style.display = 'flex';
+loginTab.click();
+});
+
+registerBtn.addEventListener('click', function() {
+authModal.style.display = 'flex';
+registerTab.click();
+});
+
+cancelAuth.addEventListener('click', function() {
+authModal.style.display = 'none';
+});
+
+loginTab.addEventListener('click', function() {
+loginTab.classList.add('active');
+registerTab.classList.remove('active');
+loginForm.style.display = 'flex';
+registerForm.style.display = 'none';
+});
+
+registerTab.addEventListener('click', function() {
+registerTab.classList.add('active');
+loginTab.classList.remove('active');
+registerForm.style.display = 'flex';
+loginForm.style.display = 'none';
+});
+
+confirmLogin.addEventListener('click', function() {
+const email = loginEmail.value;
+const password = loginPassword.value;
+if (!email || !password) {
+showNotification("Error", "Please fill in all fields");
+return;
+}
+if (loginUser(email, password)) {
+authModal.style.display = 'none';
+renderProfile();
+} else {
+showNotification("Login Failed", "Invalid email or password");
+}
+});
+
+confirmRegister.addEventListener('click', function() {
+const email = registerEmail.value;
+const password = registerPassword.value;
+const confirm = registerConfirm.value;
+if (!email || !password || !confirm) {
+showNotification("Error", "Please fill in all fields");
+return;
+}
+if (password !== confirm) {
+showNotification("Error", "Passwords do not match");
+return;
+}
+if (registerUser(email, password)) {
+authModal.style.display = 'none';
+renderProfile();
+} else {
+showNotification("Registration Failed", "Email already exists");
+}
+});
+
+logoutBtn.addEventListener('click', logoutUser);
+
+// Artwork detail events
+backToGallery.addEventListener('click', function() {
+contentSections.forEach(sec => sec.classList.remove('active'));
+document.getElementById('community-section').classList.add('active');
+navLinks.forEach(l => l.classList.remove('active'));
+document.querySelector('[data-section="community"]').classList.add('active');
+});
+
+likeBtn.addEventListener('click', likeArtwork);
+
+postCommentBtn.addEventListener('click', postComment);
+
+commentInput.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+postComment();
+}
+});
+
+deleteArtworkBtn.addEventListener('click', deleteArtwork);
+
+// Profile events
+profileBtn.addEventListener('click', function() {
+// Show profile section
+contentSections.forEach(sec => sec.classList.remove('active'));
+profileSection.classList.add('active');
+
+// Update active link
+navLinks.forEach(l => l.classList.remove('active'));
+document.querySelector('[data-section="profile"]').classList.add('active');
+
+// Render profile
+renderProfile();
+});
+
+// Profile tab switching
+tabButtons.forEach(button => {
+button.addEventListener('click', function() {
+const tabId = this.dataset.tab;
+
+// Update active tab button
+tabButtons.forEach(btn => btn.classList.remove('active'));
+this.classList.add('active');
+
+// Show active tab content
+tabContents.forEach(content => {
+content.classList.remove('active');
+if (content.id === `${tabId}-tab`) {
+content.classList.add('active');
+}
+});
+});
+});
+
+// Avatar editor
+editAvatar.addEventListener('click', function() {
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'image/*';
+input.addEventListener('change', function(e) {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(event) {
+// Set the avatar image
+avatarContainer.innerHTML = `<img src="${event.target.result}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+// Save to profile
+if (currentUser) {
+currentUser.avatarImage = event.target.result;
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+localStorage.setItem('inkflowUsers', JSON.stringify(users));
+updateUserUI();
+}
+};
+reader.readAsDataURL(file);
+}
+});
+input.click();
+});
+
+// Banner editor
+editBanner.addEventListener('click', function() {
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'image/*';
+input.addEventListener('change', function(e) {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(event) {
+// Set the banner image
+profileBanner.style.background = `url(${event.target.result}) center/cover no-repeat`;
+bannerPlaceholder.style.display = 'none';
+
+// Save to profile
+if (currentUser) {
+currentUser.bannerImage = event.target.result;
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+localStorage.setItem('inkflowUsers', JSON.stringify(users));
+}
+};
+reader.readAsDataURL(file);
+}
+});
+input.click();
+});
+
+// Save profile changes
+saveProfileBtn.addEventListener('click', function() {
+if (!currentUser) return;
+
+// Update profile
+currentUser.displayName = displayNameInput.value;
+currentUser.bio = bioInput.value;
+currentUser.about = aboutInput.value;
+currentUser.location = document.getElementById('location').value;
+currentUser.website = document.getElementById('website').value;
+
+// Save contact links
+currentUser.contactLinks = [];
+document.querySelectorAll('#contact-links-container .social-link-form').forEach(form => {
+const type = form.querySelector('select option').textContent.toLowerCase();
+const url = form.querySelector('input').value;
+currentUser.contactLinks.push({ type, url });
+});
+
+// Save to storage
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+localStorage.setItem('inkflowUsers', JSON.stringify(users));
+
+// Render updated profile
+renderProfile();
+
+// Switch to about tab
+tabButtons.forEach(btn => btn.classList.remove('active'));
+document.querySelector('[data-tab="about"]').classList.add('active');
+tabContents.forEach(content => {
+content.classList.remove('active');
+if (content.id === 'about-tab') {
+content.classList.add('active');
+}
+});
+
+// Show notification
+showNotification("Profile Updated", "Your profile information has been saved successfully!");
+});
+
+// Cancel profile edit
+cancelProfileEdit.addEventListener('click', function() {
+if (!currentUser) return;
+
+// Reset form values
+displayNameInput.value = currentUser.displayName || '';
+bioInput.value = currentUser.bio || '';
+aboutInput.value = currentUser.about || '';
+document.getElementById('location').value = currentUser.location || '';
+document.getElementById('website').value = currentUser.website || '';
+
+// Switch to gallery tab
+tabButtons.forEach(btn => btn.classList.remove('active'));
+document.querySelector('[data-tab="gallery"]').classList.add('active');
+tabContents.forEach(content => {
+content.classList.remove('active');
+if (content.id === 'gallery-tab') {
+content.classList.add('active');
+}
+});
+});
+
+// Add social link
+addSocialLinkBtn.addEventListener('click', function() {
+const type = document.getElementById('social-type').value;
+const url = document.getElementById('social-url').value.trim();
+if (!url) return;
+addContactLink(type, url);
+document.getElementById('social-url').value = '';
+});
+
+// Download from detail view
+detailDownloadBtn.addEventListener('click', function() {
+if (!currentArtwork) return;
+
+// Add watermark only for others' artwork
+const watermark = currentArtwork.author !== currentUser.username
+? `Art by ${currentArtwork.author}`
+: null;
+
+downloadArtwork(currentArtwork.title, watermark);
+});
+
+// Skills functionality
+addSkillBtn.addEventListener('click', addSkill);
+
+newSkillInput.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+addSkill();
+}
+});
+
+// Remove skill
+document.addEventListener('click', function(e) {
+if (e.target.classList.contains('remove-skill') || e.target.closest('.remove-skill')) {
+const skillTag = e.target.closest('.skill-tag');
+const skill = skillTag.querySelector('.remove-skill').getAttribute('data-skill');
+removeSkill(skill);
+}
+});
+
+// Background selector
+bgOptions.forEach(option => {
+option.addEventListener('click', function() {
+bgOptions.forEach(opt => opt.classList.remove('active'));
+this.classList.add('active');
+canvasBackground = this.dataset.bg;
+setCanvasBackground();
+saveState();
+
+// Show notification
+showNotification("Background Changed", `Canvas background set to ${canvasBackground}`);
+});
+});
+}
+
+// ======================
+// ZOOM AND PAN FUNCTIONALITY
+// ======================
+function initZoomAndPan() {
+// Set up zoom controls
+zoomInBtn.addEventListener('click', () => adjustZoom(0.1));
+zoomOutBtn.addEventListener('click', () => adjustZoom(-0.1));
+resetViewBtn.addEventListener('click', resetView);
+
+// Set up panning buttons
+panUpBtn.addEventListener('click', () => adjustPan(0, 50));
+panDownBtn.addEventListener('click', () => adjustPan(0, -50));
+panLeftBtn.addEventListener('click', () => adjustPan(50, 0));
+panRightBtn.addEventListener('click', () => adjustPan(-50, 0));
+
+// Set up wheel zoom
+canvas.addEventListener('wheel', handleWheel);
+
+// Set up panning
+canvas.addEventListener('mousedown', startPanning);
+canvas.addEventListener('mousemove', handlePanning);
+canvas.addEventListener('mouseup', stopPanning);
+canvas.addEventListener('mouseleave', stopPanning);
+}
+
+function adjustPan(dx, dy) {
+offsetX += dx;
+offsetY += dy;
+renderLayers();
+}
+
+function adjustZoom(amount) {
+// Prevent zooming below 100%
+if (zoomLevel + amount < 1) return;
+
+zoomLevel = Math.min(3, zoomLevel + amount);
+updateZoomDisplay();
+renderLayers();
+}
+
+function resetView() {
+zoomLevel = 1;
+offsetX = 0;
+offsetY = 0;
+updateZoomDisplay();
+renderLayers();
+showNotification("View Reset", "Canvas position and zoom have been reset");
+}
+
+function updateZoomDisplay() {
+zoomDisplay.textContent = Math.round(zoomLevel * 100) + '%';
+}
+
+function handleWheel(e) {
+e.preventDefault();
+const zoomAmount = e.deltaY > 0 ? -0.1 : 0.1;
+adjustZoom(zoomAmount);
+}
+
+function startPanning(e) {
+if (e.button === 2) { // Right mouse button
+isPanning = true;
+panStartX = e.clientX - offsetX;
+panStartY = e.clientY - offsetY;
+canvas.style.cursor = 'grabbing';
+}
+}
+
+function handlePanning(e) {
+if (isPanning) {
+offsetX = e.clientX - panStartX;
+offsetY = e.clientY - panStartY;
+renderLayers();
+}
+}
+
+function stopPanning() {
+isPanning = false;
+canvas.style.cursor = 'crosshair';
+}
+
+// ======================
+// SYMMETRY FUNCTIONALITY
+// ======================
+function initSymmetry() {
+symmetryOptions.forEach(option => {
+option.addEventListener('click', function() {
+symmetryOptions.forEach(opt => opt.classList.remove('active'));
+this.classList.add('active');
+symmetryType = this.dataset.symmetry;
+});
+});
+}
+
+function applySymmetry(x, y) {
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
+
+switch(symmetryType) {
+case 'vertical':
+return { x: canvas.width - x, y: y };
+case 'horizontal':
+return { x: x, y: canvas.height - y };
+case 'radial':
+return {
+x: centerX + (centerX - x),
+y: centerY + (centerY - y)
+};
+default:
+return null;
+}
+}
+
+// ======================
+// ANIMATION FUNCTIONALITY
+// ======================
+function initAnimation() {
+toggleAnimationBtn.addEventListener('click', toggleAnimation);
+closeTimelineBtn.addEventListener('click', closeTimeline);
+addFrameBtn.addEventListener('click', addFrame);
+prevFrameBtn.addEventListener('click', prevFrame);
+nextFrameBtn.addEventListener('click', nextFrame);
+playAnimationBtn.addEventListener('click', togglePlay);
+deleteFrameBtn.addEventListener('click', deleteFrame);
+
+// Speed control
+frameSpeedSlider.addEventListener('input', function() {
+frameSpeed = this.value;
+speedValue.textContent = frameSpeed + 'ms';
+});
+
+// Loop toggle
+loopAnimation.addEventListener('change', function() {
+animationLoop = this.checked;
+});
+
+// Add initial frame
+addFrame();
+}
+
+function toggleAnimation() {
+isAnimationEnabled = !isAnimationEnabled;
+if (isAnimationEnabled) {
+toggleAnimationBtn.innerHTML = '<i class="fas fa-stop"></i> Disable Animation';
+animationTimeline.classList.add('active');
+showNotification("Animation Enabled", "Animation timeline is now active. Add frames to create your animation.");
+} else {
+toggleAnimationBtn.innerHTML = '<i class="fas fa-play"></i> Enable Animation';
+animationTimeline.classList.remove('active');
+isPlaying = false;
+playAnimationBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+clearTimeout(animationTimeout);
+}
+}
+
+function closeTimeline() {
+animationTimeline.classList.remove('active');
+}
+
+function addFrame() {
+// Capture current canvas state
+const frameCanvas = document.createElement('canvas');
+frameCanvas.width = canvas.width;
+frameCanvas.height = canvas.height;
+const frameCtx = frameCanvas.getContext('2d');
+frameCtx.drawImage(canvas, 0, 0);
+
+frames.push(frameCanvas);
+currentFrame = frames.length - 1;
+renderFrames();
+renderCurrentFrame();
+}
+
+function prevFrame() {
+if (currentFrame > 0) {
+currentFrame--;
+renderCurrentFrame();
+}
+}
+
+function nextFrame() {
+if (currentFrame < frames.length - 1) {
+currentFrame++;
+renderCurrentFrame();
+}
+}
+
+function togglePlay() {
+isPlaying = !isPlaying;
+if (isPlaying) {
+playAnimationBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+playAnimation();
+} else {
+playAnimationBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+clearTimeout(animationTimeout);
+}
+}
+
+function playAnimation() {
+if (!isPlaying) return;
+
+if (currentFrame < frames.length - 1) {
+currentFrame++;
+} else if (animationLoop) {
+currentFrame = 0;
+} else {
+isPlaying = false;
+playAnimationBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+return;
+}
+
+renderCurrentFrame();
+animationTimeout = setTimeout(playAnimation, frameSpeed);
+}
+
+function deleteFrame() {
+if (frames.length <= 1) return;
+frames.splice(currentFrame, 1);
+if (currentFrame >= frames.length) {
+currentFrame = frames.length - 1;
+}
+renderFrames();
+renderCurrentFrame();
+}
+
+function renderFrames() {
+timelineFrames.innerHTML = '';
+frames.forEach((frame, index) => {
+const frameEl = document.createElement('div');
+frameEl.className = `frame ${index === currentFrame ? 'active' : ''}`;
+frameEl.dataset.index = index;
+frameEl.innerHTML = `
+<img src="${frame.toDataURL()}">
+<div class="frame-number">${index + 1}</div>
+`;
+frameEl.addEventListener('click', () => {
+currentFrame = index;
+renderFrames();
+renderCurrentFrame();
+});
+timelineFrames.appendChild(frameEl);
+});
+}
+
+function renderCurrentFrame() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(frames[currentFrame], 0, 0);
+}
+
+// ======================
+// TEXT TOOL FUNCTIONALITY
+// ======================
+function initTextTool() {
+textConfirm.addEventListener('click', addTextToCanvas);
+textCancel.addEventListener('click', closeTextTool);
+
+// Text formatting buttons
+boldBtn.addEventListener('click', function() {
+textBold = !textBold;
+this.classList.toggle('active', textBold);
+updateTextPreview();
+});
+
+italicBtn.addEventListener('click', function() {
+textItalic = !textItalic;
+this.classList.toggle('active', textItalic);
+updateTextPreview();
+});
+
+underlineBtn.addEventListener('click', function() {
+textUnderline = !textUnderline;
+this.classList.toggle('active', textUnderline);
+updateTextPreview();
+});
+
+// Font size slider
+brushSizeSlider.addEventListener('input', function() {
+if (brushType === 'text') {
+textSize = this.value;
+updateTextPreview();
+}
+});
+
+// Font selection
+fontSelect.addEventListener('change', updateTextPreview);
+
+// Text input
+textInput.addEventListener('input', updateTextPreview);
+
+canvas.addEventListener('click', function(e) {
+if (brushType === 'text') {
+const pos = getCanvasMousePos(canvas, e);
+textToolPosition = { x: pos.x, y: pos.y };
+textTool.style.display = 'block';
+textTool.style.left = (e.clientX + 10) + 'px';
+textTool.style.top = (e.clientY + 10) + 'px';
+textInput.focus();
+updateTextPreview();
+}
+});
+}
+
+function updateTextPreview() {
+const text = textInput.value.trim() || 'Text Preview';
+textPreview.textContent = text;
+
+// Apply styling
+textPreview.style.fontFamily = fontSelect.value;
+textPreview.style.fontSize = textSize + 'px';
+textPreview.style.color = currentColor;
+textPreview.style.fontWeight = textBold ? 'bold' : 'normal';
+textPreview.style.fontStyle = textItalic ? 'italic' : 'normal';
+textPreview.style.textDecoration = textUnderline ? 'underline' : 'none';
+}
+
+function addTextToCanvas() {
+const text = textInput.value.trim();
+if (!text) return;
+
+const layerCtx = layers[currentLayerIndex].ctx;
+
+// Build font string
+let fontStyle = '';
+if (textBold) fontStyle += 'bold ';
+if (textItalic) fontStyle += 'italic ';
+fontStyle += `${textSize}px ${fontSelect.value}`;
+
+layerCtx.font = fontStyle;
+layerCtx.fillStyle = currentColor;
+layerCtx.fillText(text, textToolPosition.x, textToolPosition.y);
+
+// Add underline if needed
+if (textUnderline) {
+const textWidth = layerCtx.measureText(text).width;
+layerCtx.beginPath();
+layerCtx.moveTo(textToolPosition.x, textToolPosition.y + 2);
+layerCtx.lineTo(textToolPosition.x + textWidth, textToolPosition.y + 2);
+layerCtx.strokeStyle = currentColor;
+layerCtx.lineWidth = 1;
+layerCtx.stroke();
+}
+
+renderLayers();
+saveState();
+closeTextTool();
+}
+
+function closeTextTool() {
+textTool.style.display = 'none';
+textInput.value = '';
+textBold = false;
+textItalic = false;
+textUnderline = false;
+
+// Reset button states
+boldBtn.classList.remove('active');
+italicBtn.classList.remove('active');
+underlineBtn.classList.remove('active');
+
+updateTextPreview();
+}
+
+// ======================
+// CANVAS SIZE FUNCTIONALITY
+// ======================
+function initCanvasSize() {
+sizeBtn.addEventListener('click', () => sizeModal.style.display = 'flex');
+sizeCancel.addEventListener('click', () => sizeModal.style.display = 'none');
+sizeConfirm.addEventListener('click', applyCanvasSize);
+}
+
+function applyCanvasSize() {
+const width = parseInt(canvasWidth.value) || 800;
+const height = parseInt(canvasHeight.value) || 600;
+
+// Update canvas dimensions
+canvas.width = width;
+canvas.height = height;
+
+// Update layers
+initLayers();
+saveState();
+
+// Close modal
+sizeModal.style.display = 'none';
+
+// Show notification
+showNotification("Canvas Resized", `Canvas set to ${width}x${height} pixels`);
+}
+
+// ======================
+// USER AUTHENTICATION
+// ======================
+function showNotification(title, message) {
+notificationTitle.textContent = title;
+notificationMessage.textContent = message;
+notificationModal.classList.add('show');
+setTimeout(() => {
+notificationModal.classList.remove('show');
+}, 5000);
+}
+
+function updateUserUI() {
+if (currentUser) {
+authButtons.style.display = 'none';
+userInfo.style.display = 'flex';
+usernameDisplay.textContent = currentUser.username;
+
+// Update avatar
+if (currentUser.avatarImage) {
+userAvatar.innerHTML = `<img src="${currentUser.avatarImage}" alt="Profile">`;
+} else {
+userAvatar.innerHTML = `<span id="avatar-initial">${currentUser.username.charAt(0).toUpperCase()}</span>`;
+}
+} else {
+authButtons.style.display = 'flex';
+userInfo.style.display = 'none';
+}
+}
+
+function generateRandomUsername() {
+const adjectives = ['Pixel', 'Digital', 'Creative', 'Artistic', 'Visual', 'Graphic', 'Colorful', 'Vivid'];
+const nouns = ['Artist', 'Creator', 'Designer', 'Illustrator', 'Painter', 'Sketch', 'Master', 'Wizard'];
+const randomNum = Math.floor(Math.random() * 1000);
+const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+const noun = nouns[Math.floor(Math.random() * nouns.length)];
+return `${adjective}${noun}${randomNum}`;
+}
+
+function loginUser(email, password) {
+const user = users.find(u => u.email === email && u.password === password);
+if (user) {
+currentUser = user;
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+updateUserUI();
+authModal.style.display = 'none';
+showNotification("Welcome Back", `Welcome back, ${user.username}!`);
+renderProfile();
+return true;
+}
+return false;
+}
+
+function registerUser(email, password) {
+// Check if email already exists
+if (users.some(u => u.email === email)) {
+return false;
+}
+
+// Generate random username
+const username = generateRandomUsername();
+
+// Create new user
+const newUser = {
+id: Date.now(),
+username: username,
+email: email,
+password: password,
+avatar: username.charAt(0).toUpperCase(),
+displayName: username,
+bio: "",
+about: "",
+artworks: 0,
+followers: 0,
+following: 0,
+projects: 0,
+avatarColor1: "#5d2d91",
+avatarColor2: "#8a2be2",
+bannerGradient: "linear-gradient(135deg, #5d2d91, #8a2be2, #4fc3f7)",
+contactLinks: [],
+skills: []
+};
+
+users.push(newUser);
+localStorage.setItem('inkflowUsers', JSON.stringify(users));
+
+// Log in the new user
+currentUser = newUser;
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+updateUserUI();
+
+// Switch to login form
+loginTab.click();
+authModal.style.display = 'none';
+showNotification("Account Created", `Welcome to InkFlow, ${username}!`);
+renderProfile();
+return true;
+}
+
+function logoutUser() {
+currentUser = null;
+localStorage.removeItem('currentUser');
+updateUserUI();
+showNotification("Logged Out", "You have been logged out successfully");
+}
+
+// ======================
+// ARTWORK DETAIL VIEW
+// ======================
+function incrementViewCount(artworkId) {
+const artwork = communityArtworks.find(a => a.id === artworkId);
+if (artwork) {
+artwork.views++;
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+}
+}
+
+function showArtworkDetail(artwork) {
+currentArtwork = artwork;
+
+// Increment view count when viewing artwork
+incrementViewCount(artwork.id);
+
+artworkDetailImage.src = artwork.image;
+artworkDetailTitle.textContent = artwork.title;
+artworkDetailAuthor.textContent = `By ${artwork.author}`;
+artworkDetailDescription.textContent = artwork.description;
+likeCount.textContent = artwork.likes;
+commentCount.textContent = artwork.comments;
+
+// Update like button
+if (currentUser && artwork.likedBy.includes(currentUser.id)) {
+likeBtn.classList.add('liked');
+} else {
+likeBtn.classList.remove('liked');
+}
+
+// Show delete button only for the creator
+if (currentUser && currentUser.username === artwork.author) {
+deleteArtworkBtn.style.display = 'flex';
+} else {
+deleteArtworkBtn.style.display = 'none';
+}
+
+// Render comments
+renderComments(artwork.commentsList);
+
+// Show artwork detail section
+contentSections.forEach(sec => sec.classList.remove('active'));
+artworkDetailSection.classList.add('active');
+}
+
+function renderComments(comments) {
+commentsList.innerHTML = '';
+comments.forEach(comment => {
+const commentEl = document.createElement('div');
+commentEl.className = 'comment';
+commentEl.innerHTML = `
+<div class="comment-header">
+<div class="comment-author">${comment.author}</div>
+<div class="comment-date">${comment.date}</div>
+</div>
+<div class="comment-content">${comment.content}</div>
+`;
+commentsList.appendChild(commentEl);
+});
+}
+
+function likeArtwork() {
+if (!currentUser) {
+showNotification("Login Required", "Please log in to like this artwork");
+return;
+}
+
+if (!currentArtwork.likedBy.includes(currentUser.id)) {
+currentArtwork.likedBy.push(currentUser.id);
+currentArtwork.likes++;
+likeCount.textContent = currentArtwork.likes;
+likeBtn.classList.add('liked');
+
+// Update localStorage
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+
+// Send notification to artwork owner (simulated)
+if (currentArtwork.author !== currentUser.username) {
+showNotification("Liked Artwork", `You liked "${currentArtwork.title}" by ${currentArtwork.author}`);
+}
+} else {
+const index = currentArtwork.likedBy.indexOf(currentUser.id);
+currentArtwork.likedBy.splice(index, 1);
+currentArtwork.likes--;
+likeCount.textContent = currentArtwork.likes;
+likeBtn.classList.remove('liked');
+
+// Update localStorage
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+}
+}
+
+function postComment() {
+if (!currentUser) {
+showNotification("Login Required", "Please log in to post a comment");
+return;
+}
+
+const commentText = commentInput.value.trim();
+if (!commentText) return;
+
+// Create new comment
+const newComment = {
+id: Date.now(),
+author: currentUser.username,
+content: commentText,
+date: new Date().toISOString().split('T')[0]
+};
+
+currentArtwork.commentsList.push(newComment);
+currentArtwork.comments++;
+commentCount.textContent = currentArtwork.comments;
+
+// Render comments
+renderComments(currentArtwork.commentsList);
+
+// Clear input
+commentInput.value = '';
+
+// Update localStorage
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+
+// Send notification to artwork owner (simulated)
+if (currentArtwork.author !== currentUser.username) {
+showNotification("New Comment", `${currentUser.username} commented on your artwork "${currentArtwork.title}"`);
+}
+}
+
+function deleteArtwork() {
+if (!currentUser || currentUser.username !== currentArtwork.author) {
+showNotification("Permission Denied", "Only the creator can delete this artwork");
+return;
+}
+
+if (!confirm("Are you sure you want to delete this artwork?")) return;
+
+// Remove from communityArtworks
+communityArtworks = communityArtworks.filter(a => a.id !== currentArtwork.id);
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+
+// Update user's artwork count
+if (currentUser) {
+currentUser.artworks = Math.max(0, (currentUser.artworks || 0) - 1);
+localStorage.setItem('currentUser', JSON.stringify(currentUser));
+localStorage.setItem('inkflowUsers', JSON.stringify(users));
+}
+
+// Go back to gallery
+backToGallery.click();
+
+// Show notification
+showNotification("Artwork Deleted", `"${currentArtwork.title}" has been removed from the community gallery`);
+}
+
+// ======================
+// PROFILE FUNCTIONALITY
+// ======================
+function renderProfile() {
+if (currentUser) {
+profileDisplayName.textContent = currentUser.displayName || currentUser.username;
+profileUsername.textContent = "@" + currentUser.username;
+profileBio.textContent = currentUser.bio || "No bio available";
+aboutText.textContent = currentUser.about || "No information available";
+document.getElementById('stat-artworks').textContent = currentUser.artworks || 0;
+document.getElementById('stat-followers').textContent = currentUser.followers > 1000
+? (currentUser.followers/1000).toFixed(1) + "K"
+: currentUser.followers || 0;
+document.getElementById('stat-following').textContent = currentUser.following || 0;
+document.getElementById('stat-projects').textContent = currentUser.projects || 0;
+
+// Set avatar
+if (currentUser.avatarImage) {
+avatarContainer.innerHTML = `<img src="${currentUser.avatarImage}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+} else {
+avatarContainer.innerHTML = `<span id="avatar-text">${(currentUser.displayName || currentUser.username).split(' ').map(n => n[0]).join('')}</span>`;
+avatarContainer.style.background = `linear-gradient(135deg, ${currentUser.avatarColor1 || "#5d2d91"}, ${currentUser.avatarColor2 || "#8a2be2"})`;
+}
+
+// Set banner
+if (currentUser.bannerGradient) {
+profileBanner.style.background = currentUser.bannerGradient;
+bannerPlaceholder.style.display = 'none';
+} else {
+profileBanner.style.background = '';
+bannerPlaceholder.style.display = 'flex';
+}
+
+// Render contact links
+renderContactLinks();
+
+// Render skills
+renderSkills();
+
+// Render gallery
+renderProfileGallery();
+}
+}
+
+function renderContactLinks() {
+profileContactLinks.innerHTML = '';
+
+if (currentUser && currentUser.contactLinks) {
+currentUser.contactLinks.forEach(link => {
+const linkElement = document.createElement('a');
+linkElement.href = link.url;
+linkElement.target = '_blank';
+linkElement.className = 'social-link';
+// Use appropriate icon based on type
+let iconClass = 'fas fa-link'; // default
+switch(link.type) {
+case 'youtube': iconClass = 'fab fa-youtube'; break;
+case 'instagram': iconClass = 'fab fa-instagram'; break;
+case 'telegram': iconClass = 'fab fa-telegram'; break;
+case 'discord': iconClass = 'fab fa-discord'; break;
+case 'twitter': iconClass = 'fab fa-twitter'; break;
+case 'website': iconClass = 'fas fa-globe'; break;
+}
+linkElement.innerHTML = `<i class="${iconClass}"></i>`;
+profileContactLinks.appendChild(linkElement);
+});
+}
+}
+
+function renderSkills() {
+skillsList.innerHTML = '';
+editSkillsList.innerHTML = '';
+
+if (currentUser && currentUser.skills) {
+currentUser.skills.forEach(skill => {
+// For display in About tab
+const skillItem = document.createElement('li');
+skillItem.textContent = skill;
+skillsList.appendChild(skillItem);
+
+// For editing in Edit Profile tab
+const skillTag = document.createElement('div');
+skillTag.className = 'skill-tag';
+skillTag.innerHTML = `
+${skill}
+<span class="remove-skill" data-skill="${skill}"><i class="fas fa-times"></i></span>
+`;
+editSkillsList.appendChild(skillTag);
+});
+}
+}
+
+function renderProfileGallery() {
+profileGallery.innerHTML = '';
+
+// Filter artworks by current user
+const userArtworks = communityArtworks.filter(art => art.author === currentUser.username);
+
+userArtworks.forEach(artwork => {
+const artworkCard = document.createElement('div');
+artworkCard.className = 'profile-artwork';
+artworkCard.innerHTML = `
+<img src="${artwork.image}" alt="${artwork.title}">
+<div class="artwork-info">
+<div class="artwork-title">${artwork.title}</div>
+<div class="artwork-stats">
+<div class="stat"><i class="fas fa-heart"></i> ${artwork.likes}</div>
+<div class="stat"><i class="fas fa-eye"></i> ${artwork.views}</div>
+</div>
+</div>
+`;
+profileGallery.appendChild(artworkCard);
+});
+}
+
+// Initialize layers
+function initLayers() {
+layers.forEach(layer => {
+layer.canvas.width = canvas.width;
+layer.canvas.height = canvas.height;
+layer.ctx = layer.canvas.getContext('2d');
+layer.ctx.fillStyle = 'rgba(0,0,0,0)';
+layer.ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// Set background for the background layer
+if (layer.name === "Background") {
+setCanvasBackground();
+}
+});
+}
+
+// Set canvas background based on selection
+function setCanvasBackground() {
+const backgroundLayer = layers[0];
+backgroundLayer.ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+if (canvasBackground === 'black') {
+backgroundLayer.ctx.fillStyle = '#1a1a2e';
+backgroundLayer.ctx.fillRect(0, 0, canvas.width, canvas.height);
+} else if (canvasBackground === 'white') {
+backgroundLayer.ctx.fillStyle = '#ffffff';
+backgroundLayer.ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+// For transparent, we leave it clear
+
+renderLayers();
+}
+
+// Set canvas dimensions
+function resizeCanvas() {
+const container = document.querySelector('.canvas-container');
+canvas.width = container.clientWidth;
+canvas.height = container.clientHeight;
+initLayers();
+saveState();
+}
+
+// Render all layers to main canvas
+function renderLayers() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.save();
+
+// Apply zoom and pan
+ctx.translate(offsetX, offsetY);
+ctx.scale(zoomLevel, zoomLevel);
+
+layers.forEach(layer => {
+if (layer.visible) {
+ctx.drawImage(layer.canvas, 0, 0);
+}
+});
+
+ctx.restore();
+}
+
+// Clear canvas
+function clearCanvas() {
+layers.forEach(layer => {
+if (layer.name === "Background") {
+setCanvasBackground();
+} else {
+layer.ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+});
+renderLayers();
+}
+
+// Save current state to history
+function saveState() {
+historyPointer++;
+if (historyPointer < history.length) {
+history = history.slice(0, historyPointer);
+}
+
+const state = layers.map(layer => {
+return { imageData: layer.ctx.getImageData(0, 0, canvas.width, canvas.height) };
+});
+
+history.push(state);
+
+if (history.length > 20) {
+history.shift();
+historyPointer--;
+}
+}
+
+// Undo functionality
+function undo() {
+if (historyPointer > 0) {
+historyPointer--;
+const prevState = history[historyPointer];
+prevState.forEach((layerState, index) => {
+layers[index].ctx.putImageData(layerState.imageData, 0, 0);
+});
+renderLayers();
+}
+}
+
+// Start drawing
+function startDrawing(e) {
+if (layers[currentLayerIndex].locked || isPanning || brushType === 'text') return;
+isDrawing = true;
+const pos = getCanvasMousePos(canvas, e);
+[lastX, lastY] = [pos.x, pos.y];
+}
+
+// Draw function with brush types
+function draw(e) {
+if (!isDrawing || layers[currentLayerIndex].locked || isPanning) return;
+const pos = getCanvasMousePos(canvas, e);
+const x = pos.x;
+const y = pos.y;
+const layerCtx = layers[currentLayerIndex].ctx;
+
+// Set blend mode
+layerCtx.globalCompositeOperation = blendMode;
+layerCtx.globalAlpha = brushOpacity;
+
+switch(brushType) {
+case 'normal':
+layerCtx.strokeStyle = currentColor;
+layerCtx.lineWidth = brushSize;
+layerCtx.lineJoin = 'round';
+layerCtx.lineCap = 'round';
+layerCtx.beginPath();
+layerCtx.moveTo(lastX, lastY);
+layerCtx.lineTo(x, y);
+layerCtx.stroke();
+[lastX, lastY] = [x, y];
+break;
+
+case 'pixel':
+// Draw a perfect square pixel
+layerCtx.fillStyle = currentColor;
+const pixelX = Math.floor(x / brushSize) * brushSize;
+const pixelY = Math.floor(y / brushSize) * brushSize;
+layerCtx.fillRect(pixelX, pixelY, brushSize, brushSize);
+break;
+
+case 'rainbow':
+const hue = (Date.now() / 50) % 360;
+layerCtx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+layerCtx.lineWidth = brushSize;
+layerCtx.lineJoin = 'round';
+layerCtx.lineCap = 'round';
+layerCtx.beginPath();
+layerCtx.moveTo(lastX, lastY);
+layerCtx.lineTo(x, y);
+layerCtx.stroke();
+[lastX, lastY] = [x, y];
+break;
+
+case 'fur':
+layerCtx.fillStyle = currentColor;
+for (let i = 0; i < 5; i++) {
+const offsetX = (Math.random() - 0.5) * brushSize * 2;
+const offsetY = (Math.random() - 0.5) * brushSize * 2;
+layerCtx.fillRect(x + offsetX, y + offsetY, brushSize/2, brushSize/2);
+}
+break;
+
+case 'neon':
+layerCtx.shadowBlur = 15;
+layerCtx.shadowColor = currentColor;
+layerCtx.strokeStyle = currentColor;
+layerCtx.lineWidth = brushSize;
+layerCtx.lineJoin = 'round';
+layerCtx.lineCap = 'round';
+layerCtx.beginPath();
+layerCtx.moveTo(lastX, lastY);
+layerCtx.lineTo(x, y);
+layerCtx.stroke();
+[lastX, lastY] = [x, y];
+layerCtx.shadowBlur = 0;
+break;
+
+case 'shading':
+layerCtx.fillStyle = currentColor;
+layerCtx.globalAlpha = brushOpacity * 0.3;
+layerCtx.beginPath();
+layerCtx.arc(x, y, brushSize, 0, Math.PI * 2);
+layerCtx.fill();
+layerCtx.globalAlpha = brushOpacity;
+break;
+
+case 'spray':
+const density = brushSize * 3;
+for (let i = 0; i < density; i++) {
+const radius = brushSize * Math.random();
+const angle = Math.random() * Math.PI * 2;
+const sprayX = x + Math.cos(angle) * radius;
+const sprayY = y + Math.sin(angle) * radius;
+layerCtx.fillStyle = currentColor;
+layerCtx.beginPath();
+layerCtx.arc(sprayX, sprayY, brushSize/8, 0, Math.PI * 2);
+layerCtx.fill();
+}
+break;
+
+case 'eraser':
+layerCtx.globalCompositeOperation = 'destination-out';
+layerCtx.strokeStyle = 'rgba(0,0,0,1)';
+layerCtx.lineWidth = brushSize;
+layerCtx.lineJoin = 'round';
+layerCtx.lineCap = 'round';
+layerCtx.beginPath();
+layerCtx.moveTo(lastX, lastY);
+layerCtx.lineTo(x, y);
+layerCtx.stroke();
+[lastX, lastY] = [x, y];
+break;
+
+case 'calligraphy':
+layerCtx.strokeStyle = currentColor;
+layerCtx.lineWidth = brushSize;
+layerCtx.lineJoin = 'round';
+layerCtx.lineCap = 'square';
+layerCtx.beginPath();
+layerCtx.moveTo(lastX, lastY);
+layerCtx.lineTo(x, y);
+layerCtx.stroke();
+[lastX, lastY] = [x, y];
+break;
+
+case 'glitter':
+layerCtx.fillStyle = currentColor;
+for (let i = 0; i < 10; i++) {
+const size = Math.random() * brushSize / 2;
+const glitterX = x + (Math.random() - 0.5) * brushSize * 2;
+const glitterY = y + (Math.random() - 0.5) * brushSize * 2;
+layerCtx.globalAlpha = Math.random() * brushOpacity;
+layerCtx.fillRect(glitterX, glitterY, size, size);
+}
+layerCtx.globalAlpha = brushOpacity;
+break;
+}
+
+// Apply symmetry
+if (symmetryType !== 'none') {
+const symmetricPoint = applySymmetry(x, y);
+if (symmetricPoint) {
+switch(brushType) {
+case 'pixel':
+const pixelSymX = Math.floor(symmetricPoint.x / brushSize) * brushSize;
+const pixelSymY = Math.floor(symmetricPoint.y / brushSize) * brushSize;
+layerCtx.fillRect(pixelSymX, pixelSymY, brushSize, brushSize);
+break;
+case 'eraser':
+layerCtx.beginPath();
+layerCtx.moveTo(symmetricPoint.x, symmetricPoint.y);
+layerCtx.lineTo(symmetricPoint.x, symmetricPoint.y);
+layerCtx.stroke();
+break;
+default:
+layerCtx.beginPath();
+layerCtx.moveTo(symmetricPoint.x, symmetricPoint.y);
+layerCtx.lineTo(symmetricPoint.x, symmetricPoint.y);
+layerCtx.stroke();
+break;
+}
+}
+}
+
+renderLayers();
+}
+
+// Stop drawing
+function stopDrawing() {
+if (isDrawing) {
+isDrawing = false;
+saveState();
+
+// Reset context properties after drawing
+layers.forEach(layer => {
+layer.ctx.globalAlpha = 1;
+layer.ctx.globalCompositeOperation = 'source-over';
+layer.ctx.shadowBlur = 0;
+});
+}
+}
+
+// Set active layer
+function setActiveLayer(index) {
+currentLayerIndex = index;
+
+// Update UI
+document.querySelectorAll('.layer-row').forEach(row => {
+row.classList.remove('active');
+});
+
+const activeRow = document.querySelector(`.layer-row[data-index="${index}"]`);
+if (activeRow) {
+activeRow.classList.add('active');
+}
+}
+
+// Toggle layer visibility
+function toggleLayerVisibility(index) {
+layers[index].visible = !layers[index].visible;
+const layerRow = document.querySelector(`.layer-row[data-index="${index}"]`);
+if (layerRow) {
+const visibilityBtn = layerRow.querySelector('.layer-visibility i');
+if (layers[index].visible) {
+visibilityBtn.className = 'fas fa-eye';
+layerRow.classList.remove('layer-hidden');
+} else {
+visibilityBtn.className = 'fas fa-eye-slash';
+layerRow.classList.add('layer-hidden');
+}
+}
+renderLayers();
+}
+
+// Rename layer
+function renameLayer(index, newName) {
+layers[index].name = newName;
+
+// Update UI
+const layerRow = document.querySelector(`.layer-row[data-index="${index}"]`);
+if (layerRow) {
+const nameSpan = layerRow.querySelector('.layer-name');
+nameSpan.textContent = newName;
+}
+}
+
+// Move layer up in the stack
+function moveLayerUp(index) {
+if (index < layers.length - 1) {
+// Swap layers in the array
+const temp = layers[index];
+layers[index] = layers[index + 1];
+layers[index + 1] = temp;
+
+// Update UI
+updateLayerUI();
+
+// Set the moved layer as active
+setActiveLayer(index + 1);
+renderLayers();
+}
+}
+
+// Move layer down in the stack
+function moveLayerDown(index) {
+if (index > 1) { // Background layer (index0) can't be moved
+// Swap layers in the array
+const temp = layers[index];
+layers[index] = layers[index - 1];
+layers[index - 1] = temp;
+
+// Update UI
+updateLayerUI();
+
+// Set the moved layer as active
+setActiveLayer(index - 1);
+renderLayers();
+}
+}
+
+// Download artwork as PNG with optional watermark
+function downloadArtwork(filename = "inkflow-art", watermark = null) {
+// Create a temporary canvas to render the final image
+const downloadCanvas = document.createElement('canvas');
+downloadCanvas.width = canvas.width;
+downloadCanvas.height = canvas.height;
+const downloadCtx = downloadCanvas.getContext('2d');
+
+// For transparent background, we don't fill
+if (canvasBackground !== 'transparent') {
+if (canvasBackground === 'white') {
+downloadCtx.fillStyle = '#ffffff';
+} else {
+downloadCtx.fillStyle = '#1a1a2e';
+}
+downloadCtx.fillRect(0, 0, downloadCanvas.width, downloadCanvas.height);
+}
+
+// Render all visible layers to the temporary canvas
+layers.forEach(layer => {
+if (layer.visible) {
+downloadCtx.drawImage(layer.canvas, 0, 0);
+}
+});
+
+// Add watermark if provided
+if (watermark) {
+downloadCtx.font = "16px Arial";
+downloadCtx.fillStyle = "rgba(255,255,255,0.5)";
+downloadCtx.textAlign = "right";
+downloadCtx.textBaseline = "bottom";
+downloadCtx.fillText(watermark, downloadCanvas.width - 10, downloadCanvas.height - 10);
+}
+
+// Create download link
+const link = document.createElement('a');
+link.download = `${filename}.png`;
+link.href = downloadCanvas.toDataURL('image/png');
+link.click();
+
+// Show success message
+const alexText = document.getElementById('alex-text');
+alexText.innerHTML = `<i class="fas fa-quote-left"></i> Artwork "${filename}" downloaded successfully! <i class="fas fa-quote-right"></i>`;
+}
+
+// Project management functions
+function saveProject() {
+if (!currentProject) {
+alert("Please create or select a project first");
+return;
+}
+
+// Collect layer data
+const layersData = layers.map(layer => {
+return {
+name: layer.name,
+data: layer.canvas.toDataURL(),
+visible: layer.visible,
+locked: layer.locked
+};
+});
+
+// Update project data
+currentProject.layers = layersData;
+currentProject.lastSaved = new Date().toISOString();
+
+// Update projects array
+const existingIndex = projects.findIndex(p => p.id === currentProject.id);
+if (existingIndex !== -1) {
+projects[existingIndex] = currentProject;
+} else {
+projects.push(currentProject);
+}
+
+// Save to localStorage
+localStorage.setItem('inkflowProjects', JSON.stringify(projects));
+renderProjectList();
+
+// Show success message
+const alexText = document.getElementById('alex-text');
+alexText.innerHTML = `<i class="fas fa-quote-left"></i> Project "${currentProject.name}" saved successfully! <i class="fas fa-quote-right"></i>`;
+}
+
+function loadProject(project) {
+currentProject = project;
+
+// Clear current layers
+layers = [];
+
+// Create layers from project data
+project.layers.forEach((layerData, index) => {
+const layer = {
+name: layerData.name,
+visible: layerData.visible,
+locked: layerData.locked,
+canvas: document.createElement('canvas'),
+ctx: null
+};
+
+layer.canvas.width = canvas.width;
+layer.canvas.height = canvas.height;
+layer.ctx = layer.canvas.getContext('2d');
+
+// Load image data
+const img = new Image();
+img.onload = function() {
+layer.ctx.drawImage(img, 0, 0);
+if (index === project.layers.length - 1) {
+renderLayers();
+saveState();
+}
+};
+img.src = layerData.data;
+
+layers.push(layer);
+});
+
+// Set active layer
+currentLayerIndex = layers.length - 1;
+setActiveLayer(currentLayerIndex);
+
+// Update layer UI
+updateLayerUI();
+
+// Show success message
+const alexText = document.getElementById('alex-text');
+alexText.innerHTML = `<i class="fas fa-quote-left"></i> Project "${project.name}" loaded successfully! <i class="fas fa-quote-right"></i>`;
+
+// Close project manager
+projectManager.style.display = 'none';
+}
+
+function createProject() {
+const projectName = newProjectName.value.trim();
+if (!projectName) {
+alert("Please enter a project name");
+return;
+}
+
+// Create new project
+const newProject = {
+id: Date.now().toString(),
+name: projectName,
+createdAt: new Date().toISOString(),
+lastSaved: new Date().toISOString(),
+layers: []
+};
+
+// Set as current project
+currentProject = newProject;
+projects.push(newProject);
+
+// Save to localStorage
+localStorage.setItem('inkflowProjects', JSON.stringify(projects));
+
+// Clear input
+newProjectName.value = '';
+
+// Render updated project list
+renderProjectList();
+
+// Show success message
+const alexText = document.getElementById('alex-text');
+alexText.innerHTML = `<i class="fas fa-quote-left"></i> New project "${projectName}" created! <i class="fas fa-quote-right"></i>`;
+}
+
+function deleteProject(projectId) {
+if (!confirm("Are you sure you want to delete this project?")) return;
+
+// Remove project from array
+projects = projects.filter(p => p.id !== projectId);
+
+// If deleting the current project, clear it
+if (currentProject && currentProject.id === projectId) {
+currentProject = null;
+clearCanvas();
+}
+
+// Save to localStorage
+localStorage.setItem('inkflowProjects', JSON.stringify(projects));
+
+// Render updated project list
+renderProjectList();
+}
+
+function renderProjectList() {
+projectList.innerHTML = '';
+
+// Sort projects by last saved (newest first)
+const sortedProjects = [...projects].sort((a, b) =>
+new Date(b.lastSaved) - new Date(a.lastSaved)
+);
+
+sortedProjects.forEach(project => {
+const projectEl = document.createElement('div');
+projectEl.className = 'project-item';
+if (currentProject && currentProject.id === project.id) {
+projectEl.classList.add('active');
+}
+
+const date = new Date(project.lastSaved);
+const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+
+projectEl.innerHTML = `
+<div class="project-name"><i class="fas fa-folder"></i> ${project.name}</div>
+<div class="project-date">Last saved: ${formattedDate}</div>
+<div class="project-actions">
+<button class="project-btn load" data-id="${project.id}">Load</button>
+<button class="project-btn delete" data-id="${project.id}">Delete</button>
+</div>
+`;
+
+projectList.appendChild(projectEl);
+});
+
+// Add event listeners
+document.querySelectorAll('.project-btn.load').forEach(btn => {
+btn.addEventListener('click', () => {
+const projectId = btn.getAttribute('data-id');
+const project = projects.find(p => p.id === projectId);
+if (project) loadProject(project);
+});
+});
+
+document.querySelectorAll('.project-btn.delete').forEach(btn => {
+btn.addEventListener('click', () => {
+const projectId = btn.getAttribute('data-id');
+deleteProject(projectId);
+});
+});
+}
+
+function updateLayerUI() {
+// Clear existing layer rows
+const layerRows = document.querySelectorAll('.layer-row[data-index]');
+layerRows.forEach(row => row.remove());
+
+// Add layer rows
+layers.forEach((layer, index) => {
+const layerRow = document.createElement('div');
+layerRow.className = `layer-row ${index === currentLayerIndex ? 'active' : ''} ${!layer.visible ? 'layer-hidden' : ''}`;
+layerRow.setAttribute('data-index', index);
+layerRow.innerHTML = `
+<button class="layer-btn lock-btn" title="Lock/Unlock"><i class="fas fa-lock-open"></i></button>
+<span class="layer-name">${layer.name}</span>
+<span class="layer-visibility" title="Toggle Visibility"><i class="fas ${layer.visible ? 'fa-eye' : 'fa-eye-slash'}"></i></span>
+<div class="layer-actions">
+<button class="layer-move-btn move-up-btn" title="Move Up" ${index >= layers.length - 1 ? 'disabled' : ''}><i class="fas fa-arrow-up"></i></button>
+<button class="layer-move-btn move-down-btn" title="Move Down" ${index <= 1 ? 'disabled' : ''}><i class="fas fa-arrow-down"></i></button>
+</div>
+`;
+
+// Insert before the layer actions container
+const layerActionsContainer = document.querySelector('.layer-controls > .controls');
+layerControls.insertBefore(layerRow, layerActionsContainer);
+});
+}
+
+// Helper function to get accurate canvas coordinates
+function getCanvasMousePos(canvas, evt) {
+const rect = canvas.getBoundingClientRect();
+const scaleX = canvas.width / rect.width;
+const scaleY = canvas.height / rect.height;
+return {
+x: (evt.clientX - rect.left) * scaleX,
+y: (evt.clientY - rect.top) * scaleY
+};
+}
+
+// Render community gallery
+function renderCommunityGallery() {
+galleryGrid.innerHTML = '';
+
+communityArtworks.forEach(artwork => {
+const artworkCard = document.createElement('div');
+artworkCard.className = 'artwork-card';
+artworkCard.dataset.id = artwork.id;
+artworkCard.innerHTML = `
+<img src="${artwork.image}" alt="${artwork.title}" class="artwork-image">
+<div class="artwork-info">
+<h3 class="artwork-title"><i class="fas fa-image"></i> ${artwork.title}</h3>
+<div class="profile-author" data-username="${artwork.author}"><i class="fas fa-user"></i> ${artwork.author}</div>
+<div class="artwork-stats">
+<div class="stat"><i class="fas fa-heart"></i> ${artwork.likes}</div>
+<div class="stat"><i class="fas fa-comment"></i> ${artwork.comments}</div>
+<div class="stat"><i class="fas fa-eye"></i> ${artwork.views}</div>
+</div>
+</div>
+`;
+
+galleryGrid.appendChild(artworkCard);
+});
+
+// Add click event to artwork cards
+document.querySelectorAll('.artwork-card').forEach(card => {
+card.addEventListener('click', function() {
+const artworkId = parseInt(this.getAttribute('data-id'));
+const artwork = communityArtworks.find(a => a.id === artworkId);
+if (artwork) {
+showArtworkDetail(artwork);
+}
+});
+});
+
+// Add author click event
+document.querySelectorAll('.profile-author').forEach(author => {
+author.addEventListener('click', function(e) {
+e.stopPropagation();
+const username = this.getAttribute('data-username');
+showUserProfile(username);
+});
+});
+}
+
+// Show user profile
+function showUserProfile(username) {
+const user = users.find(u => u.username === username);
+if (user) {
+profileDisplayName.textContent = user.displayName || user.username;
+profileUsername.textContent = "@" + user.username;
+profileBio.textContent = user.bio || "No bio available";
+aboutText.textContent = user.about || "No information available";
+document.getElementById('stat-artworks').textContent = user.artworks || 0;
+document.getElementById('stat-followers').textContent = user.followers > 1000
+? (user.followers/1000).toFixed(1) + "K"
+: user.followers || 0;
+document.getElementById('stat-following').textContent = user.following || 0;
+document.getElementById('stat-projects').textContent = user.projects || 0;
+
+// Set avatar
+if (user.avatarImage) {
+avatarContainer.innerHTML = `<img src="${user.avatarImage}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+} else {
+avatarContainer.innerHTML = `<span id="avatar-text">${(user.displayName || user.username).split(' ').map(n => n[0]).join('')}</span>`;
+avatarContainer.style.background = `linear-gradient(135deg, ${user.avatarColor1 || "#5d2d91"}, ${user.avatarColor2 || "#8a2be2"})`;
+}
+
+// Set banner
+if (user.bannerGradient) {
+profileBanner.style.background = user.bannerGradient;
+bannerPlaceholder.style.display = 'none';
+} else {
+profileBanner.style.background = '';
+bannerPlaceholder.style.display = 'flex';
+}
+
+// Render contact links for this user
+renderContactLinksForUser(user);
+
+// Render skills for this user
+renderSkillsForUser(user);
+
+// Render gallery for this user
+renderUserGallery(username);
+
+// Hide edit tab if not current user
+const editTab = document.querySelector('[data-tab="edit"]');
+if (currentUser && currentUser.username === username) {
+editTab.style.display = 'block';
+} else {
+editTab.style.display = 'none';
+}
+
+// Show profile section
+contentSections.forEach(sec => sec.classList.remove('active'));
+profileSection.classList.add('active');
+navLinks.forEach(l => l.classList.remove('active'));
+document.querySelector('[data-section="profile"]').classList.add('active');
+}
+}
+
+function renderContactLinksForUser(user) {
+profileContactLinks.innerHTML = '';
+
+if (user && user.contactLinks) {
+user.contactLinks.forEach(link => {
+const linkElement = document.createElement('a');
+linkElement.href = link.url;
+linkElement.target = '_blank';
+linkElement.className = 'social-link';
+// Use appropriate icon based on type
+let iconClass = 'fas fa-link'; // default
+switch(link.type) {
+case 'youtube': iconClass = 'fab fa-youtube'; break;
+case 'instagram': iconClass = 'fab fa-instagram'; break;
+case 'telegram': iconClass = 'fab fa-telegram'; break;
+case 'discord': iconClass = 'fab fa-discord'; break;
+case 'twitter': iconClass = 'fab fa-twitter'; break;
+case 'website': iconClass = 'fas fa-globe'; break;
+}
+linkElement.innerHTML = `<i class="${iconClass}"></i>`;
+profileContactLinks.appendChild(linkElement);
+});
+}
+}
+
+function renderSkillsForUser(user) {
+skillsList.innerHTML = '';
+
+if (user && user.skills) {
+user.skills.forEach(skill => {
+const skillItem = document.createElement('li');
+skillItem.textContent = skill;
+skillsList.appendChild(skillItem);
+});
+}
+}
+
+// Render user's gallery
+function renderUserGallery(username) {
+profileGallery.innerHTML = '';
+
+// Filter artworks by the given username
+const userArtworks = communityArtworks.filter(art => art.author === username);
+
+userArtworks.forEach(artwork => {
+const artworkCard = document.createElement('div');
+artworkCard.className = 'profile-artwork';
+artworkCard.innerHTML = `
+<img src="${artwork.image}" alt="${artwork.title}">
+<div class="artwork-info">
+<div class="artwork-title">${artwork.title}</div>
+<div class="artwork-stats">
+<div class="stat"><i class="fas fa-heart"></i> ${artwork.likes}</div>
+<div class="stat"><i class="fas fa-eye"></i> ${artwork.views}</div>
+</div>
+</div>
+`;
+profileGallery.appendChild(artworkCard);
+});
+}
+
+// Update author name
+function updateAuthorName(oldUsername, newUsername) {
+// Update community artworks
+communityArtworks.forEach(artwork => {
+if (artwork.author === oldUsername) {
+artwork.author = newUsername;
+}
+});
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+
+// Update comments
+communityArtworks.forEach(artwork => {
+artwork.commentsList.forEach(comment => {
+if (comment.author === oldUsername) {
+comment.author = newUsername;
+}
+});
+});
+localStorage.setItem('inkflowCommunity', JSON.stringify(communityArtworks));
+
+// Re-render galleries
+renderCommunityGallery();
+if (currentUser && currentUser.username === newUsername) {
+renderProfileGallery();
+}
+}
+
+// Contact links functionality
+function initContactLinks() {
+if (currentUser && currentUser.contactLinks) {
+contactLinksContainer.innerHTML = '';
+currentUser.contactLinks.forEach(link => {
+addContactLink(link.type, link.url);
+});
+}
+}
+
+function addContactLink(type, url) {
+const linkId = `link-${Date.now()}`;
+const linkElement = document.createElement('div');
+linkElement.className = 'social-link-form';
+linkElement.innerHTML = `
+<select disabled style="flex:1; background:rgba(30,30,50,0.5);">
+<option>${type.charAt(0).toUpperCase() + type.slice(1)}</option>
+</select>
+<input type="text" value="${url}" readonly style="flex:2;">
+<button type="button" class="remove-social-link" data-id="${linkId}"><i class="fas fa-trash"></i></button>
+`;
+contactLinksContainer.appendChild(linkElement);
+
+// Add remove functionality
+linkElement.querySelector('.remove-social-link').addEventListener('click', function() {
+contactLinksContainer.removeChild(linkElement);
+// Also remove from user data
+if (currentUser) {
+currentUser.contactLinks = currentUser.contactLinks.filter(l =>
+l.type !== type || l.url !== url
+);
+}
+});
+}
+
+// Skills functionality
+function addSkill() {
+const skill = newSkillInput.value.trim();
+if (!skill) return;
+
+if (!currentUser.skills) {
+currentUser.skills = [];
+}
+
+currentUser.skills.push(skill);
+renderSkills();
+newSkillInput.value = '';
+}
+
+function removeSkill(skill) {
+if (!currentUser.skills) return;
+
+const index = currentUser.skills.indexOf(skill);
+if (index !== -1) {
+currentUser.skills.splice(index, 1);
+renderSkills();
+}
+}
+
+// Initialize the application
+window.addEventListener('resize', resizeCanvas);
+initCanvas();
+});
+
+function downloadCanvasWithWatermark(canvas, username, displayName) {
+const ctx = canvas.getContext("2d");
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 130, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+
+function downloadWithWatermark() {
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+if (!ctx) return;
+const username = localStorage.getItem('username') || "Unknown";
+const displayName = localStorage.getItem('displayName') || "Artist";
+ctx.font = "12px sans-serif";
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillText(`${username} (${displayName})`, canvas.width - 150, canvas.height - 10);
+
+const link = document.createElement('a');
+link.download = 'drawing.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+
+</script>
 </body>
 </html>
