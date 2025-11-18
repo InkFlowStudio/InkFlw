@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>InkFlow Studio | Pixel Art Drawing Tool</title>
+<title>InkFlow Studio | Advanced Pixel Art</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 /* Reset and base styles */
@@ -65,6 +65,120 @@ body {
 .nav-links a.active, .nav-links a:hover {
   background-color: #3a3a5a;
   color: #ffffff;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background-color: #3a3a5a;
+  border: none;
+  border-radius: 6px;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+}
+
+.btn:hover {
+  background-color: #4a4a6a;
+  transform: translateY(-2px);
+}
+
+.btn-upload {
+  background-color: #8a2be2;
+}
+
+.btn-upload:hover {
+  background-color: #9b3cf3;
+}
+
+.btn-save {
+  background-color: #06d6a0;
+  color: #000;
+}
+
+.btn-save:hover {
+  background-color: #17e7b1;
+}
+
+.btn-clear {
+  background-color: #ff6b6b;
+  color: #000;
+}
+
+.btn-clear:hover {
+  background-color: #ff7c7c;
+}
+
+.btn-undo {
+  background-color: #ffd166;
+  color: #000;
+}
+
+.btn-undo:hover {
+  background-color: #ffe277;
+}
+
+.btn-download {
+  background-color: #4fc3f7;
+  color: #000;
+}
+
+.btn-download:hover {
+  background-color: #60d4ff;
+}
+
+.btn-layer {
+  background-color: #8a2be2;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.projects-btn {
+  background-color: #06d6a0;
+  color: #000;
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.projects-btn:hover {
+  background-color: #17e7b1;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.user-info:hover {
+  background-color: #3a3a5a;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #8a2be2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
 }
 
 /* Main Content */
@@ -551,87 +665,533 @@ body {
   font-size: 0.8rem;
 }
 
-/* Buttons */
-.btn {
+/* Animation timeline */
+.animation-timeline {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #252538;
+  border-top: 1px solid #3a3a5a;
+  padding: 15px;
+  z-index: 100;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.timeline-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.speed-control {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 15px;
-  background-color: #3a3a5a;
-  border: none;
-  border-radius: 6px;
-  color: #e0e0e0;
-  cursor: pointer;
-  transition: all 0.3s;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.speed-label {
   font-size: 0.9rem;
 }
 
-.btn:hover {
-  background-color: #4a4a6a;
-  transform: translateY(-2px);
+.speed-value {
+  font-size: 0.9rem;
+  min-width: 50px;
 }
 
-.btn-upload {
-  background-color: #8a2be2;
+.loop-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
-.btn-upload:hover {
-  background-color: #9b3cf3;
+.loop-label {
+  font-size: 0.9rem;
 }
 
-.btn-save {
-  background-color: #06d6a0;
-  color: #000;
+.timeline-frames {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }
 
-.btn-save:hover {
-  background-color: #17e7b1;
-}
-
-.btn-clear {
-  background-color: #ff6b6b;
-  color: #000;
-}
-
-.btn-clear:hover {
-  background-color: #ff7c7c;
-}
-
-.btn-undo {
-  background-color: #ffd166;
-  color: #000;
-}
-
-.btn-undo:hover {
-  background-color: #ffe277;
-}
-
-.btn-download {
-  background-color: #4fc3f7;
-  color: #000;
-}
-
-.btn-download:hover {
-  background-color: #60d4ff;
-}
-
-.btn-layer {
-  background-color: #8a2be2;
-  width: 100%;
+.frame {
+  width: 80px;
+  height: 60px;
+  background-color: #2d2d44;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.frame.active {
+  border: 2px solid #8a2be2;
+}
+
+.frame:hover {
+  background-color: #3a3a5a;
+}
+
+/* Profile Section */
+.profile-container {
+  background-color: #252538;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  position: relative;
+}
+
+.profile-banner {
+  height: 200px;
+  background: linear-gradient(135deg, #8a2be2, #4fc3f7);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-banner-placeholder {
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.banner-edit {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.banner-edit:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.profile-info {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  position: relative;
+  margin-top: -50px;
+}
+
+.profile-avatar {
+  position: relative;
+}
+
+.avatar-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #8a2be2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  border: 4px solid #252538;
+}
+
+.avatar-edit {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #3a3a5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.avatar-edit:hover {
+  background-color: #4a4a6a;
+}
+
+.profile-details {
+  flex: 1;
+  padding-top: 30px;
+}
+
+.profile-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#profile-display-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.profile-username {
+  color: #a0a0c0;
+  font-size: 1rem;
+}
+
+.profile-bio {
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 30px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
   margin-bottom: 5px;
 }
 
-.projects-btn {
-  background-color: #06d6a0;
-  color: #000;
+.stat-label {
+  color: #a0a0c0;
+  font-size: 0.9rem;
+}
+
+.profile-tabs {
+  display: flex;
+  border-bottom: 1px solid #3a3a5a;
+}
+
+.tab-btn {
+  padding: 15px 20px;
+  background: none;
+  border: none;
+  color: #a0a0c0;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-btn.active, .tab-btn:hover {
+  color: #ffffff;
+  border-bottom: 2px solid #8a2be2;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.profile-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.artwork-card {
+  background-color: #2d2d44;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.artwork-card:hover {
+  transform: translateY(-5px);
+}
+
+.artwork-thumbnail {
   width: 100%;
+  height: 150px;
+  background-color: #3a3a5a;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  color: #a0a0c0;
+}
+
+.artwork-info {
+  padding: 10px;
+}
+
+.artwork-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.artwork-stats {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #a0a0c0;
+}
+
+.profile-about h3 {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-about p {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.skills-container {
+  margin-bottom: 20px;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  background-color: #3a3a5a;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  background-color: #3a3a5a;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #e0e0e0;
+  transition: background-color 0.3s;
+}
+
+.social-link:hover {
+  background-color: #4a4a6a;
+}
+
+/* Profile Form */
+.profile-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 calc(50% - 15px);
+}
+
+.form-group.full-width {
+  flex: 1 1 100%;
+}
+
+.form-group label {
+  font-weight: 500;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+  padding: 10px;
+  background-color: #2d2d44;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.social-link-form {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
 }
 
-.projects-btn:hover {
+.social-link-form select, .social-link-form input {
+  flex: 1;
+  padding: 10px;
+  background-color: #2d2d44;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #e0e0e0;
+}
+
+.skill-input {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.skill-input input {
+  flex: 1;
+  padding: 10px;
+  background-color: #2d2d44;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #e0e0e0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  background-color: #6a6a8a;
+  color: #e0e0e0;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background-color: #7a7a9a;
+}
+
+.save-btn {
+  background-color: #06d6a0;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-btn:hover {
   background-color: #17e7b1;
+}
+
+/* Settings Section */
+.settings-container {
+  background-color: #252538;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.settings-group {
+  margin-bottom: 30px;
+}
+
+.settings-group h3 {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #3a3a5a;
+}
+
+.setting-label {
+  font-weight: 500;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #3a3a5a;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #8a2be2;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.setting-select {
+  padding: 8px 12px;
+  background-color: #2d2d44;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
 }
 
 /* Footer */
@@ -645,7 +1205,7 @@ body {
 }
 
 /* Modals */
-.download-modal, .size-modal, .text-tool-container {
+.download-modal, .size-modal, .auth-modal, .upload-modal, .project-manager {
   display: none;
   position: fixed;
   top: 0;
@@ -658,7 +1218,7 @@ body {
   justify-content: center;
 }
 
-.download-panel, .size-panel {
+.download-panel, .size-panel, .auth-panel, .upload-panel, .project-panel {
   background-color: #252538;
   border-radius: 10px;
   padding: 20px;
@@ -667,12 +1227,12 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.download-header, .size-header {
+.download-header, .size-header, .auth-header, .upload-header, .project-header {
   margin-bottom: 20px;
   text-align: center;
 }
 
-.download-header h2, .size-header h2 {
+.download-header h2, .size-header h2, .auth-header h2, .upload-header h2, .project-header h2 {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -691,13 +1251,13 @@ body {
   font-size: 1rem;
 }
 
-.download-actions, .size-actions {
+.download-actions, .size-actions, .auth-actions, .upload-actions {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
 }
 
-.download-confirm, .size-confirm {
+.download-confirm, .size-confirm, .auth-confirm, .upload-confirm {
   background-color: #4fc3f7;
   color: #000;
   border: none;
@@ -707,11 +1267,11 @@ body {
   transition: background-color 0.3s;
 }
 
-.download-confirm:hover, .size-confirm:hover {
+.download-confirm:hover, .size-confirm:hover, .auth-confirm:hover, .upload-confirm:hover {
   background-color: #60d4ff;
 }
 
-.download-cancel, .size-cancel {
+.download-cancel, .size-cancel, .auth-cancel, .upload-cancel {
   background-color: #6a6a8a;
   color: #e0e0e0;
   border: none;
@@ -721,7 +1281,7 @@ body {
   transition: background-color 0.3s;
 }
 
-.download-cancel:hover, .size-cancel:hover {
+.download-cancel:hover, .size-cancel:hover, .auth-cancel:hover, .upload-cancel:hover {
   background-color: #7a7a9a;
 }
 
@@ -751,8 +1311,139 @@ body {
   font-size: 1rem;
 }
 
+/* Auth Modal */
+.auth-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #3a3a5a;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: #a0a0c0;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 2px solid transparent;
+}
+
+.auth-tab.active, .auth-tab:hover {
+  color: #ffffff;
+  border-bottom: 2px solid #8a2be2;
+}
+
+.auth-form {
+  display: none;
+}
+
+.auth-form.active {
+  display: block;
+}
+
+.auth-form-group {
+  margin-bottom: 15px;
+}
+
+.auth-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.auth-form-group input {
+  width: 100%;
+  padding: 10px;
+  background-color: #2d2d44;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+/* Upload Modal */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Project Manager */
+.project-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.project-item {
+  padding: 10px;
+  background-color: #2d2d44;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.project-item:hover {
+  background-color: #3a3a5a;
+}
+
+.project-item.active {
+  background-color: #3a3a5a;
+  border-left: 3px solid #8a2be2;
+}
+
+.new-project {
+  border-top: 1px solid #3a3a5a;
+  padding-top: 20px;
+}
+
+.project-input {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.project-input input {
+  flex: 1;
+  padding: 10px;
+  background-color: #2d2d44;
+  border: 1px solid #3a3a5a;
+  border-radius: 6px;
+  color: #e0e0e0;
+}
+
+.project-input button {
+  background-color: #8a2be2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.project-input button:hover {
+  background-color: #9b3cf3;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #a0a0c0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #ffffff;
+}
+
 /* Text Tool */
 .text-tool-container {
+  display: none;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -862,6 +1553,48 @@ body {
   background-color: #7a7a9a;
 }
 
+/* Notification */
+.notification-modal {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #252538;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1002;
+  max-width: 300px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-icon {
+  font-size: 1.5rem;
+  color: #8a2be2;
+  margin-bottom: 10px;
+}
+
+.notification-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notification-message {
+  font-size: 0.9rem;
+  color: #a0a0c0;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 1200px) {
   .studio-content {
@@ -902,6 +1635,15 @@ body {
   .brush-types, .blend-modes {
     grid-template-columns: repeat(3, 1fr);
   }
+  
+  .profile-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .profile-stats {
+    justify-content: center;
+  }
 }
 </style>
 </head>
@@ -914,6 +1656,23 @@ body {
 </div>
 <div class="nav-links">
 <a href="#" class="active" data-section="studio"><i class="fas fa-draw-polygon"></i> Studio</a>
+<a href="#" data-section="profile"><i class="fas fa-user"></i> Profile</a>
+<a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a>
+</div>
+<div class="user-actions" id="user-actions">
+<div id="auth-buttons">
+<button class="btn" id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+<button class="btn btn-upload" id="register-btn"><i class="fas fa-user-plus"></i> Register</button>
+</div>
+<div id="user-info" style="display: none;">
+<div class="user-info" id="profile-btn">
+<div class="user-avatar" id="user-avatar">
+<span id="avatar-initial">U</span>
+</div>
+<span id="username-display">User</span>
+</div>
+<button class="btn btn-clear" id="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+</div>
 </div>
 </nav>
 
@@ -923,6 +1682,10 @@ body {
 <div class="content-section active" id="studio-section">
 <div class="section-header">
 <h2><i class="fas fa-draw-polygon"></i> Pixel Art Studio</h2>
+<div>
+<button class="btn btn-save" id="save-project-btn"><i class="fas fa-save"></i> Save</button>
+<button class="btn btn-upload" id="upload-artwork-btn"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+</div>
 </div>
 <div class="studio-content">
 <div class="reference-panel">
@@ -1006,7 +1769,7 @@ body {
 <button class="btn btn-download" id="download-btn"><i class="fas fa-file-download"></i> Download</button>
 <button class="btn" id="size-btn"><i class="fas fa-ruler"></i> Size</button>
 </div>
-<div class="hotkey-hint">Undo: Ctrl+Z | Clear: Ctrl+Del</div>
+<div class="hotkey-hint">Undo: Ctrl+Z | Clear: Ctrl+Del | Save: Ctrl+S</div>
 </div>
 
 <div class="tool-group">
@@ -1024,9 +1787,37 @@ body {
 <div class="brush-icon"><i class="fas fa-rainbow"></i></div>
 <div class="brush-name">Rainbow</div>
 </button>
+<button class="brush-btn" id="brush-fur" data-type="fur">
+<div class="brush-icon"><i class="fas fa-paw"></i></div>
+<div class="brush-name">Fur</div>
+</button>
+<button class="brush-btn" id="brush-neon" data-type="neon">
+<div class="brush-icon"><i class="fas fa-lightbulb"></i></div>
+<div class="brush-name">Neon</div>
+</button>
+<button class="brush-btn" id="brush-shading" data-type="shading">
+<div class="brush-icon"><i class="fas fa-cloud"></i></div>
+<div class="brush-name">Shading</div>
+</button>
+<button class="brush-btn" id="brush-spray" data-type="spray">
+<div class="brush-icon"><i class="fas fa-spray-can"></i></div>
+<div class="brush-name">Spray</div>
+</button>
 <button class="brush-btn" id="brush-eraser" data-type="eraser">
 <div class="brush-icon"><i class="fas fa-eraser"></i></div>
 <div class="brush-name">Erase</div>
+</button>
+<button class="brush-btn" id="brush-calligraphy" data-type="calligraphy">
+<div class="brush-icon"><i class="fas fa-pen-nib"></i></div>
+<div class="brush-name">Calligraphy</div>
+</button>
+<button class="brush-btn" id="brush-glitter" data-type="glitter">
+<div class="brush-icon"><i class="fas fa-sparkles"></i></div>
+<div class="brush-name">Glitter</div>
+</button>
+<button class="brush-btn" id="brush-text" data-type="text">
+<div class="brush-icon"><i class="fas fa-font"></i></div>
+<div class="brush-name">Text</div>
 </button>
 </div>
 </div>
@@ -1038,6 +1829,10 @@ body {
 <button class="blend-btn" data-mode="multiply">Multiply</button>
 <button class="blend-btn" data-mode="screen">Screen</button>
 <button class="blend-btn" data-mode="overlay">Overlay</button>
+<button class="blend-btn" data-mode="darken">Darken</button>
+<button class="blend-btn" data-mode="lighten">Lighten</button>
+<button class="blend-btn" data-mode="color-dodge">Dodge</button>
+<button class="blend-btn" data-mode="color-burn">Burn</button>
 </div>
 </div>
 
@@ -1101,6 +1896,280 @@ body {
 </div>
 </div>
 </div>
+
+<div class="tool-group">
+<h3><i class="fas fa-film"></i> Animation</h3>
+<button class="btn" id="toggle-animation"><i class="fas fa-play"></i> Enable Animation</button>
+</div>
+
+<button class="btn projects-btn" id="projects-btn"><i class="fas fa-folder"></i> Projects</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Animation Timeline -->
+<div class="animation-timeline" id="animation-timeline">
+<div class="timeline-header">
+<h3><i class="fas fa-film"></i> Animation Timeline</h3>
+<button class="btn btn-clear" id="close-timeline"><i class="fas fa-times"></i></button>
+</div>
+<div class="timeline-controls">
+<button class="btn" id="add-frame"><i class="fas fa-plus"></i> Add Frame</button>
+<button class="btn" id="prev-frame"><i class="fas fa-arrow-left"></i></button>
+<button class="btn" id="play-animation"><i class="fas fa-play"></i> Play</button>
+<button class="btn" id="next-frame"><i class="fas fa-arrow-right"></i></button>
+<button class="btn btn-clear" id="delete-frame"><i class="fas fa-trash"></i></button>
+</div>
+<div class="speed-control">
+<span class="speed-label">Speed:</span>
+<input type="range" id="frame-speed" min="100" max="1000" value="300">
+<span class="speed-value" id="speed-value">300ms</span>
+</div>
+<div class="loop-toggle">
+<input type="checkbox" id="loop-animation" checked>
+<span class="loop-label">Loop Animation</span>
+</div>
+<div class="timeline-frames" id="timeline-frames">
+<!-- Frames will be added here -->
+</div>
+</div>
+
+<!-- Profile Section -->
+<div class="content-section" id="profile-section">
+<div class="section-header">
+<h2><i class="fas fa-user"></i> Your Profile</h2>
+</div>
+<div class="profile-container">
+<div class="profile-header">
+<div class="profile-banner" id="profile-banner">
+<div class="profile-banner-placeholder" id="banner-placeholder">
+<i class="fas fa-mountain"></i> Customize your banner to showcase your style
+</div>
+<button class="banner-edit" id="edit-banner"><i class="fas fa-camera"></i> Edit Banner</button>
+</div>
+<div class="profile-info">
+<div class="profile-avatar">
+<div class="avatar-container" id="avatar-container">
+<span id="avatar-text">PM</span>
+</div>
+<div class="avatar-edit" id="edit-avatar"><i class="fas fa-camera"></i></div>
+</div>
+<div class="profile-details">
+<div class="profile-name">
+<span id="profile-display-name">Pixel Master</span>
+<span class="profile-username" id="profile-username">@PixelArtist</span>
+</div>
+<div class="profile-bio" id="profile-bio">Digital artist specializing in pixel art and game design. Passionate about creating immersive worlds and characters. Currently working on my indie game project "Pixel Quest". Let's create something amazing together!</div>
+<div class="profile-stats">
+<div class="stat-item">
+<div class="stat-value" id="stat-artworks">42</div>
+<div class="stat-label">Artworks</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="stat-followers">1.2K</div>
+<div class="stat-label">Followers</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="stat-following">587</div>
+<div class="stat-label">Following</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="stat-projects">24</div>
+<div class="stat-label">Projects</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="profile-tabs">
+<button class="tab-btn active" data-tab="gallery">Gallery</button>
+<button class="tab-btn" data-tab="about">About</button>
+<button class="tab-btn" data-tab="edit">Edit Profile</button>
+</div>
+
+<div class="tab-content active" id="gallery-tab">
+<div class="profile-gallery" id="profile-gallery">
+<!-- Artwork cards will be added dynamically -->
+</div>
+</div>
+
+<div class="tab-content" id="about-tab">
+<div class="profile-about">
+<h3><i class="fas fa-user"></i> About Me</h3>
+<p id="about-text">I'm a passionate pixel artist with over 5 years of experience in creating retro-style graphics for games and digital art. My work has been featured in several indie games and art exhibitions. I specialize in character design, environment art, and animation.</p>
+
+<h3 style="margin-top: 30px;"><i class="fas fa-graduation-cap"></i> Skills</h3>
+<div class="skills-container">
+<div class="skills-list" id="skills-list">
+<!-- Skills will be added here dynamically -->
+</div>
+</div>
+
+<h3><i class="fas fa-link"></i> Connect With Me</h3>
+<div class="social-links" id="profile-contact-links">
+<!-- Contact links will be added dynamically -->
+</div>
+</div>
+</div>
+
+<div class="tab-content" id="edit-tab">
+<div class="profile-about">
+<h3><i class="fas fa-user-edit"></i> Edit Profile</h3>
+<form class="profile-form">
+<div class="form-group">
+<label for="display-name">Display Name</label>
+<input type="text" id="display-name" value="Pixel Master">
+</div>
+<div class="form-group">
+<label for="username">Username</label>
+<input type="text" id="username" value="PixelArtist" readonly>
+</div>
+<div class="form-group full-width">
+<label for="bio">Bio</label>
+<textarea id="bio">Digital artist specializing in pixel art and game design. Passionate about creating immersive worlds and characters. Currently working on my indie game project "Pixel Quest". Let's create something amazing together!</textarea>
+</div>
+
+<!-- Contact Links Section -->
+<div class="form-group full-width">
+<label><i class="fas fa-link"></i> Contact Links</label>
+<div id="contact-links-container">
+<!-- Contact links will be added here dynamically -->
+</div>
+<div class="social-link-form">
+<select id="social-type">
+<option value="youtube">YouTube</option>
+<option value="instagram">Instagram</option>
+<option value="telegram">Telegram</option>
+<option value="discord">Discord</option>
+<option value="twitter">Twitter</option>
+<option value="website">Website</option>
+<option value="other">Other</option>
+</select>
+<input type="text" id="social-url" placeholder="Enter URL">
+<button type="button" id="add-social-link"><i class="fas fa-plus"></i> Add</button>
+</div>
+</div>
+
+<!-- Skills Editor -->
+<div class="form-group full-width">
+<label><i class="fas fa-graduation-cap"></i> Skills</label>
+<div class="skills-container">
+<div class="skills-list" id="edit-skills-list">
+<!-- Skills will be added here dynamically -->
+</div>
+<div class="skill-input">
+<input type="text" id="new-skill" placeholder="Add a new skill">
+<button type="button" id="add-skill"><i class="fas fa-plus"></i> Add</button>
+</div>
+</div>
+</div>
+
+<div class="form-group full-width">
+<label for="about">About Me</label>
+<textarea id="about">I'm a passionate pixel artist with over 5 years of experience in creating retro-style graphics for games and digital art. My work has been featured in several indie games and art exhibitions. I specialize in character design, environment art, and animation.</textarea>
+</div>
+<div class="form-group">
+<label for="location">Location</label>
+<input type="text" id="location" value="San Francisco, CA">
+</div>
+<div class="form-group">
+<label for="website">Website</label>
+<input type="text" id="website" value="pixelmaster.art">
+</div>
+<div class="form-actions">
+<button type="button" class="cancel-btn" id="cancel-profile-edit">Cancel</button>
+<button type="button" class="save-btn" id="save-profile">Save Changes</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Settings Section -->
+<div class="content-section" id="settings-section">
+<div class="section-header">
+<h2><i class="fas fa-cog"></i> Settings</h2>
+</div>
+<div class="settings-container">
+<div class="settings-group">
+<h3><i class="fas fa-paint-brush"></i> Canvas Settings</h3>
+<div class="setting-item">
+<div class="setting-label">Grid Visibility</div>
+<label class="toggle-switch">
+<input type="checkbox" id="grid-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-label">Pixel Snap</div>
+<label class="toggle-switch">
+<input type="checkbox" id="pixel-snap-toggle">
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-label">Auto-Save</div>
+<label class="toggle-switch">
+<input type="checkbox" id="auto-save-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+
+<div class="settings-group">
+<h3><i class="fas fa-palette"></i> Appearance</h3>
+<div class="setting-item">
+<div class="setting-label">Theme</div>
+<select id="theme-select" class="setting-select">
+<option value="dark">Dark (Default)</option>
+<option value="light">Light</option>
+<option value="blue">Blue Night</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-label">UI Scale</div>
+<select id="ui-scale-select" class="setting-select">
+<option value="100">100% (Default)</option>
+<option value="125">125%</option>
+<option value="150">150%</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-label">Animation Effects</div>
+<label class="toggle-switch">
+<input type="checkbox" id="animations-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+
+<div class="settings-group">
+<h3><i class="fas fa-tools"></i> Advanced</h3>
+<div class="setting-item">
+<div class="setting-label">Undo History Size</div>
+<select id="undo-history-select" class="setting-select">
+<option value="20">20 steps (Default)</option>
+<option value="50">50 steps</option>
+<option value="100">100 steps</option>
+</select>
+</div>
+<div class="setting-item">
+<div class="setting-label">Hardware Acceleration</div>
+<label class="toggle-switch">
+<input type="checkbox" id="hardware-accel-toggle" checked>
+<span class="slider"></span>
+</label>
+</div>
+<div class="setting-item">
+<div class="setting-label">Export Quality</div>
+<select id="export-quality-select" class="setting-select">
+<option value="high">High (PNG)</option>
+<option value="medium">Medium (JPG 90%)</option>
+<option value="low">Low (JPG 70%)</option>
+</select>
 </div>
 </div>
 </div>
@@ -1111,6 +2180,26 @@ body {
 <footer class="footer">
 <p>InkFlow Studio &copy; 2025 | :3</p>
 </footer>
+
+<!-- Project Manager Panel -->
+<div class="project-manager" id="project-manager" style="display: none;">
+<div class="project-panel">
+<div class="project-header">
+<h2><i class="fas fa-folder-open"></i> Project Manager</h2>
+<button class="close-btn" id="close-project-manager"><i class="fas fa-times"></i></button>
+</div>
+<div class="project-list" id="project-list">
+<!-- Projects will be loaded here -->
+</div>
+<div class="new-project">
+<h3><i class="fas fa-plus-circle"></i> Create New Project</h3>
+<div class="project-input">
+<input type="text" id="new-project-name" placeholder="Enter project name">
+<button id="create-project">Create</button>
+</div>
+</div>
+</div>
+</div>
 
 <!-- Download Modal -->
 <div class="download-modal" id="download-modal">
@@ -1124,6 +2213,96 @@ body {
 <button class="download-confirm" id="confirm-download"><i class="fas fa-download"></i> Download</button>
 <button class="download-cancel" id="cancel-download"><i class="fas fa-times"></i> Cancel</button>
 </div>
+</div>
+</div>
+
+<!-- Upload Modal -->
+<div class="upload-modal" id="upload-modal">
+<div class="upload-panel">
+<div class="upload-header">
+<h2><i class="fas fa-cloud-upload-alt"></i> Upload Artwork</h2>
+<p>Share your creation with the community</p>
+</div>
+<div class="upload-form">
+<div class="form-group">
+<label for="artwork-title">Artwork Title</label>
+<input type="text" id="artwork-title" placeholder="Enter a title for your artwork">
+</div>
+<div class="form-group">
+<label for="artwork-description">Description</label>
+<textarea id="artwork-description" placeholder="Describe your artwork..."></textarea>
+</div>
+<div class="form-group">
+<label for="artwork-tags">Tags</label>
+<input type="text" id="artwork-tags" placeholder="pixel, art, landscape, etc.">
+</div>
+<div class="form-group">
+<label for="artwork-visibility">Visibility</label>
+<select id="artwork-visibility">
+<option value="public">Public</option>
+<option value="private">Private</option>
+</select>
+</div>
+<div class="upload-actions">
+<button class="upload-cancel" id="cancel-upload"><i class="fas fa-times"></i> Cancel</button>
+<button class="upload-confirm" id="confirm-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Auth Modal -->
+<div class="auth-modal" id="auth-modal">
+<div class="auth-panel">
+<div class="auth-header">
+<h2><i class="fas fa-user"></i> Welcome to InkFlow</h2>
+<p>Sign in or create an account to access all features</p>
+</div>
+<div class="auth-tabs">
+<button class="auth-tab active" id="login-tab">Login</button>
+<button class="auth-tab" id="register-tab">Register</button>
+</div>
+<div class="auth-form active" id="login-form">
+<div class="auth-form-group">
+<label for="login-email">Email</label>
+<input type="email" id="login-email" placeholder="Enter your email">
+</div>
+<div class="auth-form-group">
+<label for="login-password">Password</label>
+<input type="password" id="login-password" placeholder="Enter your password">
+</div>
+<div class="auth-actions">
+<button class="auth-cancel" id="cancel-auth"><i class="fas fa-times"></i> Cancel</button>
+<button class="auth-confirm" id="confirm-login"><i class="fas fa-sign-in-alt"></i> Login</button>
+</div>
+</div>
+<div class="auth-form" id="register-form">
+<div class="auth-form-group">
+<label for="register-email">Email</label>
+<input type="email" id="register-email" placeholder="Enter your email">
+</div>
+<div class="auth-form-group">
+<label for="register-password">Password</label>
+<input type="password" id="register-password" placeholder="Create a password">
+</div>
+<div class="auth-form-group">
+<label for="register-confirm">Confirm Password</label>
+<input type="password" id="register-confirm" placeholder="Confirm your password">
+</div>
+<div class="auth-actions">
+<button class="auth-cancel" id="cancel-register"><i class="fas fa-times"></i> Cancel</button>
+<button class="auth-confirm" id="confirm-register"><i class="fas fa-user-plus"></i> Register</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Notification Modal -->
+<div class="notification-modal" id="notification-modal">
+<div class="notification-icon"><i class="fas fa-bell"></i></div>
+<div class="notification-content">
+<div class="notification-title" id="notification-title"></div>
+<div class="notification-message" id="notification-message"></div>
 </div>
 </div>
 
@@ -1150,6 +2329,37 @@ body {
 </div>
 </div>
 
+<!-- Text Tool Modal -->
+<div class="text-tool-container" id="text-tool">
+<div class="text-tool-header">
+<h4><i class="fas fa-font"></i> Add Text</h4>
+<span class="font-size-indicator">Size: <span id="current-font-size">24</span>px</span>
+</div>
+<input type="text" class="text-input" id="text-input" placeholder="Enter text...">
+<div class="text-preview" id="text-preview">Text Preview</div>
+<select class="font-select" id="font-select">
+<option value="Arial">Arial</option>
+<option value="Verdana">Verdana</option>
+<option value="Georgia">Georgia</option>
+<option value="Times New Roman">Times New Roman</option>
+<option value="Courier New">Courier New</option>
+<option value="Comic Sans MS">Comic Sans MS</option>
+<option value="Impact">Impact</option>
+<option value="Tahoma">Tahoma</option>
+<option value="Trebuchet MS">Trebuchet MS</option>
+<option value="Lucida Sans Unicode">Lucida Sans</option>
+</select>
+<div class="text-tool-settings">
+<button class="text-style-btn" id="bold-btn"><i class="fas fa-bold"></i> Bold</button>
+<button class="text-style-btn" id="italic-btn"><i class="fas fa-italic"></i> Italic</button>
+<button class="text-style-btn" id="underline-btn"><i class="fas fa-underline"></i> Underline</button>
+</div>
+<div class="text-tool-actions">
+<button class="text-confirm" id="text-confirm">Add Text</button>
+<button class="text-cancel" id="text-cancel">Cancel</button>
+</div>
+</div>
+
 <script>
 // Canvas setup
 const canvas = document.getElementById('drawing-canvas');
@@ -1171,6 +2381,8 @@ let lastPanY = 0;
 let undoStack = [];
 let redoStack = [];
 let maxUndoSteps = 20;
+let isLoggedIn = false;
+let currentUser = null;
 
 // Initialize canvas
 function initCanvas() {
@@ -1197,6 +2409,19 @@ function setupEventListeners() {
   canvas.addEventListener('touchmove', handleTouchMove);
   canvas.addEventListener('touchend', handleTouchEnd);
   
+  // Navigation
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const section = link.dataset.section;
+      switchSection(section);
+      
+      // Update active nav link
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+  
   // Tool controls
   document.getElementById('color-picker').addEventListener('input', (e) => {
     currentColor = e.target.value;
@@ -1219,6 +2444,11 @@ function setupEventListeners() {
       document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentBrush = btn.dataset.type;
+      
+      // Special handling for text brush
+      if (currentBrush === 'text') {
+        showTextTool();
+      }
     });
   });
   
@@ -1247,6 +2477,9 @@ function setupEventListeners() {
   document.getElementById('undo-btn').addEventListener('click', undo);
   document.getElementById('download-btn').addEventListener('click', showDownloadModal);
   document.getElementById('size-btn').addEventListener('click', showSizeModal);
+  document.getElementById('save-project-btn').addEventListener('click', saveProject);
+  document.getElementById('upload-artwork-btn').addEventListener('click', showUploadModal);
+  document.getElementById('projects-btn').addEventListener('click', showProjectManager);
   
   // Download modal
   document.getElementById('confirm-download').addEventListener('click', downloadCanvas);
@@ -1293,19 +2526,92 @@ function setupEventListeners() {
   
   document.getElementById('clear-ref-btn').addEventListener('click', clearReferenceImage);
   
+  // Auth buttons
+  document.getElementById('login-btn').addEventListener('click', showAuthModal);
+  document.getElementById('register-btn').addEventListener('click', showAuthModal);
+  document.getElementById('logout-btn').addEventListener('click', logout);
+  
+  // Auth modal
+  document.getElementById('login-tab').addEventListener('click', () => switchAuthTab('login'));
+  document.getElementById('register-tab').addEventListener('click', () => switchAuthTab('register'));
+  document.getElementById('confirm-login').addEventListener('click', login);
+  document.getElementById('confirm-register').addEventListener('click', register);
+  document.getElementById('cancel-auth').addEventListener('click', () => {
+    document.getElementById('auth-modal').style.display = 'none';
+  });
+  document.getElementById('cancel-register').addEventListener('click', () => {
+    document.getElementById('auth-modal').style.display = 'none';
+  });
+  
+  // Profile tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const tab = btn.dataset.tab;
+      switchProfileTab(tab);
+      
+      // Update active tab button
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+  
+  // Profile edit
+  document.getElementById('save-profile').addEventListener('click', saveProfile);
+  document.getElementById('cancel-profile-edit').addEventListener('click', cancelProfileEdit);
+  document.getElementById('add-social-link').addEventListener('click', addSocialLink);
+  document.getElementById('add-skill').addEventListener('click', addSkill);
+  
+  // Animation
+  document.getElementById('toggle-animation').addEventListener('click', toggleAnimation);
+  document.getElementById('close-timeline').addEventListener('click', () => {
+    document.getElementById('animation-timeline').style.display = 'none';
+  });
+  
+  // Project manager
+  document.getElementById('close-project-manager').addEventListener('click', () => {
+    document.getElementById('project-manager').style.display = 'none';
+  });
+  document.getElementById('create-project').addEventListener('click', createProject);
+  
+  // Upload modal
+  document.getElementById('cancel-upload').addEventListener('click', () => {
+    document.getElementById('upload-modal').style.display = 'none';
+  });
+  document.getElementById('confirm-upload').addEventListener('click', uploadArtwork);
+  
+  // Text tool
+  document.getElementById('text-cancel').addEventListener('click', () => {
+    document.getElementById('text-tool').style.display = 'none';
+    // Switch back to normal brush
+    document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('brush-normal').classList.add('active');
+    currentBrush = 'normal';
+  });
+  document.getElementById('text-confirm').addEventListener('click', addTextToCanvas);
+  
   // Keyboard shortcuts
   document.addEventListener('keydown', handleKeyboardShortcuts);
 }
 
+// Section switching
+function switchSection(section) {
+  document.querySelectorAll('.content-section').forEach(sec => {
+    sec.classList.remove('active');
+  });
+  document.getElementById(`${section}-section`).classList.add('active');
+}
+
 // Drawing functions
 function startDrawing(e) {
+  if (currentBrush === 'text') return;
+  
   isDrawing = true;
   [lastX, lastY] = getCoordinates(e);
   saveState();
 }
 
 function draw(e) {
-  if (!isDrawing) return;
+  if (!isDrawing || currentBrush === 'text') return;
   
   e.preventDefault();
   
@@ -1452,6 +2758,7 @@ function downloadCanvas() {
   link.href = canvas.toDataURL('image/png');
   link.click();
   document.getElementById('download-modal').style.display = 'none';
+  showNotification('Download Complete', 'Your artwork has been downloaded successfully!');
 }
 
 function showSizeModal() {
@@ -1482,6 +2789,7 @@ function applyCanvasSize() {
     ctx.drawImage(tempCanvas, (width - tempCanvas.width) / 2, (height - tempCanvas.height) / 2);
     
     saveState();
+    showNotification('Canvas Resized', `Canvas size changed to ${width}x${height} pixels`);
   }
   
   document.getElementById('size-modal').style.display = 'none';
@@ -1511,6 +2819,309 @@ function clearReferenceImage() {
   document.querySelector('.reference-placeholder').style.display = 'flex';
 }
 
+// Auth functions
+function showAuthModal() {
+  document.getElementById('auth-modal').style.display = 'flex';
+}
+
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  
+  if (tab === 'login') {
+    document.getElementById('login-tab').classList.add('active');
+    document.getElementById('login-form').classList.add('active');
+  } else {
+    document.getElementById('register-tab').classList.add('active');
+    document.getElementById('register-form').classList.add('active');
+  }
+}
+
+function login() {
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  
+  if (!email || !password) {
+    showNotification('Login Failed', 'Please enter both email and password');
+    return;
+  }
+  
+  // Simulate login
+  currentUser = {
+    name: 'Pixel Master',
+    username: 'PixelArtist',
+    email: email
+  };
+  
+  isLoggedIn = true;
+  updateUserInterface();
+  document.getElementById('auth-modal').style.display = 'none';
+  showNotification('Login Successful', `Welcome back, ${currentUser.name}!`);
+}
+
+function register() {
+  const email = document.getElementById('register-email').value;
+  const password = document.getElementById('register-password').value;
+  const confirm = document.getElementById('register-confirm').value;
+  
+  if (!email || !password || !confirm) {
+    showNotification('Registration Failed', 'Please fill in all fields');
+    return;
+  }
+  
+  if (password !== confirm) {
+    showNotification('Registration Failed', 'Passwords do not match');
+    return;
+  }
+  
+  // Simulate registration
+  currentUser = {
+    name: 'New User',
+    username: 'newuser',
+    email: email
+  };
+  
+  isLoggedIn = true;
+  updateUserInterface();
+  document.getElementById('auth-modal').style.display = 'none';
+  showNotification('Registration Successful', 'Welcome to InkFlow Studio!');
+}
+
+function logout() {
+  isLoggedIn = false;
+  currentUser = null;
+  updateUserInterface();
+  showNotification('Logged Out', 'You have been successfully logged out');
+}
+
+function updateUserInterface() {
+  if (isLoggedIn) {
+    document.getElementById('auth-buttons').style.display = 'none';
+    document.getElementById('user-info').style.display = 'flex';
+    document.getElementById('username-display').textContent = currentUser.name;
+    document.getElementById('avatar-initial').textContent = currentUser.name.charAt(0).toUpperCase();
+  } else {
+    document.getElementById('auth-buttons').style.display = 'flex';
+    document.getElementById('user-info').style.display = 'none';
+  }
+}
+
+// Profile functions
+function switchProfileTab(tab) {
+  document.querySelectorAll('.tab-content')..forEach(content => {
+    content.classList.remove('active');
+  });
+  document.getElementById(`${tab}-tab`).classList.add('active');
+}
+
+function saveProfile() {
+  const displayName = document.getElementById('display-name').value;
+  const bio = document.getElementById('bio').value;
+  const about = document.getElementById('about').value;
+  const location = document.getElementById('location').value;
+  const website = document.getElementById('website').value;
+  
+  // Update profile display
+  document.getElementById('profile-display-name').textContent = displayName;
+  document.getElementById('profile-bio').textContent = bio;
+  document.getElementById('about-text').textContent = about;
+  
+  showNotification('Profile Updated', 'Your profile has been saved successfully');
+  switchProfileTab('about');
+}
+
+function cancelProfileEdit() {
+  switchProfileTab('about');
+}
+
+function addSocialLink() {
+  const type = document.getElementById('social-type').value;
+  const url = document.getElementById('social-url').value;
+  
+  if (!url) {
+    showNotification('Error', 'Please enter a URL');
+    return;
+  }
+  
+  const container = document.getElementById('contact-links-container');
+  const linkElement = document.createElement('div');
+  linkElement.className = 'social-link';
+  linkElement.innerHTML = `
+    <i class="fab fa-${type}"></i>
+    <span>${type.charAt(0).toUpperCase() + type.slice(1)}</span>
+    <button class="remove-link" style="margin-left: auto; background: none; border: none; color: #ff6b6b; cursor: pointer;">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
+  
+  container.appendChild(linkElement);
+  
+  // Clear input
+  document.getElementById('social-url').value = '';
+  
+  // Add remove functionality
+  linkElement.querySelector('.remove-link').addEventListener('click', function() {
+    linkElement.remove();
+  });
+}
+
+function addSkill() {
+  const skill = document.getElementById('new-skill').value;
+  
+  if (!skill) {
+    showNotification('Error', 'Please enter a skill');
+    return;
+  }
+  
+  const container = document.getElementById('edit-skills-list');
+  const skillElement = document.createElement('div');
+  skillElement.className = 'skill-tag';
+  skillElement.innerHTML = `
+    ${skill}
+    <button class="remove-skill" style="margin-left: 5px; background: none; border: none; color: #ff6b6b; cursor: pointer;">
+      <i class="fas fa-times"></i>
+    </button>
+  `;
+  
+  container.appendChild(skillElement);
+  
+  // Clear input
+  document.getElementById('new-skill').value = '';
+  
+  // Add remove functionality
+  skillElement.querySelector('.remove-skill').addEventListener('click', function() {
+    skillElement.remove();
+  });
+}
+
+// Project functions
+function showProjectManager() {
+  document.getElementById('project-manager').style.display = 'flex';
+  loadProjects();
+}
+
+function loadProjects() {
+  const projectList = document.getElementById('project-list');
+  projectList.innerHTML = '';
+  
+  // Sample projects
+  const projects = [
+    { name: 'Pixel Landscape', date: '2023-10-15' },
+    { name: 'Character Design', date: '2023-09-22' },
+    { name: 'Game Assets', date: '2023-08-05' }
+  ];
+  
+  projects.forEach(project => {
+    const projectElement = document.createElement('div');
+    projectElement.className = 'project-item';
+    projectElement.innerHTML = `
+      <div style="font-weight: bold;">${project.name}</div>
+      <div style="font-size: 0.8rem; color: #a0a0c0;">${project.date}</div>
+    `;
+    
+    projectList.appendChild(projectElement);
+  });
+}
+
+function createProject() {
+  const name = document.getElementById('new-project-name').value;
+  
+  if (!name) {
+    showNotification('Error', 'Please enter a project name');
+    return;
+  }
+  
+  showNotification('Project Created', `Project "${name}" has been created`);
+  document.getElementById('new-project-name').value = '';
+  loadProjects();
+}
+
+function saveProject() {
+  if (!isLoggedIn) {
+    showNotification('Authentication Required', 'Please log in to save projects');
+    showAuthModal();
+    return;
+  }
+  
+  showNotification('Project Saved', 'Your artwork has been saved to your projects');
+}
+
+// Upload functions
+function showUploadModal() {
+  if (!isLoggedIn) {
+    showNotification('Authentication Required', 'Please log in to upload artwork');
+    showAuthModal();
+    return;
+  }
+  
+  document.getElementById('upload-modal').style.display = 'flex';
+}
+
+function uploadArtwork() {
+  const title = document.getElementById('artwork-title').value;
+  const description = document.getElementById('artwork-description').value;
+  
+  if (!title) {
+    showNotification('Error', 'Please enter a title for your artwork');
+    return;
+  }
+  
+  document.getElementById('upload-modal').style.display = 'none';
+  showNotification('Artwork Uploaded', `"${title}" has been uploaded successfully`);
+}
+
+// Animation functions
+function toggleAnimation() {
+  const timeline = document.getElementById('animation-timeline');
+  if (timeline.style.display === 'none' || !timeline.style.display) {
+    timeline.style.display = 'block';
+    document.getElementById('toggle-animation').innerHTML = '<i class="fas fa-stop"></i> Disable Animation';
+  } else {
+    timeline.style.display = 'none';
+    document.getElementById('toggle-animation').innerHTML = '<i class="fas fa-play"></i> Enable Animation';
+  }
+}
+
+// Text tool functions
+function showTextTool() {
+  document.getElementById('text-tool').style.display = 'block';
+}
+
+function addTextToCanvas() {
+  const text = document.getElementById('text-input').value;
+  const fontSize = parseInt(document.getElementById('current-font-size').textContent);
+  const fontFamily = document.getElementById('font-select').value;
+  
+  if (!text) {
+    showNotification('Error', 'Please enter some text');
+    return;
+  }
+  
+  // Save state before adding text
+  saveState();
+  
+  // Set text properties
+  ctx.font = `${fontSize}px ${fontFamily}`;
+  ctx.fillStyle = currentColor;
+  ctx.globalAlpha = brushOpacity;
+  
+  // Add text to canvas (centered for demo)
+  const x = canvas.width / 2;
+  const y = canvas.height / 2;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, x, y);
+  
+  // Hide text tool
+  document.getElementById('text-tool').style.display = 'none';
+  document.getElementById('text-input').value = '';
+  
+  // Switch back to normal brush
+  document.querySelectorAll('.brush-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('brush-normal').classList.add('active');
+  currentBrush = 'normal';
+}
+
 // Helper functions
 function updateActivePresetColor() {
   document.querySelectorAll('.preset-color').forEach(color => {
@@ -1535,7 +3146,11 @@ function handleKeyboardShortcuts(e) {
         break;
       case 's':
         e.preventDefault();
-        showDownloadModal();
+        if (isLoggedIn) {
+          saveProject();
+        } else {
+          showDownloadModal();
+        }
         break;
     }
   }
@@ -1544,6 +3159,19 @@ function handleKeyboardShortcuts(e) {
     e.preventDefault();
     clearCanvas();
   }
+}
+
+function showNotification(title, message) {
+  const notification = document.getElementById('notification-modal');
+  document.getElementById('notification-title').textContent = title;
+  document.getElementById('notification-message').textContent = message;
+  
+  notification.style.display = 'block';
+  
+  // Auto hide after 3 seconds
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 3000);
 }
 
 // Initialize the app when the page loads
